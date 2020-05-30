@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"path"
+	"runtime"
 )
 
 // Currency -
@@ -17,7 +19,12 @@ type Currency struct {
 var Currencies = make([]Currency, 0)
 
 func init() {
-	raw, err := ioutil.ReadFile("./currencies.json")
+	_, currentFile, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatalln("No caller information")
+	}
+
+	raw, err := ioutil.ReadFile(path.Join(path.Dir(currentFile), "./currencies.json"))
 	if err != nil {
 		log.Fatalln("Error in currencies", err)
 	}

@@ -9,9 +9,9 @@ type ProjectModel struct {
 	Area    float32      `bson:"area" json:"area"`
 	Unit    string       `bson:"unit" json:"unit"`
 	// Extended
-	*BaseModel
-	*CurrencyModel
-	*MetaModel
+	*BaseModel     `bson:",inline"`
+	*CurrencyModel `bson:",inline"`
+	*MetaModel     `bson:",inline"`
 	// Computed
 	LotIDs    []string `bson:"lotIDs" json:"lotIDs"`
 	LotsArea  float32  `bson:"lotsArea" json:"lotsArea"`
@@ -19,8 +19,8 @@ type ProjectModel struct {
 	AgentIDs  []string `bson:"agentIDs" json:"agentIDs"`
 }
 
-// NewProject -
-func NewProject() *ProjectModel {
+// NewProjectModel -
+func NewProjectModel() *ProjectModel {
 	return &ProjectModel{
 		BaseModel:     NewBaseModel(),
 		CurrencyModel: NewCurrencyModel(),

@@ -1,17 +1,14 @@
 package main
 
 import (
-	"log"
-
-	"github.com/mewben/realty278/internal"
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/internal/startup"
+	"github.com/mewben/realty278/pkg"
 )
 
 func main() {
-	internal.InitEnvironment()
+	// startup.InitEnvironment()
+	db := startup.Init()
+	app := pkg.SetupBackend(db)
 
-	business := models.NewBusinessModel()
-	log.Println("business", business)
-	log.Println("countries", enums.Countries)
+	app.Listen("localhost:5000")
 }

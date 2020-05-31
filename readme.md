@@ -23,6 +23,10 @@
 Backend: Go
 Frontend: React (create-react-app)
 
+## Testing
+
+go test --tags=integration // includes integration tests
+
 ## Processes
 
 ### Signup Users.signup()

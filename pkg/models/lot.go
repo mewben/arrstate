@@ -8,14 +8,13 @@ type LotModel struct {
 	Price      float32 `bson:"price" json:"price"`
 	PriceAddon float32 `bson:"priceAddon" json:"priceAddon"`
 	// Extended
-	*BaseModel
-	*MetaModel
+	*BaseModel `bson:",inline"`
+	*MetaModel `bson:",inline"`
 }
 
 // NewLotModel -
-func NewLotModel(projectID string) *LotModel {
+func NewLotModel() *LotModel {
 	return &LotModel{
-		ProjectID: projectID,
 		BaseModel: NewBaseModel(),
 		MetaModel: NewMetaModel(),
 	}

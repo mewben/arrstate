@@ -1,5 +1,6 @@
 package enums
 
+// Default values
 const (
 	DefaultCurrency = "PHP"
 	DefaultCountry  = "PH"

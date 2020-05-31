@@ -5,7 +5,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 	"strconv"
 	"strings"
 
@@ -27,7 +26,10 @@ func DoRequest(method, path string, body interface{}) *http.Request {
 		bodyString = string(jsonByte)
 		payload = strings.NewReader(bodyString)
 	}
-	req := httptest.NewRequest(method, path, payload)
+	req, err := http.NewRequest(method, path, payload)
+	if err != nil {
+		panic(err)
+	}
 	req.Header.Set("Content-Type", fiber.MIMEApplicationJSON)
 	req.Header.Set("Content-Length", strconv.Itoa(len(bodyString)))
 	return req

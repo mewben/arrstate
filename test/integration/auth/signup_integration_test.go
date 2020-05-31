@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"os"
 	"testing"
 	"time"
@@ -9,17 +10,25 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/mewben/realty278/internal"
+	"github.com/mewben/realty278/internal/enums"
+	"github.com/mewben/realty278/internal/startup"
+	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/test/helpers"
 )
 
-func TestSignup(t *testing.T) {
+func TestIntegrationSignup(t *testing.T) {
 	os.Setenv("ENV", "TESTING")
-	internal.InitEnvironment()
-
+	db := startup.Init()
+	app := pkg.SetupBackend(db)
 	path := "/auth/signup"
+
+	// cleanup
+	db.Collection(enums.CollBusinesses).DeleteMany(context.Background(), bson.D{{}})
+	db.Collection(enums.CollUsers).DeleteMany(context.Background(), bson.D{{}})
+	db.Collection(enums.CollPeople).DeleteMany(context.Background(), bson.D{{}})
 
 	t.Run("It should return the JWT and authSuccess data", func(t *testing.T) {
 		// Setup -
@@ -31,23 +40,20 @@ func TestSignup(t *testing.T) {
 		fakeFamilyName := "Family Name"
 		fakePassword := "passworD"
 		data := fiber.Map{
-			"email":        fakeEmail,
-			"password":     fakePassword,
-			"businessName": fakeBusiness,
-			"domain":       fakeDomain,
-			"givenName":    fakeGivenname,
-			"familyName":   fakeFamilyName,
+			"email":      fakeEmail,
+			"password":   fakePassword,
+			"business":   fakeBusiness,
+			"domain":     fakeDomain,
+			"givenName":  fakeGivenname,
+			"familyName": fakeFamilyName,
 		}
-		h := &Handler{}
-		app := fiber.New()
-		app.Post(path, h.Signup)
 		req := helpers.DoRequest("POST", path, data)
 
 		// Execute -
 		res, err := app.Test(req, -1)
 		// Assert -
 		assert.Nil(err)
-		assert.Equal(200, res.StatusCode)
+		assert.Equal(201, res.StatusCode, res)
 		response, err := helpers.GetResponseAuth(res)
 		assert.Nil(err)
 		user := response.CurrentUser.User
@@ -62,7 +68,7 @@ func TestSignup(t *testing.T) {
 		assert.NotNil(user)
 		assert.Empty(user.Password)
 		assert.Equal(user.Email, fakeEmail)
-		assert.Equal(user.AccountStatus, "pending")
+		assert.Equal(user.AccountStatus, enums.AccountStatusPending)
 		assert.Equal(person.BusinessID, business.ID)
 		assert.Equal(person.GivenName, fakeGivenname)
 		assert.Equal(person.FamilyName, fakeFamilyName)

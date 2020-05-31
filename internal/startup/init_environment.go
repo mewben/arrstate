@@ -1,4 +1,4 @@
-package internal
+package startup
 
 import (
 	"log"
@@ -28,7 +28,7 @@ func InitEnvironment() {
 	if !ok {
 		log.Fatalln("No caller information")
 	}
-	viper.AddConfigPath(path.Join(path.Dir(filename), "../"))
+	viper.AddConfigPath(path.Join(path.Dir(filename), "../../"))
 	viper.SetConfigType("env")
 	viper.SetConfigName(configFile)
 

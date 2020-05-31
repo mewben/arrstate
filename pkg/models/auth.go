@@ -13,3 +13,20 @@ type AuthSuccessResponse struct {
 	CurrentBusiness *BusinessModel   `json:"currentBusiness"`
 	UserBusinesses  []*BusinessModel `json:"userBusinesses"`
 }
+
+// NewCurrentUser -
+func NewCurrentUser() *CurrentUser {
+	return &CurrentUser{
+		User:   NewUserModel(),
+		Person: NewPersonModel(),
+	}
+}
+
+// NewAuthSuccessResponse -
+func NewAuthSuccessResponse() *AuthSuccessResponse {
+	return &AuthSuccessResponse{
+		CurrentUser:     NewCurrentUser(),
+		CurrentBusiness: NewBusinessModel(),
+		UserBusinesses:  make([]*BusinessModel, 0),
+	}
+}

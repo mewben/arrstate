@@ -8,15 +8,14 @@ type PersonModel struct {
 	GivenName  string `bson:"givenName" json:"givenName"`
 	FamilyName string `bson:"familyName" json:"familyName"`
 	// Extended
-	*BaseModel
-	*AddressModel
-	*MetaModel
+	*BaseModel    `bson:",inline"`
+	*AddressModel `bson:",inline"`
+	*MetaModel    `bson:",inline"`
 }
 
 // NewPersonModel -
-func NewPersonModel(userID string) *PersonModel {
+func NewPersonModel() *PersonModel {
 	return &PersonModel{
-		UserID:       userID,
 		BaseModel:    NewBaseModel(),
 		AddressModel: NewAddressModel(),
 		MetaModel:    NewMetaModel(),

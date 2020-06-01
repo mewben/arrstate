@@ -15,7 +15,10 @@ import (
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/auth"
+	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 )
 
@@ -73,6 +76,74 @@ func TestIntegrationSignup(t *testing.T) {
 		assert.Equal(person.GivenName, fakeGivenname)
 		assert.Equal(person.FamilyName, fakeFamilyName)
 		assert.Equal(person.Role, "owner")
+	})
+
+	t.Run("It should catch required fields", func(t *testing.T) {
+		assert := assert.New(t)
+		payloads := []auth.SignupPayload{
+			{},
+			{
+				GivenName:  "",
+				FamilyName: "",
+				Business:   "",
+				Domain:     "",
+				Email:      "",
+				Password:   "",
+			},
+			{
+				GivenName:  "",
+				FamilyName: "testfn",
+				Business:   "testb",
+				Domain:     "testd",
+				Email:      "teste",
+				Password:   "test",
+			},
+			{
+				GivenName:  "testgn",
+				FamilyName: "testfn",
+				Business:   "",
+				Domain:     "testd",
+				Email:      "teste",
+				Password:   "test",
+			},
+			{
+				GivenName:  "testgn/",
+				FamilyName: "testfn",
+				Business:   "testb",
+				Domain:     "",
+				Email:      "teste",
+				Password:   "test",
+			},
+			{
+				GivenName:  "testgn/",
+				FamilyName: "testfn",
+				Business:   "testb",
+				Domain:     "testd",
+				Email:      "",
+				Password:   "test",
+			},
+			{
+				GivenName:  "testgn/",
+				FamilyName: "testfn",
+				Business:   "testb",
+				Domain:     "testd",
+				Email:      "teste",
+				Password:   "",
+			},
+		}
+
+		for _, payload := range payloads {
+			req := helpers.DoRequest("POST", path, payload)
+			res, err := app.Test(req, -1)
+
+			// Assert
+			assert.Nil(err)
+			assert.Equal(400, res.StatusCode, res)
+			response, err := helpers.GetResponseError(res)
+			assert.Nil(err)
+			assert.Equal(response.Message, services.T(errors.ErrInputInvalid), response)
+		}
+
 	})
 
 }

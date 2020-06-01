@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-ozzo/ozzo-validation/v4 v4.2.1
 	github.com/gofiber/fiber v1.10.1
 	github.com/gofiber/logger v0.2.2

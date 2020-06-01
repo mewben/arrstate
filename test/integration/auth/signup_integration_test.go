@@ -194,6 +194,69 @@ func TestIntegrationSignup(t *testing.T) {
 
 	})
 
+	t.Run("It should throw duplicate domain", func(t *testing.T) {
+		// Setup -
+		assert := assert.New(t)
+		fakeEmail := "test@email.com"
+		fakeBusiness := "Test Business"
+		fakeDomain := "test-domain"
+		fakeGivenname := "Given Name"
+		fakeFamilyName := "Family Name"
+		fakePassword := "passworD"
+		data := fiber.Map{
+			"email":      fakeEmail,
+			"password":   fakePassword,
+			"business":   fakeBusiness,
+			"domain":     fakeDomain,
+			"givenName":  fakeGivenname,
+			"familyName": fakeFamilyName,
+		}
+		req := helpers.DoRequest("POST", path, data)
+
+		// Execute -
+		res, err := app.Test(req, -1)
+		// Assert -
+		assert.Nil(err)
+		assert.Equal(400, res.StatusCode, res)
+		response, err := helpers.GetResponseError(res)
+		assert.Nil(err)
+		assert.Equal(response.Message, services.T(errors.ErrDomainDuplicate), response)
+
+	})
+
+	t.Run("It should throw duplicate email", func(t *testing.T) {
+		// Setup -
+		assert := assert.New(t)
+		fakeEmail := "test@email.com"
+		fakeBusiness := "Test Business"
+		fakeDomain := "test-domain-3"
+		fakeGivenname := "Given Name"
+		fakeFamilyName := "Family Name"
+		fakePassword := "passworD"
+		data := fiber.Map{
+			"email":      fakeEmail,
+			"password":   fakePassword,
+			"business":   fakeBusiness,
+			"domain":     fakeDomain,
+			"givenName":  fakeGivenname,
+			"familyName": fakeFamilyName,
+		}
+		req := helpers.DoRequest("POST", path, data)
+
+		// Execute -
+		res, err := app.Test(req, -1)
+		// Assert -
+		assert.Nil(err)
+		assert.Equal(400, res.StatusCode, res)
+		response, err := helpers.GetResponseError(res)
+		assert.Nil(err)
+		assert.Equal(response.Message, services.T(errors.ErrUserDuplicate), response)
+	})
+
+	t.Run("It should cleanup business, user, people on signup error", func(t *testing.T) {
+		// TODO: not urgent
+	})
+
 }
 
 func checkJWT(token string, user *models.UserModel, assert *assert.Assertions) {

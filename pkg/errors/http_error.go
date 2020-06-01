@@ -8,10 +8,9 @@ import (
 
 // HTTPError custom
 type HTTPError struct {
-	Code      int    `json:"-"`
-	Message   string `json:"message"`
-	RequestID string `json:"requestID"`
-	Internal  error  `json:"-"`
+	Code     int    `json:"-"`
+	Message  string `json:"message"`
+	Internal error  `json:"-"`
 }
 
 // Error makes it compatible with `error` interface.

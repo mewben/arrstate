@@ -6,8 +6,8 @@ import "go.mongodb.org/mongo-driver/mongo"
 func Init() *mongo.Database {
 	InitEnvironment()
 	db := ConnectMongo()
+	Indexes(db)
 	// TODO:
-	// Indexes(db)
 	// Migrations(db)
 	return db
 }

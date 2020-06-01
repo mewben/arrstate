@@ -1,9 +1,7 @@
 package people
 
 import (
-	"encoding/json"
 	"errors"
-	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 
@@ -28,14 +26,7 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 	person.Role = data.Role
 	person.GivenName = data.GivenName
 	person.FamilyName = data.FamilyName
-	person.Country = "PH"
-
-	result, err := json.Marshal(person)
-	if err != nil {
-		panic(err)
-	}
-
-	log.Println(string(result))
+	person.Country = enums.DefaultCountry
 
 	insertResult, err := h.DB.InsertOne(h.Ctx, enums.CollPeople, person)
 	if err != nil {

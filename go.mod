@@ -9,6 +9,7 @@ require (
 	github.com/gofiber/logger v0.2.2
 	github.com/gofiber/recover v0.1.0
 	github.com/gofiber/requestid v0.1.0
+	github.com/gosimple/slug v1.9.0
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.6.0
 	go.mongodb.org/mongo-driver v1.3.3

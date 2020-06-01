@@ -78,7 +78,37 @@ func TestIntegrationSignup(t *testing.T) {
 		assert.Equal(person.Role, "owner")
 	})
 
-	t.Run("It should catch required fields", func(t *testing.T) {
+	t.Run("It should auto clean inputs", func(t *testing.T) {
+		// Setup -
+		assert := assert.New(t)
+		fakeEmail := "Test2@email.com"
+		fakeBusiness := "Test Business2"
+		fakeDomain := "Test Domain 2"
+		fakeGivenname := "Given Name"
+		fakeFamilyName := "Family Name"
+		fakePassword := "passworD"
+		data := fiber.Map{
+			"email":      fakeEmail,
+			"password":   fakePassword,
+			"business":   fakeBusiness,
+			"domain":     fakeDomain,
+			"givenName":  fakeGivenname,
+			"familyName": fakeFamilyName,
+		}
+		req := helpers.DoRequest("POST", path, data)
+
+		// Execute -
+		res, err := app.Test(req, -1)
+		// Assert -
+		assert.Nil(err)
+		assert.Equal(201, res.StatusCode, res)
+		response, err := helpers.GetResponseAuth(res)
+		assert.Nil(err)
+		assert.Equal(response.CurrentBusiness.Domain, "test-domain-2")
+		assert.Equal(response.CurrentUser.User.Email, "test2@email.com")
+	})
+
+	t.Run("It should validate inputs", func(t *testing.T) {
 		assert := assert.New(t)
 		payloads := []auth.SignupPayload{
 			{},

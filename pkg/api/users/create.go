@@ -3,6 +3,7 @@ package users
 import (
 	"errors"
 	"log"
+	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
 
@@ -24,7 +25,7 @@ func (h *Handler) Create(data *Payload) (*models.UserModel, error) {
 		log.Println("err generatepassword")
 		return nil, err
 	}
-	user.Email = data.Email
+	user.Email = strings.ToLower(data.Email)
 	user.Password = hashedPassword
 	user.AccountStatus = enums.AccountStatusPending
 

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/gosimple/slug"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/realty278/internal/enums"
@@ -36,7 +37,7 @@ func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 
 	business := models.NewBusinessModel()
 	business.Name = data.Name
-	business.Domain = data.Domain
+	business.Domain = slug.Make(data.Domain)
 
 	insertResult, err := h.DB.InsertOne(h.Ctx, enums.CollBusinesses, business)
 	if err != nil {

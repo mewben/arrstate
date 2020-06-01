@@ -4,6 +4,7 @@ import (
 	"log"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/api/businesses"
@@ -40,10 +41,12 @@ func (v SignupPayload) Validate() error {
 		validation.Field(
 			&v.Email,
 			validation.Required,
+			is.EmailFormat,
 		),
 		validation.Field(
 			&v.Password,
 			validation.Required,
+			validation.Length(6, 0),
 		),
 	)
 }

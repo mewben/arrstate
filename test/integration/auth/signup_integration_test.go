@@ -107,7 +107,7 @@ func TestIntegrationSignup(t *testing.T) {
 				Password:   "test",
 			},
 			{
-				GivenName:  "testgn/",
+				GivenName:  "testgn",
 				FamilyName: "testfn",
 				Business:   "testb",
 				Domain:     "",
@@ -115,7 +115,7 @@ func TestIntegrationSignup(t *testing.T) {
 				Password:   "test",
 			},
 			{
-				GivenName:  "testgn/",
+				GivenName:  "testgn",
 				FamilyName: "testfn",
 				Business:   "testb",
 				Domain:     "testd",
@@ -123,12 +123,30 @@ func TestIntegrationSignup(t *testing.T) {
 				Password:   "test",
 			},
 			{
-				GivenName:  "testgn/",
+				GivenName:  "testgn",
 				FamilyName: "testfn",
 				Business:   "testb",
 				Domain:     "testd",
 				Email:      "teste",
 				Password:   "",
+			},
+			{
+				// invalid email
+				GivenName:  "testgn",
+				FamilyName: "testfn",
+				Business:   "testb",
+				Domain:     "testd",
+				Email:      "teste",
+				Password:   "test",
+			},
+			{
+				// password must be at least 6 chars
+				GivenName:  "testgn",
+				FamilyName: "testfn",
+				Business:   "testb",
+				Domain:     "testd",
+				Email:      "sample@email.com",
+				Password:   "test",
 			},
 		}
 

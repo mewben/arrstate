@@ -11,6 +11,7 @@ import (
 	"github.com/mewben/realty278/pkg/api/people"
 	"github.com/mewben/realty278/pkg/api/users"
 	"github.com/mewben/realty278/pkg/errors"
+	"github.com/mewben/realty278/pkg/models"
 )
 
 // SignupPayload -
@@ -52,11 +53,11 @@ func (v SignupPayload) Validate() error {
 }
 
 // Signup -
-func (h *Handler) Signup(data *SignupPayload) (interface{}, error) {
+func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, error) {
 	log.Println("Signup")
 	// validate payload
 	if err := data.Validate(); err != nil {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
 	// 1. Create Business
@@ -74,8 +75,6 @@ func (h *Handler) Signup(data *SignupPayload) (interface{}, error) {
 		return nil, err
 	}
 
-	log.Println("after create business")
-
 	// 2. Create User
 	userHandler := &users.Handler{
 		DB:  h.DB,
@@ -91,8 +90,6 @@ func (h *Handler) Signup(data *SignupPayload) (interface{}, error) {
 		// TODO: remove business
 		return nil, err
 	}
-
-	log.Println("after create user")
 
 	// 3. Create Person
 	personHandler := &people.Handler{
@@ -113,16 +110,12 @@ func (h *Handler) Signup(data *SignupPayload) (interface{}, error) {
 		return nil, err
 	}
 
-	log.Println("afeter create person")
-
 	response, err := h.AuthResponse(user.ID, business.ID)
 	if err != nil {
 		log.Println("error authresponse", err)
 		// TODO: remove business, user, and people
 		return nil, err
 	}
-
-	log.Println("after authresponse")
 
 	return response, nil
 }

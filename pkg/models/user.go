@@ -49,6 +49,7 @@ func (*UserModel) GeneratePassword(pwd string) (string, error) {
 
 // ComparePassword -
 func (*UserModel) ComparePassword(hashedPassword, plainPassword string) bool {
+	plainPassword = plainPassword + viper.GetString("PASSWORD_SALT")
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(plainPassword))
 	if err != nil {
 		log.Println("error ComparePassword", err)

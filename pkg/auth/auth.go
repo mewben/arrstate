@@ -39,4 +39,23 @@ func Routes(app *fiber.App, db *mongo.Database) {
 		}
 		c.Status(201).JSON(response)
 	})
+
+	app.Post("/auth/signin", func(c *fiber.Ctx) {
+		h.Ctx = c.Fasthttp
+		payload := &SigninPayload{}
+
+		if err := c.BodyParser(&payload); err != nil {
+			c.Next(err)
+			return
+		}
+
+		response, err := h.Signin(payload)
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
 }

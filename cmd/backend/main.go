@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-	// startup.InitEnvironment()
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
 

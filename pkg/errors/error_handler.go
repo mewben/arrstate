@@ -19,5 +19,6 @@ func ErrorHandler() func(*fiber.Ctx) {
 			log.Println("-err", e)
 			c.Status(e.Code).JSON(e)
 		}
+		c.Next()
 	}
 }

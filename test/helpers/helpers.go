@@ -3,14 +3,16 @@ package helpers
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/assert"
 )
 
 // DoRequest helper
@@ -38,24 +40,20 @@ func DoRequest(method, path string, body interface{}, token string) *http.Reques
 	return req
 }
 
-// GetResponseError http
-func GetResponseError(res *http.Response) (*errors.HTTPError, error) {
-	responseError := &errors.HTTPError{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return responseError, nil
-	}
-	err = json.Unmarshal(body, &responseError)
-	return responseError, err
-}
-
-// GetResponseAuth success signup/signin
-func GetResponseAuth(res *http.Response) (*models.AuthSuccessResponse, error) {
-	response := &models.AuthSuccessResponse{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
+// CheckJWT -
+func CheckJWT(token string, user *models.UserModel, businessID string, assert *assert.Assertions) {
+	assert.NotEmpty(token)
+	tokenSigningKey := viper.GetString("TOKEN_SIGNING_KEY")
+	assert.NotEmpty(tokenSigningKey)
+	t, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		return []byte(tokenSigningKey), nil
+	})
+	assert.Nil(err, t)
+	claims := t.Claims.(jwt.MapClaims)
+	exp := time.Now().Add(time.Hour * viper.GetDuration("TOKEN_EXPIRY")).Unix()
+	claimsExpiry := claims["exp"].(float64)
+	diff := float64(exp) - claimsExpiry
+	assert.Equal(user.ID, claims["sub"])
+	assert.LessOrEqual(diff, float64(1))
+	assert.Equal(businessID, claims["businessID"])
 }

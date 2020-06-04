@@ -3,11 +3,8 @@ package auth
 import (
 	"os"
 	"testing"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber"
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/mewben/realty278/internal/enums"
@@ -15,7 +12,6 @@ import (
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/auth"
 	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 )
@@ -58,7 +54,7 @@ func TestSignup(t *testing.T) {
 		user := response.CurrentUser.User
 		person := response.CurrentUser.Person
 		business := response.CurrentBusiness
-		checkJWT(response.Token, user, business.ID, assert)
+		helpers.CheckJWT(response.Token, user, business.ID, assert)
 		assert.NotEmpty(business.ID)
 		assert.Equal(business.Domain, fakeDomain)
 		assert.Equal(business.Name, fakeBusiness)
@@ -253,21 +249,4 @@ func TestSignup(t *testing.T) {
 		// TODO: not urgent
 	})
 
-}
-
-func checkJWT(token string, user *models.UserModel, businessID string, assert *assert.Assertions) {
-	assert.NotEmpty(token)
-	tokenSigningKey := viper.GetString("TOKEN_SIGNING_KEY")
-	assert.NotEmpty(tokenSigningKey)
-	t, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
-		return []byte(tokenSigningKey), nil
-	})
-	assert.Nil(err, t)
-	claims := t.Claims.(jwt.MapClaims)
-	exp := time.Now().Add(time.Hour * viper.GetDuration("TOKEN_EXPIRY")).Unix()
-	claimsExpiry := claims["exp"].(float64)
-	diff := float64(exp) - claimsExpiry
-	assert.Equal(user.ID, claims["sub"])
-	assert.LessOrEqual(diff, float64(1))
-	assert.Equal(businessID, claims["businessID"])
 }

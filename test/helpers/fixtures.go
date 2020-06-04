@@ -49,3 +49,29 @@ func SignupFixture(app *fiber.App) (*auth.SignupPayload, *models.AuthSuccessResp
 
 	return payload, response
 }
+
+// ProjectFixture -
+func ProjectFixture(app *fiber.App, token string) *models.ProjectModel {
+	address := models.NewAddressModel()
+	address.Country = "PH"
+	address.State = "Bohol"
+	payload := fiber.Map{
+		"name":    "testproject",
+		"address": address,
+		"area":    100.5,
+		"notes":   "Sample Notes",
+	}
+
+	req := DoRequest("POST", "/api/projects", payload, token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err app test signup", err)
+	}
+
+	response, err := GetResponseProject(res)
+	if err != nil {
+		log.Fatalln("err get response auth", err)
+	}
+
+	return response
+}

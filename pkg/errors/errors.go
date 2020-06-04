@@ -4,6 +4,7 @@ package errors
 const (
 	ErrDefault            = "errors.default"
 	ErrNotFound           = "errors.notFound"
+	ErrNotFoundBusiness   = "errors.notFound.business"
 	ErrInputInvalid       = "errors.inputInvalid"
 	ErrDomainDuplicate    = "errors.domain.duplicate"
 	ErrUserDuplicate      = "errors.user.duplicate"

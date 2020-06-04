@@ -21,34 +21,6 @@ type SignupPayload struct {
 	Password   string `json:"password" validate:"required,min=6"`
 }
 
-// // Validate Payload
-// func (v SignupPayload) Validate() error {
-// 	return validation.ValidateStruct(&v,
-// 		validation.Field(
-// 			&v.GivenName,
-// 			validation.Required,
-// 		),
-// 		validation.Field(
-// 			&v.Business,
-// 			validation.Required,
-// 		),
-// 		validation.Field(
-// 			&v.Domain,
-// 			validation.Required,
-// 		),
-// 		validation.Field(
-// 			&v.Email,
-// 			validation.Required,
-// 			is.EmailFormat,
-// 		),
-// 		validation.Field(
-// 			&v.Password,
-// 			validation.Required,
-// 			validation.Length(6, 0),
-// 		),
-// 	)
-// }
-
 // Signup -
 func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, error) {
 	// validate payload

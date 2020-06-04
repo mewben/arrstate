@@ -1,9 +1,7 @@
 package projects
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"net/http"
+	"log"
 	"os"
 	"testing"
 
@@ -19,6 +17,7 @@ import (
 )
 
 func TestCreateProject(t *testing.T) {
+	log.Println("-- test create project --")
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
@@ -57,7 +56,7 @@ func TestCreateProject(t *testing.T) {
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := GetResponseProject(res)
+		response, err := helpers.GetResponseProject(res)
 		assert.Nil(err)
 		assert.Equal(response.BusinessID, authResponse.CurrentBusiness.ID)
 		assert.Equal(response.CreatedBy, authResponse.CurrentUser.User.ID)
@@ -73,6 +72,22 @@ func TestCreateProject(t *testing.T) {
 		assert.Equal(response.Images[0].Src, fakeImages[0].Src)
 		assert.Equal(response.Images[0].Alt, fakeImages[0].Alt)
 		assert.Equal(response.Images[0].Description, fakeImages[0].Description)
+	})
+
+	t.Run("It should set defaultValues if not set", func(t *testing.T) {
+		assert := assert.New(t)
+		data := fiber.Map{
+			"name": "Project Name 2",
+		}
+		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(201, res.StatusCode, res)
+		response, err := helpers.GetResponseProject(res)
+		assert.Nil(err)
+		assert.EqualValues(response.Area, 0)
+		assert.Equal(response.Unit, enums.DefaultUnitArea)
 	})
 
 	t.Run("It should validate project inputs", func(t *testing.T) {
@@ -109,15 +124,4 @@ func TestCreateProject(t *testing.T) {
 		}
 	})
 
-}
-
-// GetResponseProject success
-func GetResponseProject(res *http.Response) (*models.ProjectModel, error) {
-	response := &models.ProjectModel{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
 }

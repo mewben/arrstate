@@ -15,17 +15,17 @@ type AuthSuccessResponse struct {
 }
 
 // NewCurrentUser -
-func NewCurrentUser() *CurrentUser {
+func NewCurrentUser(userID, businessID string) *CurrentUser {
 	return &CurrentUser{
 		User:   NewUserModel(),
-		Person: NewPersonModel(),
+		Person: NewPersonModel(userID, businessID),
 	}
 }
 
 // NewAuthSuccessResponse -
-func NewAuthSuccessResponse() *AuthSuccessResponse {
+func NewAuthSuccessResponse(userID, businessID string) *AuthSuccessResponse {
 	return &AuthSuccessResponse{
-		CurrentUser:     NewCurrentUser(),
+		CurrentUser:     NewCurrentUser(userID, businessID),
 		CurrentBusiness: NewBusinessModel(),
 		UserBusinesses:  make([]*BusinessModel, 0),
 	}

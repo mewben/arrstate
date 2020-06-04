@@ -4,8 +4,6 @@ import (
 	"log"
 	"strings"
 
-	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/realty278/internal/enums"
@@ -15,31 +13,15 @@ import (
 
 // Payload -
 type Payload struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-// Validate Payload
-func (v Payload) Validate() error {
-	return validation.ValidateStruct(&v,
-		validation.Field(
-			&v.Email,
-			validation.Required,
-			is.EmailFormat,
-		),
-		validation.Field(
-			&v.Password,
-			validation.Required,
-			validation.Length(6, 0),
-		),
-	)
+	Email    string `json:"email" validate:"email,required"`
+	Password string `json:"password" validate:"required,min=6"`
 }
 
 // Create User
 func (h *Handler) Create(data *Payload) (*models.UserModel, error) {
 	// validate payload
-	if err := data.Validate(); err != nil {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	if err := validate.Struct(data); err != nil {
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
 	cleanedEmail := strings.ToLower(data.Email)
@@ -66,24 +48,14 @@ func (h *Handler) Create(data *Payload) (*models.UserModel, error) {
 	user.Password = hashedPassword
 	user.AccountStatus = enums.AccountStatusPending
 
-	insertResult, err := h.DB.InsertOne(h.Ctx, enums.CollUsers, user)
-	if err != nil {
-		log.Println("err user.insertone")
-		return nil, err
+	doc, err := h.DB.InsertOne(h.Ctx, enums.CollUsers, user)
+	if err != nil || doc == nil {
+		log.Println("insertonerr", err)
+		return nil, errors.NewHTTPError(errors.ErrInsert, err)
 	}
 
-	filter = bson.D{
-		{
-			Key:   "_id",
-			Value: insertResult.InsertedID,
-		},
-	}
-	insertedModel := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
-	if insertedModel == nil {
-		log.Println("err findone", insertedModel)
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
-	}
+	user = doc.(*models.UserModel)
 
-	return insertedModel.(*models.UserModel), nil
+	return user, nil
 
 }

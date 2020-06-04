@@ -11,7 +11,7 @@ import (
 
 // AuthResponse response after signup/signin
 func (h *Handler) AuthResponse(userID, businessID string) (*models.AuthSuccessResponse, error) {
-	response := models.NewAuthSuccessResponse()
+	response := models.NewAuthSuccessResponse(userID, businessID)
 	userOID, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
 		return nil, err
@@ -20,10 +20,9 @@ func (h *Handler) AuthResponse(userID, businessID string) (*models.AuthSuccessRe
 	if err != nil {
 		return nil, err
 	}
-	log.Println("businessOID", businessOID)
 
 	// generate jwt
-	token, err := response.CurrentUser.User.GenerateJWT(userID)
+	token, err := response.CurrentUser.User.GenerateJWT(userID, businessID)
 	if err != nil {
 		log.Println("error generate jwt")
 		return nil, err

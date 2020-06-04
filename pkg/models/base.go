@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // BaseModel -
 type BaseModel struct {
@@ -13,10 +15,22 @@ type BaseModel struct {
 }
 
 // NewBaseModel autopopulates createdAt and updatedAt
-func NewBaseModel() *BaseModel {
+func NewBaseModel(args ...string) *BaseModel {
 	now := time.Now()
-	return &BaseModel{
+	model := &BaseModel{
 		CreatedAt: &now,
 		UpdatedAt: &now,
 	}
+
+	for i, arg := range args {
+		if arg != "" {
+			if i == 0 {
+				model.CreatedBy = arg
+			} else if i == 1 {
+				model.BusinessID = arg
+			}
+		}
+	}
+
+	return model
 }

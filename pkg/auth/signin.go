@@ -4,8 +4,6 @@ import (
 	"log"
 	"strings"
 
-	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
@@ -14,31 +12,15 @@ import (
 
 // SigninPayload -
 type SigninPayload struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-// Validate Payload
-func (v SigninPayload) Validate() error {
-	return validation.ValidateStruct(&v,
-		validation.Field(
-			&v.Email,
-			validation.Required,
-			is.EmailFormat,
-		),
-		validation.Field(
-			&v.Password,
-			validation.Required,
-			validation.Length(6, 0),
-		),
-	)
+	Email    string `json:"email" validate:"email,required"`
+	Password string `json:"password" validate:"required,min=6"`
 }
 
 // Signin -
 func (h *Handler) Signin(data *SigninPayload) (*models.AuthSuccessResponse, error) {
 	log.Println("Signin")
 	// validate payload
-	if err := data.Validate(); err != nil {
+	if err := validate.Struct(data); err != nil {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 

@@ -3,6 +3,8 @@ package businesses
 import (
 	"context"
 
+	validator "github.com/go-playground/validator/v10"
+
 	"github.com/mewben/realty278/pkg/services/database"
 )
 
@@ -14,3 +16,6 @@ type Handler struct {
 
 // Params -
 type Params struct{}
+
+// use a single instance of Validate, it caches struct info
+var validate = validator.New()

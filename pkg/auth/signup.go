@@ -3,9 +3,6 @@ package auth
 import (
 	"log"
 
-	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
-
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/api/businesses"
 	"github.com/mewben/realty278/pkg/api/people"
@@ -16,47 +13,46 @@ import (
 
 // SignupPayload -
 type SignupPayload struct {
-	GivenName  string `json:"givenName"`
+	GivenName  string `json:"givenName" validate:"required"`
 	FamilyName string `json:"familyName"`
-	Business   string `json:"business"`
-	Domain     string `json:"domain"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
+	Business   string `json:"business" validate:"required"`
+	Domain     string `json:"domain" validate:"required"`
+	Email      string `json:"email" validate:"email,required"`
+	Password   string `json:"password" validate:"required,min=6"`
 }
 
-// Validate Payload
-func (v SignupPayload) Validate() error {
-	return validation.ValidateStruct(&v,
-		validation.Field(
-			&v.GivenName,
-			validation.Required,
-		),
-		validation.Field(
-			&v.Business,
-			validation.Required,
-		),
-		validation.Field(
-			&v.Domain,
-			validation.Required,
-		),
-		validation.Field(
-			&v.Email,
-			validation.Required,
-			is.EmailFormat,
-		),
-		validation.Field(
-			&v.Password,
-			validation.Required,
-			validation.Length(6, 0),
-		),
-	)
-}
+// // Validate Payload
+// func (v SignupPayload) Validate() error {
+// 	return validation.ValidateStruct(&v,
+// 		validation.Field(
+// 			&v.GivenName,
+// 			validation.Required,
+// 		),
+// 		validation.Field(
+// 			&v.Business,
+// 			validation.Required,
+// 		),
+// 		validation.Field(
+// 			&v.Domain,
+// 			validation.Required,
+// 		),
+// 		validation.Field(
+// 			&v.Email,
+// 			validation.Required,
+// 			is.EmailFormat,
+// 		),
+// 		validation.Field(
+// 			&v.Password,
+// 			validation.Required,
+// 			validation.Length(6, 0),
+// 		),
+// 	)
+// }
 
 // Signup -
 func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, error) {
-	log.Println("Signup")
 	// validate payload
-	if err := data.Validate(); err != nil {
+	if err := validate.Struct(data); err != nil {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 

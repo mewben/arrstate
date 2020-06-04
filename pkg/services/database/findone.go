@@ -2,7 +2,6 @@ package database
 
 import (
 	"context"
-	"log"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/models"
@@ -16,7 +15,6 @@ func (s *Service) FindOne(ctx context.Context, collectionName string, filter int
 	result := s.DB.Collection(collectionName).FindOne(ctx, filter, opts...)
 
 	if result.Err() != nil {
-		log.Println("resulterr", result.Err(), filter, collectionName)
 		return nil
 	}
 

@@ -23,13 +23,14 @@ func NewUserModel() *UserModel {
 }
 
 // GenerateJWT for signup/signin repsonse
-func (*UserModel) GenerateJWT(sub string) (string, error) {
+func (*UserModel) GenerateJWT(sub, businessID string) (string, error) {
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["sub"] = sub
+	claims["businessID"] = businessID
 	claims["exp"] = time.Now().Add(time.Hour * viper.GetDuration("TOKEN_EXPIRY")).Unix()
 
 	// Generate encoded token

@@ -1,13 +1,15 @@
 package models
 
-import "github.com/mewben/realty278/internal/enums"
+import (
+	"github.com/mewben/realty278/internal/enums"
+)
 
 // ProjectModel -
 type ProjectModel struct {
-	Name    string       `bson:"name" json:"name"`
-	Address AddressModel `bson:"address" json:"address"`
-	Area    float32      `bson:"area" json:"area"`
-	Unit    string       `bson:"unit" json:"unit"`
+	Name    string        `bson:"name" json:"name"`
+	Address *AddressModel `bson:"address" json:"address"`
+	Area    float32       `bson:"area" json:"area"`
+	Unit    string        `bson:"unit" json:"unit"`
 	// Extended
 	*BaseModel     `bson:",inline"`
 	*CurrencyModel `bson:",inline"`
@@ -20,11 +22,12 @@ type ProjectModel struct {
 }
 
 // NewProjectModel -
-func NewProjectModel() *ProjectModel {
+func NewProjectModel(arg ...string) *ProjectModel {
 	return &ProjectModel{
-		BaseModel:     NewBaseModel(),
+		BaseModel:     NewBaseModel(arg...),
 		CurrencyModel: NewCurrencyModel(),
 		MetaModel:     NewMetaModel(),
+		Address:       NewAddressModel(),
 		Unit:          enums.DefaultUnitArea,
 	}
 }

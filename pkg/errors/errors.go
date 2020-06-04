@@ -10,4 +10,5 @@ const (
 	ErrToken              = "errors.token"
 	ErrSignupEmailInvalid = "errors.signup.email.invalid"
 	ErrSigninIncorrect    = "errors.signin.incorrect"
+	ErrInsert             = "errors.insert"
 )

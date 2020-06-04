@@ -1,4 +1,4 @@
-package auth
+package projects
 
 import (
 	"context"
@@ -10,57 +10,48 @@ import (
 
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/services/database"
+	"github.com/mewben/realty278/pkg/utils"
 )
 
 // Handler -
 type Handler struct {
-	DB  *database.Service
-	Ctx context.Context
+	DB         *database.Service
+	Ctx        context.Context
+	UserID     string
+	BusinessID string
 }
 
 // use a single instance of Validate, it caches struct info
 var validate = validator.New()
 
 // Routes -
-func Routes(app *fiber.App, db *mongo.Database) {
+func Routes(g *fiber.Group, db *mongo.Database) {
 	h := &Handler{
 		DB: database.NewService(db),
 	}
 
-	app.Post("/auth/signup", func(c *fiber.Ctx) {
+	g.Post("/projects", func(c *fiber.Ctx) {
+		log.Println("projects.post")
 		h.Ctx = c.Fasthttp
-		payload := &SignupPayload{}
+
+		userID, businessID := utils.ExtractClaims(c)
+		h.UserID = userID
+		h.BusinessID = businessID
+
+		payload := &Payload{}
 
 		if err := c.BodyParser(&payload); err != nil {
+			log.Println("errrbodyparser", err)
 			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 			return
 		}
 
-		response, err := h.Signup(payload)
+		response, err := h.Create(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)
 			return
 		}
 		c.Status(201).JSON(response)
-	})
-
-	app.Post("/auth/signin", func(c *fiber.Ctx) {
-		h.Ctx = c.Fasthttp
-		payload := &SigninPayload{}
-
-		if err := c.BodyParser(&payload); err != nil {
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
-		}
-
-		response, err := h.Signin(payload)
-		if err != nil {
-			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
-		}
-		c.Status(200).JSON(response)
-
 	})
 }

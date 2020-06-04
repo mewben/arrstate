@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"os"
 	"testing"
 	"time"
@@ -10,7 +9,6 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
@@ -22,16 +20,14 @@ import (
 	"github.com/mewben/realty278/test/helpers"
 )
 
-func TestIntegrationSignup(t *testing.T) {
+func TestSignup(t *testing.T) {
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
 	path := "/auth/signup"
 
-	// cleanup
-	db.Collection(enums.CollBusinesses).DeleteMany(context.Background(), bson.D{{}})
-	db.Collection(enums.CollUsers).DeleteMany(context.Background(), bson.D{{}})
-	db.Collection(enums.CollPeople).DeleteMany(context.Background(), bson.D{{}})
+	// setup
+	helpers.CleanupFixture(db)
 
 	t.Run("It should return the JWT and authSuccess data", func(t *testing.T) {
 		// Setup -
@@ -50,7 +46,7 @@ func TestIntegrationSignup(t *testing.T) {
 			"givenName":  fakeGivenname,
 			"familyName": fakeFamilyName,
 		}
-		req := helpers.DoRequest("POST", path, data)
+		req := helpers.DoRequest("POST", path, data, "")
 
 		// Execute -
 		res, err := app.Test(req, -1)
@@ -62,7 +58,7 @@ func TestIntegrationSignup(t *testing.T) {
 		user := response.CurrentUser.User
 		person := response.CurrentUser.Person
 		business := response.CurrentBusiness
-		checkJWT(response.Token, user, assert)
+		checkJWT(response.Token, user, business.ID, assert)
 		assert.NotEmpty(business.ID)
 		assert.Equal(business.Domain, fakeDomain)
 		assert.Equal(business.Name, fakeBusiness)
@@ -95,7 +91,7 @@ func TestIntegrationSignup(t *testing.T) {
 			"givenName":  fakeGivenname,
 			"familyName": fakeFamilyName,
 		}
-		req := helpers.DoRequest("POST", path, data)
+		req := helpers.DoRequest("POST", path, data, "")
 
 		// Execute -
 		res, err := app.Test(req, -1)
@@ -181,7 +177,7 @@ func TestIntegrationSignup(t *testing.T) {
 		}
 
 		for _, payload := range payloads {
-			req := helpers.DoRequest("POST", path, payload)
+			req := helpers.DoRequest("POST", path, payload, "")
 			res, err := app.Test(req, -1)
 
 			// Assert
@@ -211,7 +207,7 @@ func TestIntegrationSignup(t *testing.T) {
 			"givenName":  fakeGivenname,
 			"familyName": fakeFamilyName,
 		}
-		req := helpers.DoRequest("POST", path, data)
+		req := helpers.DoRequest("POST", path, data, "")
 
 		// Execute -
 		res, err := app.Test(req, -1)
@@ -241,7 +237,7 @@ func TestIntegrationSignup(t *testing.T) {
 			"givenName":  fakeGivenname,
 			"familyName": fakeFamilyName,
 		}
-		req := helpers.DoRequest("POST", path, data)
+		req := helpers.DoRequest("POST", path, data, "")
 
 		// Execute -
 		res, err := app.Test(req, -1)
@@ -259,7 +255,7 @@ func TestIntegrationSignup(t *testing.T) {
 
 }
 
-func checkJWT(token string, user *models.UserModel, assert *assert.Assertions) {
+func checkJWT(token string, user *models.UserModel, businessID string, assert *assert.Assertions) {
 	assert.NotEmpty(token)
 	tokenSigningKey := viper.GetString("TOKEN_SIGNING_KEY")
 	assert.NotEmpty(tokenSigningKey)
@@ -272,5 +268,6 @@ func checkJWT(token string, user *models.UserModel, assert *assert.Assertions) {
 	claimsExpiry := claims["exp"].(float64)
 	diff := float64(exp) - claimsExpiry
 	assert.Equal(user.ID, claims["sub"])
-	assert.Equal(diff, float64(0))
+	assert.LessOrEqual(diff, float64(1))
+	assert.Equal(businessID, claims["businessID"])
 }

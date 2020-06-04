@@ -14,7 +14,7 @@ import (
 )
 
 // DoRequest helper
-func DoRequest(method, path string, body interface{}) *http.Request {
+func DoRequest(method, path string, body interface{}, token string) *http.Request {
 	var payload io.Reader
 	bodyString := ""
 	if body != nil {
@@ -32,6 +32,9 @@ func DoRequest(method, path string, body interface{}) *http.Request {
 	}
 	req.Header.Set("Content-Type", fiber.MIMEApplicationJSON)
 	req.Header.Set("Content-Length", strconv.Itoa(len(bodyString)))
+	if token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
 	return req
 }
 
@@ -51,7 +54,7 @@ func GetResponseAuth(res *http.Response) (*models.AuthSuccessResponse, error) {
 	response := &models.AuthSuccessResponse{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return response, nil
+		return nil, err
 	}
 	err = json.Unmarshal(body, &response)
 	return response, err

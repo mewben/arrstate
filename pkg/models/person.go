@@ -14,9 +14,9 @@ type PersonModel struct {
 }
 
 // NewPersonModel -
-func NewPersonModel() *PersonModel {
+func NewPersonModel(arg ...string) *PersonModel {
 	return &PersonModel{
-		BaseModel:    NewBaseModel(),
+		BaseModel:    NewBaseModel(arg...),
 		AddressModel: NewAddressModel(),
 		MetaModel:    NewMetaModel(),
 	}

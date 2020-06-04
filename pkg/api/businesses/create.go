@@ -3,7 +3,6 @@ package businesses
 import (
 	"log"
 
-	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/gosimple/slug"
 	"go.mongodb.org/mongo-driver/bson"
 
@@ -14,30 +13,15 @@ import (
 
 // Payload -
 type Payload struct {
-	Name   string `json:"name"`
-	Domain string `json:"domain"`
-}
-
-// Validate Payload
-func (v Payload) Validate() error {
-	return validation.ValidateStruct(&v,
-		validation.Field(
-			&v.Name,
-			validation.Required,
-		),
-		validation.Field(
-			&v.Domain,
-			validation.Required,
-			validation.Length(3, 254),
-		),
-	)
+	Name   string `json:"name" validate:"required"`
+	Domain string `json:"domain" validate:"required,min=3,max=254"`
 }
 
 // Create business
 func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 	// validate payload
-	if err := data.Validate(); err != nil {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	if err := validate.Struct(data); err != nil {
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
 	cleanedDomain := slug.Make(data.Domain)
@@ -58,23 +42,13 @@ func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 	business := models.NewBusinessModel()
 	business.Name = data.Name
 	business.Domain = cleanedDomain
-	insertResult, err := h.DB.InsertOne(h.Ctx, enums.CollBusinesses, business)
-	if err != nil {
+	doc, err := h.DB.InsertOne(h.Ctx, enums.CollBusinesses, business)
+	if err != nil || doc == nil {
 		log.Println("insertonerr", err)
-		return nil, err
+		return nil, errors.NewHTTPError(errors.ErrInsert, err)
 	}
 
-	filter = bson.D{
-		{
-			Key:   "_id",
-			Value: insertResult.InsertedID,
-		},
-	}
-	insertedModel := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
-	if insertedModel == nil {
-		log.Println("findoneerr")
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
-	}
+	business = doc.(*models.BusinessModel)
 
-	return insertedModel.(*models.BusinessModel), nil
+	return business, nil
 }

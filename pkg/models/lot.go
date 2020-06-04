@@ -13,9 +13,9 @@ type LotModel struct {
 }
 
 // NewLotModel -
-func NewLotModel() *LotModel {
+func NewLotModel(arg ...string) *LotModel {
 	return &LotModel{
-		BaseModel: NewBaseModel(),
+		BaseModel: NewBaseModel(arg...),
 		MetaModel: NewMetaModel(),
 	}
 }

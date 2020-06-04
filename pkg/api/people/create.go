@@ -1,48 +1,44 @@
 package people
 
 import (
-	"errors"
-
-	"go.mongodb.org/mongo-driver/bson"
+	"log"
 
 	"github.com/mewben/realty278/internal/enums"
+	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 )
 
 // Payload -
 type Payload struct {
 	UserID     string `json:"userID"`
-	BusinessID string `json:"businessID"`
-	Role       string `json:"role"`
-	GivenName  string `json:"givenName"`
+	BusinessID string `json:"businessID" validate:"required"`
+	Role       string `json:"role" validate:"required"`
+	GivenName  string `json:"givenName" validate:"required"`
 	FamilyName string `json:"familyName"`
 }
 
 // Create User
 func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
-	person := models.NewPersonModel()
+	// validate payload
+	if err := validate.Struct(data); err != nil {
+		log.Println("error validate", err)
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
+	}
+
+	person := models.NewPersonModel(data.UserID, data.BusinessID)
 	person.UserID = data.UserID
-	person.BusinessID = data.BusinessID
 	person.Role = data.Role
 	person.GivenName = data.GivenName
 	person.FamilyName = data.FamilyName
 	person.Country = enums.DefaultCountry
 
-	insertResult, err := h.DB.InsertOne(h.Ctx, enums.CollPeople, person)
-	if err != nil {
-		return nil, err
+	doc, err := h.DB.InsertOne(h.Ctx, enums.CollPeople, person)
+	if err != nil || doc == nil {
+		log.Println("insertonerr", err)
+		return nil, errors.NewHTTPError(errors.ErrInsert, err)
 	}
 
-	filter := bson.D{
-		{
-			Key:   "_id",
-			Value: insertResult.InsertedID,
-		},
-	}
-	insertedModel := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
-	if insertedModel == nil {
-		return nil, errors.New("Not found")
-	}
+	person = doc.(*models.PersonModel)
 
-	return insertedModel.(*models.PersonModel), nil
+	return person, nil
 }

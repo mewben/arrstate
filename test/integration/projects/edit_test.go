@@ -48,7 +48,19 @@ func TestEditProject(t *testing.T) {
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
-		assert.Equal(203, res.StatusCode, res)
+		assert.Equal(200, res.StatusCode, res)
+		response, err := helpers.GetResponseProject(res)
+		assert.Nil(err)
+		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
+		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
+		assert.Equal(project.ID, response.ID)
+		assert.Equal(updName, response.Name)
+		assert.EqualValues(updArea, response.Area)
+		assert.Equal(updUnit, response.Unit)
+		assert.Equal(updAddress.Country, response.Address.Country)
+		assert.Equal(updAddress.State, response.Address.State)
+		assert.Equal(updNotes, response.Notes)
+		assert.Equal(authResponse.CurrentUser.User.ID, response.UpdatedBy)
 
 	})
 

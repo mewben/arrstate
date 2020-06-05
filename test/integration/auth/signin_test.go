@@ -44,18 +44,18 @@ func TestSignin(t *testing.T) {
 		business := response.CurrentBusiness
 		helpers.CheckJWT(response.Token, user, business.ID, assert)
 		assert.NotEmpty(business.ID)
-		assert.Equal(business.Domain, signupPayload.Domain)
-		assert.Equal(business.Name, signupPayload.Business)
-		assert.Equal(len(response.UserBusinesses), 1)
+		assert.Equal(signupPayload.Domain, business.Domain)
+		assert.Equal(signupPayload.Business, business.Name)
+		assert.Len(response.UserBusinesses, 1)
 		assert.NotNil(person)
 		assert.NotNil(user)
 		assert.Empty(user.Password)
-		assert.Equal(user.Email, signupPayload.Email)
-		assert.Equal(user.AccountStatus, enums.AccountStatusPending)
-		assert.Equal(person.BusinessID, business.ID)
-		assert.Equal(person.GivenName, signupPayload.GivenName)
-		assert.Equal(person.FamilyName, signupPayload.FamilyName)
-		assert.Equal(person.Role, "owner")
+		assert.Equal(signupPayload.Email, user.Email)
+		assert.Equal(enums.AccountStatusPending, user.AccountStatus)
+		assert.Equal(business.ID, person.BusinessID)
+		assert.Equal(signupPayload.GivenName, person.GivenName)
+		assert.Equal(signupPayload.FamilyName, person.FamilyName)
+		assert.Equal("owner", person.Role)
 	})
 
 	t.Run("It should catch invalid email or password", func(t *testing.T) {
@@ -117,7 +117,7 @@ func TestSignin(t *testing.T) {
 			assert.Equal(400, res.StatusCode, res)
 			response, err := helpers.GetResponseError(res)
 			assert.Nil(err)
-			assert.Equal(response.Message, services.T(cas.Err), response)
+			assert.Equal(services.T(cas.Err), response.Message, response)
 		}
 
 	})

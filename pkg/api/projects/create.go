@@ -25,20 +25,13 @@ func (h *Handler) Create(data *Payload) (*models.ProjectModel, error) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
-	// Get business
-	foundBusiness := h.DB.FindByID(h.Ctx, enums.CollBusinesses, h.BusinessID)
-	if foundBusiness == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFoundBusiness)
-	}
-	business := foundBusiness.(*models.BusinessModel)
-
-	project := models.NewProjectModel(h.UserID, h.BusinessID)
+	project := models.NewProjectModel(h.User.ID, h.Business.ID)
 	project.Name = data.Name
 	project.Address = data.Address
 	project.Area = data.Area
 	project.Unit = data.Unit
 	if data.Unit == "" {
-		project.Unit = business.AreaUnits.Default
+		project.Unit = h.Business.AreaUnits.Default
 	}
 	project.MetaModel = data.MetaModel
 

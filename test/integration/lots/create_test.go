@@ -11,7 +11,9 @@ import (
 
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 )
 
@@ -77,11 +79,95 @@ func TestCreateLot(t *testing.T) {
 	})
 
 	t.Run("It should validate lot inputs", func(t *testing.T) {
+		assert := assert.New(t)
+		projectID := project.ID.Hex()
+		cases := []struct {
+			err     string
+			payload fiber.Map
+		}{
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"name": "",
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"projectID": "",
+					"name":      "testlot",
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"projectID": projectID,
+					"name":      "testlot",
+					"area":      "notanumber",
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"projectID": projectID,
+					"name":      "testlot",
+					"area":      "100",
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"projectID": projectID,
+					"name":      "testlot",
+					"area":      -100,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"projectID": projectID,
+					"name":      "testlot",
+					"area":      100.5,
+					"price":     -100,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"projectID":  projectID,
+					"name":       "testlot",
+					"area":       100.5,
+					"price":      100.9,
+					"priceAddon": -40.5,
+				},
+			},
+			{
+				errors.ErrNotFoundProject,
+				fiber.Map{
+					"projectID":  primitive.NewObjectID(),
+					"name":       "testlot",
+					"area":       100.5,
+					"price":      100.9,
+					"priceAddon": 40.5,
+				},
+			},
+		}
 
-	})
+		for _, item := range cases {
+			req := helpers.DoRequest("POST", path, item.payload, authResponse.Token)
+			res, err := app.Test(req, -1)
 
-	t.Run("It should throw if project not found", func(t *testing.T) {
-
+			// Assert
+			assert.Nil(err)
+			assert.Equal(400, res.StatusCode, item.payload)
+			response, err := helpers.GetResponseError(res)
+			assert.Nil(err)
+			assert.Equal(services.T(item.err), response.Message, item.payload)
+		}
 	})
 
 }

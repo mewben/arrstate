@@ -16,6 +16,12 @@ func (h *Handler) Create(data *Payload) (*models.LotModel, error) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
+	// get project if exists
+	foundProject := h.DB.FindByID(h.Ctx, enums.CollProjects, data.ProjectID.Hex(), h.Business.ID)
+	if foundProject == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundProject)
+	}
+
 	lot := models.NewLotModel(h.User.ID, h.Business.ID)
 	lot.ProjectID = data.ProjectID
 	lot.Name = data.Name

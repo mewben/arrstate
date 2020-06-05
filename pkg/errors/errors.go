@@ -6,6 +6,8 @@ const (
 	ErrNotFound           = "errors.notFound"
 	ErrNotFoundUser       = "errors.notFound.user"
 	ErrNotFoundBusiness   = "errors.notFound.business"
+	ErrNotFoundProject    = "errors.notFound.project"
+	ErrNotFoundLot        = "errors.notFound.lot"
 	ErrInputInvalid       = "errors.inputInvalid"
 	ErrDomainDuplicate    = "errors.domain.duplicate"
 	ErrUserDuplicate      = "errors.user.duplicate"

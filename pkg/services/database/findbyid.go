@@ -10,7 +10,7 @@ import (
 
 // FindByID - returns the document model
 // gets from cache first then db
-func (s *Service) FindByID(ctx context.Context, collectionName, id string) interface{} {
+func (s *Service) FindByID(ctx context.Context, collectionName, id string, businessID primitive.ObjectID) interface{} {
 	// TODO: hit cache first
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -20,8 +20,12 @@ func (s *Service) FindByID(ctx context.Context, collectionName, id string) inter
 
 	filter := bson.D{
 		{
-			Key: "_id",
+			Key:   "_id",
 			Value: oid,
+		},
+		{
+			Key:   "businessID",
+			Value: businessID,
 		},
 	}
 

@@ -8,7 +8,9 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 	"github.com/stretchr/testify/assert"
 )
@@ -22,10 +24,10 @@ func TestEditProject(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app)
-	project := helpers.ProjectFixture(app, authResponse.Token)
-
-	log.Println("project", project.ID)
+	_, authResponse := helpers.SignupFixture(app, 1)
+	_, authResponse2 := helpers.SignupFixture(app, 2)
+	project := helpers.ProjectFixture(app, authResponse.Token, 1)
+	project2 := helpers.ProjectFixture(app, authResponse2.Token, 2)
 
 	t.Run("It should edit project", func(t *testing.T) {
 		assert := assert.New(t)
@@ -44,7 +46,7 @@ func TestEditProject(t *testing.T) {
 			"notes":   updNotes,
 		}
 		log.Println("token", authResponse.Token)
-		req := helpers.DoRequest("PUT", path+"/"+project.ID, data, authResponse.Token)
+		req := helpers.DoRequest("PUT", path+"/"+project.ID.Hex(), data, authResponse.Token)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
@@ -64,11 +66,57 @@ func TestEditProject(t *testing.T) {
 
 	})
 
-	t.Run("It should edit only those set", func(t *testing.T) {
+	t.Run("It should validate input", func(t *testing.T) {
+		assert := assert.New(t)
+		payloads := []fiber.Map{
+			{},
+			{
+				"name": "",
+			},
+			{
+				"name": "testp",
+				"area": "notanumber",
+			},
+			{
+				"name": "testp",
+				"area": "100",
+			},
+			{
+				"name": "testp",
+				"area": -102,
+			},
+		}
+
+		for _, payload := range payloads {
+			req := helpers.DoRequest("PUT", path+"/"+project.ID.Hex(), payload, authResponse.Token)
+			res, err := app.Test(req, -1)
+
+			// Assert
+			assert.Nil(err)
+			assert.Equal(400, res.StatusCode, payload)
+			response, err := helpers.GetResponseError(res)
+			assert.Nil(err)
+			assert.Equal(services.T(errors.ErrInputInvalid), response.Message, response)
+		}
 
 	})
 
-	t.Run("It should validate input", func(t *testing.T) {
+	t.Run("Permissions", func(t *testing.T) {
 
+		t.Run("It should not edit if not in the current business", func(t *testing.T) {
+			assert := assert.New(t)
+			data := fiber.Map{
+				"name": "edit another",
+			}
+			req := helpers.DoRequest("PUT", path+"/"+project2.ID.Hex(), data, authResponse.Token)
+
+			res, err := app.Test(req, -1)
+			assert.Nil(err)
+			assert.Equal(400, res.StatusCode, res)
+			response, err := helpers.GetResponseError(res)
+			assert.Nil(err)
+			assert.Equal(services.T(errors.ErrNotFound), response.Message, response)
+
+		})
 	})
 }

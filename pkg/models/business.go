@@ -4,15 +4,16 @@ import (
 	"time"
 
 	"github.com/mewben/realty278/internal/enums"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // BusinessModel -
 type BusinessModel struct {
-	ID        string          `bson:"_id,omitempty" json:"_id,omitempty"`
-	Name      string          `bson:"name" json:"name"`
-	Domain    string          `bson:"domain" json:"domain"`
-	CreatedAt *time.Time      `bson:"createdAt" json:"createdAt"`
-	AreaUnits *AreaUnitsModel `bson:"areaUnits" json:"areaUnits"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Name      string             `bson:"name" json:"name"`
+	Domain    string             `bson:"domain" json:"domain"`
+	CreatedAt *time.Time         `bson:"createdAt" json:"createdAt"`
+	AreaUnits *AreaUnitsModel    `bson:"areaUnits" json:"areaUnits"`
 }
 
 // NewBusinessModel -

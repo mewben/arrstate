@@ -14,6 +14,7 @@ import (
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestCreateProject(t *testing.T) {
@@ -25,7 +26,7 @@ func TestCreateProject(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app)
+	_, authResponse := helpers.SignupFixture(app, 1)
 
 	t.Run("It should create project", func(t *testing.T) {
 		assert := assert.New(t)
@@ -37,7 +38,7 @@ func TestCreateProject(t *testing.T) {
 		fakeNotes := "Sample Notes"
 		fakeImages := []*models.ImageModel{
 			{
-				ID:          "id",
+				ID:          primitive.NewObjectID(),
 				Src:         "src",
 				Alt:         "alt",
 				Description: "description",
@@ -51,6 +52,7 @@ func TestCreateProject(t *testing.T) {
 			"notes":   fakeNotes,
 			"images":  fakeImages,
 		}
+		log.Println("token", authResponse.Token)
 		req := helpers.DoRequest("POST", path, data, authResponse.Token)
 
 		res, err := app.Test(req, -1)

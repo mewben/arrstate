@@ -13,6 +13,7 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // DoRequest helper
@@ -41,7 +42,7 @@ func DoRequest(method, path string, body interface{}, token string) *http.Reques
 }
 
 // CheckJWT -
-func CheckJWT(token string, user *models.UserModel, businessID string, assert *assert.Assertions) {
+func CheckJWT(token string, user *models.UserModel, businessID primitive.ObjectID, assert *assert.Assertions) {
 	assert.NotEmpty(token)
 	tokenSigningKey := viper.GetString("TOKEN_SIGNING_KEY")
 	assert.NotEmpty(tokenSigningKey)
@@ -53,7 +54,7 @@ func CheckJWT(token string, user *models.UserModel, businessID string, assert *a
 	exp := time.Now().Add(time.Hour * viper.GetDuration("TOKEN_EXPIRY")).Unix()
 	claimsExpiry := claims["exp"].(float64)
 	diff := float64(exp) - claimsExpiry
-	assert.Equal(user.ID, claims["sub"])
+	assert.Equal(user.ID.Hex(), claims["sub"])
 	assert.LessOrEqual(diff, float64(1))
-	assert.Equal(businessID, claims["businessID"])
+	assert.Equal(businessID.Hex(), claims["businessID"])
 }

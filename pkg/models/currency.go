@@ -8,8 +8,8 @@ type CurrencyModel struct {
 }
 
 // NewCurrencyModel -
-func NewCurrencyModel() *CurrencyModel {
-	return &CurrencyModel{
+func NewCurrencyModel() CurrencyModel {
+	return CurrencyModel{
 		Currency: enums.DefaultCurrency,
 	}
 }

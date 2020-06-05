@@ -1,6 +1,8 @@
 package projects
 
 import (
+	"log"
+
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/gofiber/fiber"
@@ -11,6 +13,18 @@ import (
 
 // Edit Project
 func (h *Handler) Edit(id string, data *Payload) (*models.ProjectModel, error) {
+	// validate payload
+	if err := validate.Struct(data); err != nil {
+		log.Println("error validate", err)
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
+	}
+
+	// get current document
+	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollProjects, id, h.Business.ID)
+	if foundOldDoc == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFound)
+	}
+	oldDoc := foundOldDoc.(*models.ProjectModel)
 
 	// prepare fields to be $set
 	upd := fiber.Map{
@@ -35,7 +49,7 @@ func (h *Handler) Edit(id string, data *Payload) (*models.ProjectModel, error) {
 		},
 	}
 
-	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProjects, id, op)
+	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProjects, oldDoc.ID, op)
 	if doc == nil {
 		return nil, errors.NewHTTPError(errors.ErrUpdate)
 	}

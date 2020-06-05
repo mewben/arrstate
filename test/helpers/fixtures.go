@@ -13,6 +13,48 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 )
 
+// fixture variables
+var signup1 *auth.SignupPayload
+var signup2 *auth.SignupPayload
+var project1 fiber.Map
+var project2 fiber.Map
+
+func init() {
+
+	// business
+	signup1 = &auth.SignupPayload{
+		GivenName:  "testgn",
+		FamilyName: "testfn",
+		Business:   "Test Business",
+		Domain:     "test-domain",
+		Email:      "test@email.com",
+		Password:   "password",
+	}
+	signup2 = &auth.SignupPayload{
+		GivenName:  "testgn2",
+		FamilyName: "testfn2",
+		Business:   "Test Business2",
+		Domain:     "test-domain2",
+		Email:      "test2@email.com",
+		Password:   "password2",
+	}
+
+	// projects
+	address := models.NewAddressModel()
+	address.Country = "PH"
+	address.State = "Bohol"
+	project1 = fiber.Map{
+		"name":    "testproject",
+		"address": address,
+		"area":    100.5,
+		"notes":   "Sample Notes",
+	}
+	project2 = fiber.Map{
+		"name": "testproject2",
+	}
+
+}
+
 // CleanupFixture -
 func CleanupFixture(db *mongo.Database) {
 	collections := []string{
@@ -27,20 +69,18 @@ func CleanupFixture(db *mongo.Database) {
 }
 
 // SignupFixture -
-func SignupFixture(app *fiber.App) (*auth.SignupPayload, *models.AuthSuccessResponse) {
-	payload := &auth.SignupPayload{
-		GivenName:  "testgn",
-		FamilyName: "testfn",
-		Business:   "Test Business",
-		Domain:     "test-domain",
-		Email:      "test@email.com",
-		Password:   "password",
+func SignupFixture(app *fiber.App, n int) (*auth.SignupPayload, *models.AuthSuccessResponse) {
+	payload := signup1
+	if n == 2 {
+		payload = signup2
 	}
 	req := DoRequest("POST", "/auth/signup", payload, "")
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test signup", err)
 	}
+
+	log.Println("resauth 1", res)
 
 	response, err := GetResponseAuth(res)
 	if err != nil {
@@ -51,15 +91,10 @@ func SignupFixture(app *fiber.App) (*auth.SignupPayload, *models.AuthSuccessResp
 }
 
 // ProjectFixture -
-func ProjectFixture(app *fiber.App, token string) *models.ProjectModel {
-	address := models.NewAddressModel()
-	address.Country = "PH"
-	address.State = "Bohol"
-	payload := fiber.Map{
-		"name":    "testproject",
-		"address": address,
-		"area":    100.5,
-		"notes":   "Sample Notes",
+func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
+	payload := project1
+	if n == 2 {
+		payload = project2
 	}
 
 	req := DoRequest("POST", "/api/projects", payload, token)

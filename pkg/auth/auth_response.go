@@ -10,16 +10,8 @@ import (
 )
 
 // AuthResponse response after signup/signin
-func (h *Handler) AuthResponse(userID, businessID string) (*models.AuthSuccessResponse, error) {
+func (h *Handler) AuthResponse(userID, businessID primitive.ObjectID) (*models.AuthSuccessResponse, error) {
 	response := models.NewAuthSuccessResponse(userID, businessID)
-	userOID, err := primitive.ObjectIDFromHex(userID)
-	if err != nil {
-		return nil, err
-	}
-	businessOID, err := primitive.ObjectIDFromHex(businessID)
-	if err != nil {
-		return nil, err
-	}
 
 	// generate jwt
 	token, err := response.CurrentUser.User.GenerateJWT(userID, businessID)
@@ -33,7 +25,7 @@ func (h *Handler) AuthResponse(userID, businessID string) (*models.AuthSuccessRe
 	filter := bson.D{
 		{
 			Key:   "_id",
-			Value: userOID,
+			Value: userID,
 		},
 	}
 	user := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
@@ -66,18 +58,14 @@ func (h *Handler) AuthResponse(userID, businessID string) (*models.AuthSuccessRe
 		if person.BusinessID == businessID {
 			response.CurrentUser.Person = person
 		}
-		businessOID, err := primitive.ObjectIDFromHex(person.BusinessID)
-		if err != nil {
-			return nil, err
-		}
-		businessIDs = append(businessIDs, businessOID)
+		businessIDs = append(businessIDs, person.BusinessID)
 	}
 
 	// get business
 	filter = bson.D{
 		{
 			Key:   "_id",
-			Value: businessOID,
+			Value: businessID,
 		},
 	}
 	business := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)

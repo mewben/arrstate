@@ -10,6 +10,6 @@ type AddressModel struct {
 }
 
 // NewAddressModel -
-func NewAddressModel() *AddressModel {
-	return &AddressModel{}
+func NewAddressModel() AddressModel {
+	return AddressModel{}
 }

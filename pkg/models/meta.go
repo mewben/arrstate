@@ -7,6 +7,6 @@ type MetaModel struct {
 }
 
 // NewMetaModel -
-func NewMetaModel() *MetaModel {
-	return &MetaModel{}
+func NewMetaModel() MetaModel {
+	return MetaModel{}
 }

@@ -8,15 +8,6 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 )
 
-// Payload -
-type Payload struct {
-	Name    string               `json:"name" validate:"required"`
-	Address *models.AddressModel `json:"address"`
-	Area    float32              `json:"area" validate:"number,min=0"`
-	Unit    string               `json:"unit"`
-	*models.MetaModel
-}
-
 // Create project
 func (h *Handler) Create(data *Payload) (*models.ProjectModel, error) {
 	// validate payload

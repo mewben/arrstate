@@ -24,7 +24,7 @@ func TestSignin(t *testing.T) {
 
 	// Setup
 	helpers.CleanupFixture(db)
-	signupPayload, _ := helpers.SignupFixture(app)
+	signupPayload, _ := helpers.SignupFixture(app, 1)
 
 	t.Run("It should return the JWT and authSuccess data", func(t *testing.T) {
 		assert := assert.New(t)

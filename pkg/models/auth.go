@@ -1,5 +1,7 @@
 package models
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 // CurrentUser -
 type CurrentUser struct {
 	User   *UserModel   `json:"user"`
@@ -15,7 +17,7 @@ type AuthSuccessResponse struct {
 }
 
 // NewCurrentUser -
-func NewCurrentUser(userID, businessID string) *CurrentUser {
+func NewCurrentUser(userID, businessID primitive.ObjectID) *CurrentUser {
 	return &CurrentUser{
 		User:   NewUserModel(),
 		Person: NewPersonModel(userID, businessID),
@@ -23,7 +25,7 @@ func NewCurrentUser(userID, businessID string) *CurrentUser {
 }
 
 // NewAuthSuccessResponse -
-func NewAuthSuccessResponse(userID, businessID string) *AuthSuccessResponse {
+func NewAuthSuccessResponse(userID, businessID primitive.ObjectID) *AuthSuccessResponse {
 	return &AuthSuccessResponse{
 		CurrentUser:     NewCurrentUser(userID, businessID),
 		CurrentBusiness: NewBusinessModel(),

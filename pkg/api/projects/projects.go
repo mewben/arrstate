@@ -8,7 +8,6 @@ import (
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services/database"
@@ -21,6 +20,15 @@ type Handler struct {
 	Ctx      context.Context
 	User     *models.UserModel
 	Business *models.BusinessModel
+}
+
+// Payload -
+type Payload struct {
+	Name    string              `json:"name" validate:"required"`
+	Address models.AddressModel `json:"address"`
+	Area    float32             `json:"area" validate:"number,min=0"`
+	Unit    string              `json:"unit"`
+	models.MetaModel
 }
 
 // use a single instance of Validate, it caches struct info
@@ -47,6 +55,7 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		}
 
 		response, err := h.Create(payload)
+		log.Println("aferecreate")
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)
@@ -61,6 +70,7 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			c.Status(400).JSON(err)
 			return
 		}
+		log.Println("after prepare")
 
 		payload := &Payload{}
 		if err := c.BodyParser(&payload); err != nil {
@@ -69,7 +79,10 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			return
 		}
 
+		log.Println("after bodyparser")
+
 		response, err := h.Edit(c.Params("projectID"), payload)
+		log.Println("afteredit")
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)
@@ -83,21 +96,22 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 // Prepare -
 func (h *Handler) Prepare(c *fiber.Ctx) error {
 	h.Ctx = c.Fasthttp
-	userID, businessID := utils.ExtractClaims(c)
+	userID, businessID, err := utils.ExtractClaims(c)
+	if err != nil {
+		return err
+	}
 
 	// get user
-	foundUser := h.DB.FindByID(h.Ctx, enums.CollUsers, userID)
-	if foundUser == nil {
+	h.User = h.DB.FindUser(h.Ctx, userID)
+	if h.User == nil {
 		return errors.NewHTTPError(errors.ErrNotFoundUser)
 	}
-	h.User = foundUser.(*models.UserModel)
 
 	// get business
-	foundBusiness := h.DB.FindByID(h.Ctx, enums.CollBusinesses, businessID)
-	if foundBusiness == nil {
+	h.Business = h.DB.FindBusiness(h.Ctx, businessID)
+	if h.Business == nil {
 		return errors.NewHTTPError(errors.ErrNotFoundBusiness)
 	}
-	h.Business = foundBusiness.(*models.BusinessModel)
 
 	return nil
 }

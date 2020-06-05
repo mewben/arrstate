@@ -6,15 +6,16 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // UserModel -
 type UserModel struct {
-	ID            string `bson:"_id,omitempty" json:"_id,omitempty"`
-	Email         string `bson:"email" json:"email"`
-	Password      string `bson:"password" json:"-"`
-	AccountStatus string `bson:"accountStatus" json:"accountStatus"`
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Email         string             `bson:"email" json:"email"`
+	Password      string             `bson:"password" json:"-"`
+	AccountStatus string             `bson:"accountStatus" json:"accountStatus"`
 }
 
 // NewUserModel -
@@ -23,7 +24,7 @@ func NewUserModel() *UserModel {
 }
 
 // GenerateJWT for signup/signin repsonse
-func (*UserModel) GenerateJWT(sub, businessID string) (string, error) {
+func (*UserModel) GenerateJWT(sub, businessID primitive.ObjectID) (string, error) {
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 

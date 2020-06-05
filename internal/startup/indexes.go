@@ -68,4 +68,27 @@ func Indexes(db *mongo.Database) {
 		log.Fatalln("error people index", err)
 	}
 
+	// Projects
+	_, err = db.Collection(enums.CollProjects).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
+		{
+			Keys: bson.D{
+				{
+					Key:   "userID",
+					Value: 1,
+				},
+			},
+		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "businessID",
+					Value: 1,
+				},
+			},
+		},
+	})
+	if err != nil {
+		log.Fatalln("error project index", err)
+	}
+
 }

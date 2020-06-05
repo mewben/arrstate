@@ -31,6 +31,12 @@ type Payload struct {
 	models.MetaModel
 }
 
+// ResponseList -
+type ResponseList struct {
+	Total int                    `json:"total"`
+	Data  []*models.ProjectModel `json:"list"`
+}
+
 // use a single instance of Validate, it caches struct info
 var validate = validator.New()
 
@@ -39,6 +45,22 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 	h := &Handler{
 		DB: database.NewService(db),
 	}
+
+	g.Get("/projects", func(c *fiber.Ctx) {
+		log.Println("projects.get")
+		if err := h.Prepare(c); err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		response, err := h.Get()
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+	})
 
 	g.Post("/projects", func(c *fiber.Ctx) {
 		log.Println("projects.post")

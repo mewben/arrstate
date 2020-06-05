@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber"
+	"github.com/mewben/realty278/pkg/api/projects"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 )
@@ -32,6 +33,17 @@ func GetResponseAuth(res *http.Response) (*models.AuthSuccessResponse, error) {
 	return response, err
 }
 
+// GetResponseDelete success
+func GetResponseDelete(res *http.Response) (fiber.Map, error) {
+	response := fiber.Map{}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(body, &response)
+	return response, err
+}
+
 // GetResponseProject success
 func GetResponseProject(res *http.Response) (*models.ProjectModel, error) {
 	response := &models.ProjectModel{}
@@ -43,9 +55,9 @@ func GetResponseProject(res *http.Response) (*models.ProjectModel, error) {
 	return response, err
 }
 
-// GetResponseDelete success
-func GetResponseDelete(res *http.Response) (fiber.Map, error) {
-	response := fiber.Map{}
+// GetResponseProjects success
+func GetResponseProjects(res *http.Response) (*projects.ResponseList, error) {
+	response := &projects.ResponseList{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err

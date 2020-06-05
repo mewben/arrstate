@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/gofiber/fiber"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 )
@@ -34,6 +35,17 @@ func GetResponseAuth(res *http.Response) (*models.AuthSuccessResponse, error) {
 // GetResponseProject success
 func GetResponseProject(res *http.Response) (*models.ProjectModel, error) {
 	response := &models.ProjectModel{}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(body, &response)
+	return response, err
+}
+
+// GetResponseDelete success
+func GetResponseDelete(res *http.Response) (fiber.Map, error) {
+	response := fiber.Map{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err

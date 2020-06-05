@@ -17,7 +17,7 @@ func (s *Service) FindOneAndUpdate(ctx context.Context, collectionName string, f
 	result := s.DB.Collection(collectionName).FindOneAndUpdate(ctx, filter, update, opts...)
 
 	if result.Err() != nil {
-		log.Println("findoneandupdate err", result.Err().Error)
+		log.Println("findoneandupdate err", result.Err())
 		return nil
 	}
 

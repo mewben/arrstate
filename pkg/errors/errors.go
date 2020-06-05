@@ -14,5 +14,6 @@ const (
 	ErrSigninIncorrect    = "errors.signin.incorrect"
 	ErrInsert             = "errors.insert"
 	ErrUpdate             = "errors.update"
+	ErrDelete             = "errors.delete"
 	ErrEncoding           = "errors.encoding"
 )

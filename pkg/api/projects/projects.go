@@ -70,7 +70,6 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			c.Status(400).JSON(err)
 			return
 		}
-		log.Println("after prepare")
 
 		payload := &Payload{}
 		if err := c.BodyParser(&payload); err != nil {
@@ -79,10 +78,24 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			return
 		}
 
-		log.Println("after bodyparser")
-
 		response, err := h.Edit(c.Params("projectID"), payload)
-		log.Println("afteredit")
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
+	g.Delete("/projects/:projectID", func(c *fiber.Ctx) {
+		log.Println("projects.delete")
+		if err := h.Prepare(c); err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		response, err := h.Remove(c.Params("projectID"))
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)

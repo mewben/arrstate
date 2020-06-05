@@ -45,7 +45,6 @@ func TestEditProject(t *testing.T) {
 			"unit":    updUnit,
 			"notes":   updNotes,
 		}
-		log.Println("token", authResponse.Token)
 		req := helpers.DoRequest("PUT", path+"/"+project.ID.Hex(), data, authResponse.Token)
 
 		res, err := app.Test(req, -1)

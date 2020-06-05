@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber"
+	"github.com/mewben/realty278/pkg/api/lots"
 	"github.com/mewben/realty278/pkg/api/projects"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
@@ -58,6 +59,28 @@ func GetResponseProject(res *http.Response) (*models.ProjectModel, error) {
 // GetResponseProjects success
 func GetResponseProjects(res *http.Response) (*projects.ResponseList, error) {
 	response := &projects.ResponseList{}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(body, &response)
+	return response, err
+}
+
+// GetResponseLot success
+func GetResponseLot(res *http.Response) (*models.LotModel, error) {
+	response := &models.LotModel{}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(body, &response)
+	return response, err
+}
+
+// GetResponseLots success
+func GetResponseLots(res *http.Response) (*lots.ResponseList, error) {
+	response := &lots.ResponseList{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err

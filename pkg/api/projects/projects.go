@@ -48,7 +48,10 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 
 	g.Get("/projects", func(c *fiber.Ctx) {
 		log.Println("projects.get")
-		if err := h.Prepare(c); err != nil {
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
 			c.Status(400).JSON(err)
 			return
 		}
@@ -64,7 +67,10 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 
 	g.Post("/projects", func(c *fiber.Ctx) {
 		log.Println("projects.post")
-		if err := h.Prepare(c); err != nil {
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
 			c.Status(400).JSON(err)
 			return
 		}
@@ -88,7 +94,10 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 
 	g.Put("/projects/:projectID", func(c *fiber.Ctx) {
 		log.Println("projects.put")
-		if err := h.Prepare(c); err != nil {
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
 			c.Status(400).JSON(err)
 			return
 		}
@@ -112,7 +121,10 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 
 	g.Delete("/projects/:projectID", func(c *fiber.Ctx) {
 		log.Println("projects.delete")
-		if err := h.Prepare(c); err != nil {
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
 			c.Status(400).JSON(err)
 			return
 		}
@@ -126,27 +138,4 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		c.Status(200).JSON(response)
 
 	})
-}
-
-// Prepare -
-func (h *Handler) Prepare(c *fiber.Ctx) error {
-	h.Ctx = c.Fasthttp
-	userID, businessID, err := utils.ExtractClaims(c)
-	if err != nil {
-		return err
-	}
-
-	// get user
-	h.User = h.DB.FindUser(h.Ctx, userID)
-	if h.User == nil {
-		return errors.NewHTTPError(errors.ErrNotFoundUser)
-	}
-
-	// get business
-	h.Business = h.DB.FindBusiness(h.Ctx, businessID)
-	if h.Business == nil {
-		return errors.NewHTTPError(errors.ErrNotFoundBusiness)
-	}
-
-	return nil
 }

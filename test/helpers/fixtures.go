@@ -62,6 +62,7 @@ func CleanupFixture(db *mongo.Database) {
 		enums.CollUsers,
 		enums.CollPeople,
 		enums.CollProjects,
+		enums.CollLots,
 	}
 	for _, col := range collections {
 		db.Collection(col).DeleteMany(context.Background(), bson.D{{}})

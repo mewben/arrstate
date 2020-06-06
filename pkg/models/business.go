@@ -10,8 +10,8 @@ import (
 // BusinessModel -
 type BusinessModel struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Name      string             `bson:"name" json:"name"`
-	Domain    string             `bson:"domain" json:"domain"`
+	Name      string             `bson:"name" json:"name" validate:"required"`
+	Domain    string             `bson:"domain" json:"domain" validate:"required,min=3,max=254"`
 	CreatedAt *time.Time         `bson:"createdAt" json:"createdAt"`
 	AreaUnits *AreaUnitsModel    `bson:"areaUnits" json:"areaUnits"`
 }

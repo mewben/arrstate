@@ -11,12 +11,6 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 )
 
-// Payload -
-type Payload struct {
-	Email    string `json:"email" validate:"email,required"`
-	Password string `json:"password" validate:"required,min=6"`
-}
-
 // Create User
 func (h *Handler) Create(data *Payload) (*models.UserModel, error) {
 	// validate payload

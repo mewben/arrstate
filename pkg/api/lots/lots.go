@@ -6,7 +6,6 @@ import (
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/realty278/pkg/errors"
@@ -26,16 +25,6 @@ type Handler struct {
 // Payload -
 type Payload struct {
 	models.LotModel
-}
-
-// Payload2 -
-type Payload2 struct {
-	ProjectID  primitive.ObjectID `json:"projectID"`
-	Name       string             `json:"name" validate:"required"`
-	Area       float32            `json:"area" validate:"number,min=0"`
-	Price      float32            `json:"price" validate:"number,min=0"`
-	PriceAddon float32            `json:"priceAddon" validate:"number,min=0"`
-	models.MetaModel
 }
 
 // ResponseList -

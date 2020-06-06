@@ -34,8 +34,10 @@ func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, erro
 		Ctx: h.Ctx,
 	}
 	businessPayload := &businesses.Payload{
-		Name:   data.Business,
-		Domain: data.Domain,
+		BusinessModel: models.BusinessModel{
+			Name:   data.Business,
+			Domain: data.Domain,
+		},
 	}
 	business, err := businessHandler.Create(businessPayload)
 	if err != nil {
@@ -61,15 +63,19 @@ func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, erro
 
 	// 3. Create Person
 	personHandler := &people.Handler{
-		DB:  h.DB,
-		Ctx: h.Ctx,
+		DB:       h.DB,
+		Ctx:      h.Ctx,
+		User:     user,
+		Business: business,
 	}
 	personPayload := &people.Payload{
-		UserID:     user.ID,
-		BusinessID: business.ID,
-		Role:       enums.RoleOwner,
-		GivenName:  data.GivenName,
-		FamilyName: data.FamilyName,
+		PersonModel: models.PersonModel{
+			UserID:     &user.ID,
+			Email:      data.Email,
+			Role:       enums.RoleOwner,
+			GivenName:  data.GivenName,
+			FamilyName: data.FamilyName,
+		},
 	}
 	_, err = personHandler.Create(personPayload)
 	if err != nil {

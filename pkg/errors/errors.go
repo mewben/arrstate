@@ -18,4 +18,5 @@ const (
 	ErrUpdate             = "errors.update"
 	ErrDelete             = "errors.delete"
 	ErrEncoding           = "errors.encoding"
+	ErrOwner              = "errors.owner"
 )

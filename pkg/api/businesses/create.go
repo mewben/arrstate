@@ -11,12 +11,6 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 )
 
-// Payload -
-type Payload struct {
-	Name   string `json:"name" validate:"required"`
-	Domain string `json:"domain" validate:"required,min=3,max=254"`
-}
-
 // Create business
 func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 	// validate payload

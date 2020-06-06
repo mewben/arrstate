@@ -43,7 +43,7 @@ func TestSignin(t *testing.T) {
 		person := response.CurrentUser.Person
 		business := response.CurrentBusiness
 		helpers.CheckJWT(response.Token, user, business.ID, assert)
-		assert.NotEmpty(business.ID)
+		assert.False(business.ID.IsZero())
 		assert.Equal(signupPayload.Domain, business.Domain)
 		assert.Equal(signupPayload.Business, business.Name)
 		assert.Len(response.UserBusinesses, 1)

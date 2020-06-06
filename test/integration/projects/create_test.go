@@ -52,7 +52,6 @@ func TestCreateProject(t *testing.T) {
 			"notes":   fakeNotes,
 			"images":  fakeImages,
 		}
-		log.Println("token", authResponse.Token)
 		req := helpers.DoRequest("POST", path, data, authResponse.Token)
 
 		res, err := app.Test(req, -1)
@@ -62,7 +61,7 @@ func TestCreateProject(t *testing.T) {
 		assert.Nil(err)
 		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
 		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
-		assert.NotEmpty(response.ID)
+		assert.False(response.ID.IsZero())
 		assert.Equal(fakeProject, response.Name)
 		assert.EqualValues(fakeArea, response.Area)
 		assert.Equal(enums.DefaultUnitArea, response.Unit)

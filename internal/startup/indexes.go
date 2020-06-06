@@ -38,7 +38,6 @@ func Indexes(db *mongo.Database) {
 					Value: 1,
 				},
 			},
-			Options: options.Index().SetUnique(true),
 		},
 	})
 	if err != nil {
@@ -62,6 +61,19 @@ func Indexes(db *mongo.Database) {
 					Value: 1,
 				},
 			},
+		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "email",
+					Value: 1,
+				},
+				{
+					Key:   "businessID",
+					Value: 1,
+				},
+			},
+			Options: options.Index().SetUnique(true),
 		},
 	})
 	if err != nil {

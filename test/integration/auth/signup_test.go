@@ -55,7 +55,7 @@ func TestSignup(t *testing.T) {
 		person := response.CurrentUser.Person
 		business := response.CurrentBusiness
 		helpers.CheckJWT(response.Token, user, business.ID, assert)
-		assert.NotEmpty(business.ID)
+		assert.False(business.ID.IsZero())
 		assert.Equal(fakeDomain, business.Domain)
 		assert.Equal(fakeBusiness, business.Name)
 		assert.Len(response.UserBusinesses, 1)

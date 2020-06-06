@@ -5,6 +5,7 @@ import (
 
 	validator "github.com/go-playground/validator/v10"
 
+	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services/database"
 )
 
@@ -14,8 +15,10 @@ type Handler struct {
 	Ctx context.Context
 }
 
-// Params -
-type Params struct{}
+// Payload -
+type Payload struct {
+	models.BusinessModel
+}
 
 // use a single instance of Validate, it caches struct info
 var validate = validator.New()

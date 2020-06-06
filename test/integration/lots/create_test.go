@@ -64,7 +64,7 @@ func TestCreateLot(t *testing.T) {
 		assert.Nil(err)
 		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
 		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
-		assert.NotEmpty(response.ID)
+		assert.False(response.ID.IsZero())
 		assert.Equal(fakeProjectID, response.ProjectID.Hex())
 		assert.Equal(fakeName, response.Name)
 		assert.EqualValues(fakeArea, response.Area)

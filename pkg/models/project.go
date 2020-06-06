@@ -7,9 +7,9 @@ import (
 
 // ProjectModel -
 type ProjectModel struct {
-	Name    string       `bson:"name" json:"name"`
+	Name    string       `bson:"name" json:"name" validate:"required"`
 	Address AddressModel `bson:"address" json:"address"`
-	Area    float32      `bson:"area" json:"area"`
+	Area    float32      `bson:"area" json:"area" validate:"number,min=0"`
 	Unit    string       `bson:"unit" json:"unit"`
 	// Extended
 	BaseModel     `bson:",inline"`

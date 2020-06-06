@@ -17,7 +17,7 @@ func (h *Handler) Create(data *Payload) (*models.LotModel, error) {
 	}
 
 	// get project if exists
-	foundProject := h.DB.FindByID(h.Ctx, enums.CollProjects, data.ProjectID.Hex(), h.Business.ID)
+	foundProject := h.DB.FindByID(h.Ctx, enums.CollProjects, data.ProjectID, h.Business.ID)
 	if foundProject == nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFoundProject)
 	}

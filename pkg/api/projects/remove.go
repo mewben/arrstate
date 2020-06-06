@@ -2,6 +2,7 @@ package projects
 
 import (
 	"github.com/gofiber/fiber"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
@@ -10,8 +11,13 @@ import (
 
 // Remove Project
 func (h *Handler) Remove(id string) (fiber.Map, error) {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	}
+
 	// get current document
-	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollProjects, id, h.Business.ID)
+	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollProjects, oid, h.Business.ID)
 	if foundOldDoc == nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFound)
 	}

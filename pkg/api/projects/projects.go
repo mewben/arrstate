@@ -24,11 +24,7 @@ type Handler struct {
 
 // Payload -
 type Payload struct {
-	Name    string              `json:"name" validate:"required"`
-	Address models.AddressModel `json:"address"`
-	Area    float32             `json:"area" validate:"number,min=0"`
-	Unit    string              `json:"unit"`
-	models.MetaModel
+	models.ProjectModel
 }
 
 // ResponseList -
@@ -92,8 +88,8 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		c.Status(201).JSON(response)
 	})
 
-	g.Put("/projects/:projectID", func(c *fiber.Ctx) {
-		log.Println("projects.put")
+	g.Put("/projects", func(c *fiber.Ctx) {
+		log.Println("projects.edit")
 		var err error
 		h.Ctx = c.Fasthttp
 		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
@@ -109,7 +105,7 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			return
 		}
 
-		response, err := h.Edit(c.Params("projectID"), payload)
+		response, err := h.Edit(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)

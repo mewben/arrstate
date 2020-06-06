@@ -105,6 +105,13 @@ func TestCreateLot(t *testing.T) {
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
+					"projectID": "invalidid",
+					"name":      "testlot",
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
 					"projectID": projectID,
 					"name":      "testlot",
 					"area":      "notanumber",

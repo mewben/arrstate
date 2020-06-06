@@ -1,4 +1,4 @@
-package projects
+package lots
 
 import (
 	"log"
@@ -9,18 +9,18 @@ import (
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func TestEditProject(t *testing.T) {
-	log.Println("-- test edit project --")
+func TestEditLot(t *testing.T) {
+	log.Println("-- test edit lot --")
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
-	path := "/api/projects"
+	path := "/api/lots"
 
 	// setup
 	helpers.CleanupFixture(db)
@@ -28,39 +28,39 @@ func TestEditProject(t *testing.T) {
 	_, authResponse2 := helpers.SignupFixture(app, 2)
 	project := helpers.ProjectFixture(app, authResponse.Token, 1)
 	project2 := helpers.ProjectFixture(app, authResponse2.Token, 2)
+	lot1 := helpers.LotFixture(app, authResponse.Token, project.ID, 1)
+	lot2 := helpers.LotFixture(app, authResponse2.Token, project2.ID, 2)
 
-	t.Run("It should edit project", func(t *testing.T) {
+	t.Run("It should edit lot", func(t *testing.T) {
 		assert := assert.New(t)
-		updName := "edit1"
-		updAddress := models.NewAddressModel()
-		updAddress.Country = "US"
-		updAddress.State = "Ohio"
-		updArea := 24
-		updUnit := "sq.in"
-		updNotes := "Edit notes"
+		updName := "edit"
+		updArea := 12.5
+		updPrice := 100.5
+		updPriceAddon := 15.3
+		updNotes := "edit notes"
 		data := fiber.Map{
-			"_id":     project.ID,
-			"name":    updName,
-			"address": updAddress,
-			"area":    updArea,
-			"unit":    updUnit,
-			"notes":   updNotes,
+			"_id":        lot1.ID,
+			"name":       updName,
+			"area":       updArea,
+			"price":      updPrice,
+			"priceAddon": updPriceAddon,
+			"notes":      updNotes,
 		}
 		req := helpers.DoRequest("PUT", path, data, authResponse.Token)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponseProject(res)
+		response, err := helpers.GetResponseLot(res)
 		assert.Nil(err)
 		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
 		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
-		assert.Equal(project.ID, response.ID)
+		assert.Equal(lot1.ID, response.ID)
+		assert.Equal(project.ID, response.ProjectID)
 		assert.Equal(updName, response.Name)
 		assert.EqualValues(updArea, response.Area)
-		assert.Equal(updUnit, response.Unit)
-		assert.Equal(updAddress.Country, response.Address.Country)
-		assert.Equal(updAddress.State, response.Address.State)
+		assert.EqualValues(updPrice, response.Price)
+		assert.EqualValues(updPriceAddon, response.PriceAddon)
 		assert.Equal(updNotes, response.Notes)
 		assert.Equal(authResponse.CurrentUser.User.ID, response.UpdatedBy)
 
@@ -78,23 +78,36 @@ func TestEditProject(t *testing.T) {
 				"name": "testp",
 			},
 			{
-				"_id":  project.ID,
+				"_id":  lot1.ID,
 				"name": "",
 			},
 			{
-				"_id":  project.ID,
+				"_id":  lot1.ID,
 				"name": "testp",
 				"area": "notanumber",
 			},
 			{
-				"_id":  project.ID,
+				"_id":  lot1.ID,
 				"name": "testp",
 				"area": "100",
 			},
 			{
-				"_id":  project.ID,
+				"_id":  lot1.ID,
 				"name": "testp",
 				"area": -102,
+			},
+			{
+				"_id":   lot1.ID,
+				"name":  "testp",
+				"area":  102,
+				"price": -14,
+			},
+			{
+				"_id":        lot1.ID,
+				"name":       "testp",
+				"area":       102,
+				"price":      14,
+				"priceAddon": -14,
 			},
 		}
 
@@ -112,12 +125,32 @@ func TestEditProject(t *testing.T) {
 
 	})
 
+	t.Run("It should not edit projectID", func(t *testing.T) {
+		assert := assert.New(t)
+		updName := "edit2"
+		data := fiber.Map{
+			"_id":       lot1.ID,
+			"name":      updName,
+			"projectID": primitive.NewObjectID(),
+		}
+		req := helpers.DoRequest("PUT", path, data, authResponse.Token)
+
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(200, res.StatusCode, res)
+		response, err := helpers.GetResponseLot(res)
+		assert.Nil(err)
+		assert.Equal(lot1.ID, response.ID)
+		assert.Equal(project.ID, response.ProjectID)
+		assert.Equal(updName, response.Name)
+	})
+
 	t.Run("Permissions", func(t *testing.T) {
 
-		t.Run("It should not edit if not in the current business", func(t *testing.T) {
+		t.Run("It should not edit from other business", func(t *testing.T) {
 			assert := assert.New(t)
 			data := fiber.Map{
-				"_id":  project2.ID,
+				"_id":  lot2.ID,
 				"name": "edit another",
 			}
 			req := helpers.DoRequest("PUT", path, data, authResponse.Token)
@@ -131,4 +164,5 @@ func TestEditProject(t *testing.T) {
 
 		})
 	})
+
 }

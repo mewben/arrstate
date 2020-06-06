@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/realty278/internal/enums"
@@ -18,6 +19,8 @@ var signup1 *auth.SignupPayload
 var signup2 *auth.SignupPayload
 var project1 fiber.Map
 var project2 fiber.Map
+var lot1 fiber.Map
+var lot2 fiber.Map
 
 func init() {
 
@@ -51,6 +54,20 @@ func init() {
 	}
 	project2 = fiber.Map{
 		"name": "testproject2",
+	}
+
+	// lots
+	lot1 = fiber.Map{
+		"name":       "testlot",
+		"area":       1.5,
+		"price":      100.5,
+		"priceAddon": 114,
+		"notes":      "Sample Notes",
+	}
+	lot2 = fiber.Map{
+		"name":  "testlot2",
+		"area":  2.5,
+		"price": 12.3,
 	}
 
 }
@@ -101,12 +118,35 @@ func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 	req := DoRequest("POST", "/api/projects", payload, token)
 	res, err := app.Test(req, -1)
 	if err != nil {
-		log.Fatalln("err app test signup", err)
+		log.Fatalln("err app test project", err)
 	}
 
 	response, err := GetResponseProject(res)
 	if err != nil {
-		log.Fatalln("err get response auth", err)
+		log.Fatalln("err get response project", err)
+	}
+
+	return response
+}
+
+// LotFixture -
+func LotFixture(app *fiber.App, token string, projectID primitive.ObjectID, n int) *models.LotModel {
+	payload := lot1
+	if n == 2 {
+		payload = lot2
+	}
+
+	payload["projectID"] = projectID
+
+	req := DoRequest("POST", "/api/lots", payload, token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err app test lot", err)
+	}
+
+	response, err := GetResponseLot(res)
+	if err != nil {
+		log.Fatalln("err get response lot", err)
 	}
 
 	return response

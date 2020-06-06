@@ -53,21 +53,24 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	// g.Get("/lots", func(c *fiber.Ctx) {
-	// 	log.Println("lots.get")
-	// 	if err := h.Prepare(c); err != nil {
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
+	g.Get("/lots/:projectID", func(c *fiber.Ctx) {
+		log.Println("lots.get")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
 
-	// 	response, err := h.Get()
-	// 	if err != nil {
-	// 		log.Println("errrrrr", err)
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
-	// 	c.Status(200).JSON(response)
-	// })
+		response, err := h.Get(c.Params("projectID"))
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+	})
 
 	g.Post("/lots", func(c *fiber.Ctx) {
 		log.Println("lots.post")
@@ -123,20 +126,23 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 
 	})
 
-	// g.Delete("/lots/:projectID", func(c *fiber.Ctx) {
-	// 	log.Println("lots.delete")
-	// 	if err := h.Prepare(c); err != nil {
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
+	g.Delete("/lots/:lotID", func(c *fiber.Ctx) {
+		log.Println("lots.delete")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
 
-	// 	response, err := h.Remove(c.Params("projectID"))
-	// 	if err != nil {
-	// 		log.Println("errrrrr", err)
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
-	// 	c.Status(200).JSON(response)
+		response, err := h.Remove(c.Params("lotID"))
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
 
-	// })
+	})
 }

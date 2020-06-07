@@ -94,32 +94,32 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		c.Status(201).JSON(response)
 	})
 
-	// g.Put("/lots", func(c *fiber.Ctx) {
-	// 	log.Println("lots.put")
-	// 	var err error
-	// 	h.Ctx = c.Fasthttp
-	// 	h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
-	// 	if err != nil {
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
+	g.Put("/people", func(c *fiber.Ctx) {
+		log.Println("people.put")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
 
-	// 	payload := &Payload{}
-	// 	if err := c.BodyParser(&payload); err != nil {
-	// 		log.Println("errrbodyparser", err)
-	// 		c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-	// 		return
-	// 	}
+		payload := &Payload{}
+		if err := c.BodyParser(&payload); err != nil {
+			log.Println("errrbodyparser", err)
+			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
+			return
+		}
 
-	// 	response, err := h.Edit(payload)
-	// 	if err != nil {
-	// 		log.Println("errrrrr", err)
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
-	// 	c.Status(200).JSON(response)
+		response, err := h.Edit(payload)
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
 
-	// })
+	})
 
 	// g.Delete("/lots/:lotID", func(c *fiber.Ctx) {
 	// 	log.Println("lots.delete")

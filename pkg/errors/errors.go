@@ -19,4 +19,5 @@ const (
 	ErrDelete             = "errors.delete"
 	ErrEncoding           = "errors.encoding"
 	ErrOwner              = "errors.owner"
+	ErrDuplicate          = "errors.duplicate"
 )

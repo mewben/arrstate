@@ -25,7 +25,8 @@ Frontend: React (create-react-app)
 
 ## Testing
 
-go test --tags=integration // includes integration tests
+- To run sequentially:
+  `go test ./... -p=1 -v`
 
 ## Processes
 

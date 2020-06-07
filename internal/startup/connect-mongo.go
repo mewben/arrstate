@@ -32,6 +32,13 @@ func ConnectMongo() *mongo.Database {
 
 }
 
+// DisconnectMongo -
+func DisconnectMongo(db *mongo.Database) {
+	if err := db.Client().Disconnect(context.TODO()); err != nil {
+		log.Println("-- Error Disconnect: ", err)
+	}
+}
+
 // extractDatabaseName from the uri
 func extractDatabaseName(mongoURL string) (databaseName string) {
 	databaseName = "default"

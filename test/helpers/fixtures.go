@@ -3,6 +3,7 @@ package helpers
 import (
 	"context"
 	"log"
+	"math/rand"
 
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/bson"
@@ -21,6 +22,8 @@ var project1 fiber.Map
 var project2 fiber.Map
 var lot1 fiber.Map
 var lot2 fiber.Map
+var person1 fiber.Map
+var person2 fiber.Map
 
 func init() {
 
@@ -40,6 +43,18 @@ func init() {
 		Domain:     "test-domain2",
 		Email:      "test2@email.com",
 		Password:   "password2",
+	}
+
+	// people
+	person1 = fiber.Map{
+		"email":     "email1@email.com",
+		"role":      enums.RoleAgent,
+		"givenName": "given",
+	}
+	person2 = fiber.Map{
+		"email":     "email2@email.com",
+		"role":      enums.RoleAgent,
+		"givenName": "given2",
 	}
 
 	// projects
@@ -72,6 +87,16 @@ func init() {
 
 }
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyz")
+
+func randStr(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
+}
+
 // CleanupFixture -
 func CleanupFixture(db *mongo.Database) {
 	collections := []string{
@@ -82,7 +107,7 @@ func CleanupFixture(db *mongo.Database) {
 		enums.CollLots,
 	}
 	for _, col := range collections {
-		db.Collection(col).DeleteMany(context.Background(), bson.D{{}})
+		db.Collection(col).DeleteMany(context.TODO(), bson.D{})
 	}
 }
 
@@ -147,6 +172,27 @@ func LotFixture(app *fiber.App, token string, projectID primitive.ObjectID, n in
 	response, err := GetResponseLot(res)
 	if err != nil {
 		log.Fatalln("err get response lot", err)
+	}
+
+	return response
+}
+
+// PersonFixture -
+func PersonFixture(app *fiber.App, token string, n int) *models.PersonModel {
+	payload := person1
+	if n == 2 {
+		payload = person2
+	}
+
+	req := DoRequest("POST", "/api/people", payload, token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err app test people", err)
+	}
+
+	response, err := GetResponsePerson(res)
+	if err != nil {
+		log.Fatalln("err get response people", err)
 	}
 
 	return response

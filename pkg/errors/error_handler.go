@@ -11,12 +11,12 @@ import (
 func ErrorHandler() func(*fiber.Ctx) {
 	return func(c *fiber.Ctx) {
 		if c.Error() != nil {
+			log.Println("-- Error Handler: ", c.Error())
 			e := &HTTPError{}
 			e.Code = 500
 			e.Message = c.Error().Error()
 
 			// TODO: log to external
-			log.Println("-err", e)
 			c.Status(e.Code).JSON(e)
 		}
 		c.Next()

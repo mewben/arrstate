@@ -3,6 +3,7 @@ package helpers
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/gofiber/fiber"
@@ -16,12 +17,26 @@ import (
 // GetResponseError http
 func GetResponseError(res *http.Response) (*errors.HTTPError, error) {
 	responseError := &errors.HTTPError{}
+	if res.StatusCode == 500 {
+		msg, err := GetResponseMap(res)
+		log.Println("- err 500:", msg)
+		responseError.Message = msg
+		return responseError, err
+	}
+
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return responseError, nil
 	}
 	err = json.Unmarshal(body, &responseError)
 	return responseError, err
+}
+
+// GetResponseMap general error
+func GetResponseMap(res *http.Response) (string, error) {
+	body, err := ioutil.ReadAll(res.Body)
+	return string(body), err
+
 }
 
 // GetResponseAuth success signup/signin

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"os"
 	"testing"
 
@@ -17,6 +18,7 @@ import (
 )
 
 func TestSignup(t *testing.T) {
+	log.Println("[TEST SIGNUP]")
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
@@ -49,6 +51,10 @@ func TestSignup(t *testing.T) {
 		// Assert -
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
+		if res.StatusCode != 201 {
+			helpers.GetResponseError(res)
+			return
+		}
 		response, err := helpers.GetResponseAuth(res)
 		assert.Nil(err)
 		user := response.CurrentUser.User
@@ -248,5 +254,7 @@ func TestSignup(t *testing.T) {
 	t.Run("It should cleanup business, user, people on signup error", func(t *testing.T) {
 		// TODO: not urgent
 	})
+
+	// startup.DisconnectMongo(db)
 
 }

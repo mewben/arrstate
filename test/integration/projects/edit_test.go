@@ -6,13 +6,14 @@ import (
 	"testing"
 
 	"github.com/gofiber/fiber"
+	"github.com/stretchr/testify/assert"
+
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestEditProject(t *testing.T) {

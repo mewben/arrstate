@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"os"
 	"testing"
 
@@ -17,6 +18,7 @@ import (
 )
 
 func TestSignin(t *testing.T) {
+	log.Println("[TEST SIGNIN]")
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
@@ -37,6 +39,10 @@ func TestSignin(t *testing.T) {
 
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
+		// if res.StatusCode != 200 {
+		// 	responseError, err := helpers.GetResponseMap(res)
+		// 	log.Println("err", responseError, err)
+		// }
 		response, err := helpers.GetResponseAuth(res)
 		assert.Nil(err)
 		user := response.CurrentUser.User
@@ -125,4 +131,6 @@ func TestSignin(t *testing.T) {
 	t.Run("It should lock for 5 minutes if 5 unsuccessful attempts", func(t *testing.T) {
 		// TODO: not urgent
 	})
+
+	// startup.DisconnectMongo(db)
 }

@@ -4,21 +4,11 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 )
-
-// Payload2 -
-type Payload2 struct {
-	UserID     primitive.ObjectID `json:"userID"`
-	BusinessID primitive.ObjectID `json:"businessID" validate:"required"`
-	Role       string             `json:"role" validate:"required"`
-	GivenName  string             `json:"givenName" validate:"required"`
-	FamilyName string             `json:"familyName"`
-}
 
 // Create Person
 func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {

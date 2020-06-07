@@ -6,6 +6,9 @@ import (
 	"testing"
 
 	"github.com/gofiber/fiber"
+	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
@@ -13,8 +16,6 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
-	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestCreateProject(t *testing.T) {

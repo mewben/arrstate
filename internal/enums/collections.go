@@ -7,4 +7,5 @@ const (
 	CollPeople     = "people"
 	CollProjects   = "projects"
 	CollLots       = "lots"
+	CollClientLots = "clientLots"
 )

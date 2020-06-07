@@ -36,6 +36,11 @@ func DecodeSingle(result *mongo.SingleResult, collectionName string) interface{}
 		lot := models.NewLotModel()
 		result.Decode(&lot)
 		return lot
+
+	case enums.CollClientLots:
+		clientlot := models.NewClientLotModel()
+		result.Decode(&clientlot)
+		return clientlot
 	}
 
 	return nil

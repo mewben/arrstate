@@ -11,4 +11,11 @@ const (
 	AccountStatusInactive = "inactive"
 	AccountStatusPending  = "pending"
 	AccountStatusDeleted  = "deleted"
+
+	StatusActive     = "active"
+	StatusPending    = "pending"
+	StatusPaid       = "paid"
+	StatusCancelled  = "cancelled"
+	StatusTerminated = "terminated"
+	StatusApproved   = "approved"
 )

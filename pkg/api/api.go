@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 
+	"github.com/mewben/realty278/pkg/api/clientlots"
 	"github.com/mewben/realty278/pkg/api/lots"
 	"github.com/mewben/realty278/pkg/api/people"
 	"github.com/mewben/realty278/pkg/api/projects"
@@ -28,5 +29,6 @@ func Routes(app *fiber.App, db *mongo.Database) {
 	projects.Routes(g, db)
 	lots.Routes(g, db)
 	people.Routes(g, db)
+	clientlots.Routes(g, db)
 
 }

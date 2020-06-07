@@ -12,7 +12,7 @@ import (
 	"github.com/mewben/realty278/test/helpers"
 )
 
-func TestGetLot(t *testing.T) {
+func TestGetLots(t *testing.T) {
 	log.Println("-- test get lots --")
 
 	os.Setenv("ENV", "TESTING")

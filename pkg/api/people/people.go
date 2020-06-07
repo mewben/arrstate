@@ -43,24 +43,24 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	// g.Get("/lots/:projectID", func(c *fiber.Ctx) {
-	// 	log.Println("lots.get")
-	// 	var err error
-	// 	h.Ctx = c.Fasthttp
-	// 	h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
-	// 	if err != nil {
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
+	g.Get("/people", func(c *fiber.Ctx) {
+		log.Println("people.get")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
 
-	// 	response, err := h.Get(c.Params("projectID"))
-	// 	if err != nil {
-	// 		log.Println("errrrrr", err)
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
-	// 	c.Status(200).JSON(response)
-	// })
+		response, err := h.Get()
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+	})
 
 	g.Post("/people", func(c *fiber.Ctx) {
 		log.Println("people.post")

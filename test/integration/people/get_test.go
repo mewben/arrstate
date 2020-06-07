@@ -1,4 +1,4 @@
-package projects
+package people
 
 import (
 	"log"
@@ -12,33 +12,33 @@ import (
 	"github.com/mewben/realty278/test/helpers"
 )
 
-func TestGetProjects(t *testing.T) {
-	log.Println("-- test get projects --")
+func TestGetPeople(t *testing.T) {
+	log.Println("-- test remove person --")
 
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
-	path := "/api/projects"
+	path := "/api/people"
 
 	// setup
 	helpers.CleanupFixture(db)
 	_, authResponse := helpers.SignupFixture(app, 1)
 	_, authResponse2 := helpers.SignupFixture(app, 2)
-	helpers.ProjectFixture(app, authResponse.Token, 1)
-	helpers.ProjectFixture(app, authResponse.Token, 2)
-	helpers.ProjectFixture(app, authResponse2.Token, 2)
+	helpers.PersonFixture(app, authResponse.Token, 1)
+	helpers.PersonFixture(app, authResponse.Token, 2)
+	helpers.PersonFixture(app, authResponse2.Token, 2)
 
-	t.Run("It should get the list of projects", func(t *testing.T) {
+	t.Run("It should get the list of people inside the business", func(t *testing.T) {
 		assert := assert.New(t)
 		req := helpers.DoRequest("GET", path, nil, authResponse.Token)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponseProjects(res)
+		response, err := helpers.GetResponsePersons(res)
 		assert.Nil(err)
-		assert.Len(response.Data, 2)
-		assert.Equal(response.Total, 2)
+		assert.Len(response.Data, 3)
+		assert.Equal(response.Total, 3)
 	})
 
 }

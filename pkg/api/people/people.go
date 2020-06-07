@@ -121,23 +121,23 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 
 	})
 
-	// g.Delete("/lots/:lotID", func(c *fiber.Ctx) {
-	// 	log.Println("lots.delete")
-	// 	var err error
-	// 	h.Ctx = c.Fasthttp
-	// 	h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
-	// 	if err != nil {
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
+	g.Delete("/people/:personID", func(c *fiber.Ctx) {
+		log.Println("people.delete")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
 
-	// 	response, err := h.Remove(c.Params("lotID"))
-	// 	if err != nil {
-	// 		log.Println("errrrrr", err)
-	// 		c.Status(400).JSON(err)
-	// 		return
-	// 	}
-	// 	c.Status(200).JSON(response)
+		response, err := h.Remove(c.Params("personID"))
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
 
-	// })
+	})
 }

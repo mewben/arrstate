@@ -51,10 +51,6 @@ func TestSignup(t *testing.T) {
 		// Assert -
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		if res.StatusCode != 201 {
-			helpers.GetResponseError(res)
-			return
-		}
 		response, err := helpers.GetResponseAuth(res)
 		assert.Nil(err)
 		user := response.CurrentUser.User

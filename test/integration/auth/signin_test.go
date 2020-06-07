@@ -39,10 +39,6 @@ func TestSignin(t *testing.T) {
 
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		// if res.StatusCode != 200 {
-		// 	responseError, err := helpers.GetResponseMap(res)
-		// 	log.Println("err", responseError, err)
-		// }
 		response, err := helpers.GetResponseAuth(res)
 		assert.Nil(err)
 		user := response.CurrentUser.User

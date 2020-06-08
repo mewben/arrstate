@@ -25,10 +25,28 @@ func (h *Handler) Create(data *Payload) (*SingleResponse, error) {
 		return nil, errors.NewHTTPError(errors.ErrNotFoundLot)
 	}
 	lot := foundlot.(*models.LotModel)
+	if lot.ClientLotID != nil {
+		return nil, errors.NewHTTPError(errors.ErrLotAlreadyTaken)
+	}
+
+	// get the client doc
+	foundclient := h.DB.FindByID(h.Ctx, enums.CollPeople, data.ClientID, h.Business.ID)
+	if foundclient == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+	}
+	client := foundclient.(*models.PersonModel)
+
+	// get the agent doc if present
+	if data.AgentID != nil {
+		foundagent := h.DB.FindByID(h.Ctx, enums.CollPeople, *data.AgentID, h.Business.ID)
+		if foundagent == nil {
+			return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+		}
+	}
 
 	clientlot := models.NewClientLotModel(h.User.ID, h.Business.ID)
-	clientlot.LotID = data.LotID
-	clientlot.ClientID = data.ClientID
+	clientlot.LotID = lot.ID
+	clientlot.ClientID = client.ID
 	clientlot.AgentID = data.AgentID
 	clientlot.Status = enums.StatusPending
 	clientlot.Price = lot.Price + lot.PriceAddon

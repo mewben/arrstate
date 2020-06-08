@@ -8,6 +8,7 @@ const (
 	ErrNotFoundBusiness   = "errors.notFound.business"
 	ErrNotFoundProject    = "errors.notFound.project"
 	ErrNotFoundLot        = "errors.notFound.lot"
+	ErrNotFoundPerson     = "errors.notFound.person"
 	ErrInputInvalid       = "errors.inputInvalid"
 	ErrDomainDuplicate    = "errors.domain.duplicate"
 	ErrUserDuplicate      = "errors.user.duplicate"
@@ -20,4 +21,7 @@ const (
 	ErrEncoding           = "errors.encoding"
 	ErrOwner              = "errors.owner"
 	ErrDuplicate          = "errors.duplicate"
+
+	// lot errors
+	ErrLotAlreadyTaken = "errors.lot.alreadyTaken"
 )

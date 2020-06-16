@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "/*": ["./*"],
+      "@Components": ["./src/components"],
+      "@Components/*": ["./src/components/*"],
+      "@Screens/*": ["./src/screens/*"],
+      "@Store/*": ["./src/store/*"],
+      "@Utils/*": ["./src/utils/*"],
+      "@Enums": ["./src/enums"],
+      "@Enums/*": ["./src/enums/*"],
+      "@Providers": ["./src/providers"],
+      "@Providers/*": ["./src/providers/*"],
+      "@Wrappers": ["./src/wrappers"],
+      "@Wrappers/*": ["./src/wrappers/*"]
+    },
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "build"]
+}

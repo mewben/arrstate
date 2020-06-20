@@ -1,7 +1,7 @@
 import React from "react"
 import * as Yup from "yup"
 
-import { Form, TextField } from "@Components/forms"
+import { Form, TextField, SubmitButton } from "@Components/forms"
 import { t } from "@Utils/t"
 
 const req = t("errors.required")
@@ -26,7 +26,7 @@ const SigninForm = () => {
           autoFocus
         />
         <TextField name="password" label={t("password")} type="password" />
-        <button type="submit">{t("signin")}</button>
+        <SubmitButton>{t("signin")}</SubmitButton>
       </Form>
     </div>
   )

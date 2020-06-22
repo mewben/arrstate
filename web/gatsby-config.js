@@ -41,6 +41,7 @@ module.exports = {
         "@Screens": path.join(__dirname, "src/screens"),
         "@Utils": path.join(__dirname, "src/utils"),
         "@Enums": path.join(__dirname, "src/enums"),
+        "@Store": path.join(__dirname, "src/store"),
       },
     },
   ],

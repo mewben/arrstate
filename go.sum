@@ -79,10 +79,14 @@ github.com/gobuffalo/packd v0.1.0/go.mod h1:M2Juc+hhDXf/PnmBANFCqx4DM3wRbgDvnVWe
 github.com/gobuffalo/packr/v2 v2.0.9/go.mod h1:emmyGweYTm6Kdper+iywB6YK5YzuKchGtJQZ0Odn4pQ=
 github.com/gobuffalo/packr/v2 v2.2.0/go.mod h1:CaAwI0GPIAv+5wKLtv8Afwl+Cm78K/I/VCm/3ptBN+0=
 github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754/go.mod h1:HhnNqWY95UYwwW3uSASeV7vtgYkT2t16hJgV3AEPUpw=
+github.com/gofiber/cors v0.2.0 h1:NcprkYrVR4AdOhHH11M0JZLPtalAxiZDidvVBkGvU4E=
+github.com/gofiber/cors v0.2.0/go.mod h1:HSHnRk7vZJdey6iVf010ZB6K/OqteCIEApKwoUVxVy0=
 github.com/gofiber/fiber v1.10.0/go.mod h1:8083zyrwS9acYIAgpYPbXPW80m57uc8WPzPF3wt1qNk=
 github.com/gofiber/fiber v1.10.1/go.mod h1:8083zyrwS9acYIAgpYPbXPW80m57uc8WPzPF3wt1qNk=
 github.com/gofiber/fiber v1.10.5 h1:zitQhmNh2qtClV1VB+q+/gSYTxeURhQhYZ6oqtS24bw=
 github.com/gofiber/fiber v1.10.5/go.mod h1:jA7DEjzDo1dH8rRJuZ0p6tpkANmuVyZk+tUoILo7VTs=
+github.com/gofiber/fiber v1.11.0 h1:7mk1bOs0HQ3x3GPwmLfr4/um/MHPaj98jNFUk1jDj2M=
+github.com/gofiber/fiber v1.11.0/go.mod h1:yFeAjCJH91bgsVXSRuJ8phno0O6/PcGHvjndFw91Vxs=
 github.com/gofiber/jwt v0.1.0 h1:9SC0NsC1Lqo00uwhy7AN+Icj1GsGQ4Du3TDEEXJDplE=
 github.com/gofiber/jwt v0.1.0/go.mod h1:fMdgQzBKLC6HlJeyaGmqs0Tb+4vIl7w43SRxm9cE718=
 github.com/gofiber/logger v0.2.2 h1:/7GrBzfLrQAbHtIEsYN4mbfNG2FHYyb1Hy4fjYWleYs=
@@ -92,6 +96,8 @@ github.com/gofiber/recover v0.1.0/go.mod h1:A2EvHogpjBLJNL8VyzAu8M5gjHMVNfbGJfgw
 github.com/gofiber/utils v0.0.3/go.mod h1:pacRFtghAE3UoknMOUiXh2Io/nLWSUHtQCi/3QASsOc=
 github.com/gofiber/utils v0.0.4 h1:gcOb+WZDQ319bELqAp5ePDYwxostDDzWh4pY7S0KiMI=
 github.com/gofiber/utils v0.0.4/go.mod h1:pacRFtghAE3UoknMOUiXh2Io/nLWSUHtQCi/3QASsOc=
+github.com/gofiber/utils v0.0.6 h1:lWuJfXQ06aFPVA2/y7lUw9ahS4TuXhbwXnxKl1D/fuY=
+github.com/gofiber/utils v0.0.6/go.mod h1:pacRFtghAE3UoknMOUiXh2Io/nLWSUHtQCi/3QASsOc=
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.1/go.mod h1:hp+jE20tsWTFYpLwKvXlhS1hjn+gTNwPg2I6zVXpSg4=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=

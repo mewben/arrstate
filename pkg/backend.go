@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"github.com/gofiber/cors"
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/logger"
 	"github.com/gofiber/recover"
@@ -20,6 +21,7 @@ func SetupBackend(db *mongo.Database) *fiber.App {
 	// global middleware
 	app.Use(logger.New())
 	app.Use(recover.New())
+	app.Use(cors.New())
 
 	// Register routes
 	auth.Routes(app, db)

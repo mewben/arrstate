@@ -2,3 +2,5 @@
 .DS_Store
 .env.development
 .env.testing
+.air.conf
+tmp

@@ -15,3 +15,7 @@ export const PrivateWrapper = ({ children }) => {
 
   return children
 }
+
+const MeWrapper = ({ children }) => {
+  // fetch me
+}

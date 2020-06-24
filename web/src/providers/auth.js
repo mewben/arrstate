@@ -21,14 +21,23 @@ export const AuthProvider = ({ children }) => {
     initAuth()
   }, [])
 
-  console.log("isLoading", isLoading)
-  console.log("isAuthenticated", isAuthenticated)
+  const authSignIn = token => {
+    authToken.process(token)
+    setIsAuthenticated(!authToken.isExpired)
+  }
+
+  const authSignout = () => {
+    authToken.clear()
+    setIsAuthenticated(!authToken.isExpired)
+  }
 
   return (
     <AuthContext.Provider
       value={{
         isLoading,
         isAuthenticated,
+        authSignIn,
+        authSignout,
       }}
     >
       {children}
@@ -47,15 +56,26 @@ class AuthToken {
     } else {
       this.token = token
     }
+    this.process(this.token)
+  }
+
+  process(token) {
+    this.token = token
     // default to expired
     this.decodedToken = { sub: "", exp: 0 }
     // then try and decode the jwt using jwt-decode
     try {
-      console.log("thistoken", this.token)
       this.decodedToken = jwtDecode(this.token)
+      this.store(token)
     } catch (e) {
       console.info("error jwtDecode", e)
     }
+  }
+
+  clear() {
+    this.token = ""
+    this.decodedToken = { sub: "", exp: 0 }
+    localStorage.removeItem(TOKEN_STORAGE_KEY)
   }
 
   get authorizationString() {
@@ -67,14 +87,10 @@ class AuthToken {
   }
 
   get isExpired() {
-    console.log("decodedToken", this.decodedToken)
-    console.log(new Date())
-    console.log(this.expiresAt)
-    console.log("isExpired")
     return new Date() > this.expiresAt
   }
 
-  static store(token) {
+  store(token) {
     localStorage.setItem(TOKEN_STORAGE_KEY, token)
   }
 }

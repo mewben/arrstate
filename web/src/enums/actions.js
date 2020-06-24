@@ -4,4 +4,7 @@ export const ACTIONS = {
     SIGNUP: "auth.signUp",
     SIGNOUT: "auth.signOut",
   },
+  ME: {
+    GET: "me.get",
+  },
 }

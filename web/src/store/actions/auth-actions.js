@@ -3,6 +3,14 @@ import { ACTIONS } from "@Enums"
 import { requestApi } from "@Utils"
 
 export const signIn = payload => {
+  console.log("payload", payload)
+  return requestApi("/auth/signin", "POST", {
+    data: payload,
+    noToken: true,
+  })
+}
+
+export const signIn22 = payload => {
   return dispatch({
     type: ACTIONS.AUTH.SIGNIN,
     payload: requestApi("/auth/signin2", "POST", {

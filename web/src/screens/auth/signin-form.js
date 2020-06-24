@@ -1,10 +1,12 @@
 import React from "react"
+import { navigate } from "gatsby"
 import * as Yup from "yup"
+import { useMutation } from "react-query"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
 import { t } from "@Utils/t"
-import { signIn } from "@Store/actions/auth-actions"
-import { extractError } from "@Utils"
+import { requestApi, extractError } from "@Utils"
+import { useAuth } from "@Providers"
 
 const req = t("errors.required")
 
@@ -13,16 +15,25 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required(req),
 })
 
+// ------- SigninForm -------- //
 const SigninForm = () => {
-  const onSubmit = async data => {
-    console.log("data", data)
-    const res = await signIn(data)
-    console.log("typeof res", typeof res, JSON.stringify(res, null, "  "))
-    if (res.error) {
-      console.log("res error", res)
-      console.log("errorMesssage", res.data)
-    } else {
-      console.log("no error", res)
+  const { authSignIn } = useAuth()
+  const [mutate, { reset, error, isError }] = useMutation(formData => {
+    return requestApi("/auth/signin", "POST", {
+      data: formData,
+      noToken: true,
+    })
+  })
+
+  const onSubmit = async formData => {
+    reset()
+    const res = await mutate(formData)
+    if (res) {
+      // store token,
+      // redirect to '/'
+      console.log("ressss", res.data)
+      authSignIn(res.data.token)
+      navigate("/", { replace: true })
     }
   }
 
@@ -31,8 +42,9 @@ const SigninForm = () => {
       <Form
         onSubmit={onSubmit}
         validationSchema={validationSchema}
-        model={{ email: "test@email.com", password: "password2" }}
+        model={{ email: "test@email.com", password: "password" }}
       >
+        {isError && <div>{extractError(error)}</div>}
         <TextField
           name="email"
           label={t("email")}

@@ -1,9 +1,16 @@
 import React from "react"
 
 import { PrivateWrapper } from "@Wrappers"
+import { useAuth } from "@Providers"
 
 const ProjectsPage = () => {
-  return <PrivateWrapper>Projects</PrivateWrapper>
+  const { authSignout } = useAuth()
+  return (
+    <PrivateWrapper>
+      Projects
+      <button onClick={() => authSignout()}>Signout</button>
+    </PrivateWrapper>
+  )
 }
 
 export default ProjectsPage

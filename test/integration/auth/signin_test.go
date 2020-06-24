@@ -8,7 +8,6 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/auth"
@@ -26,38 +25,23 @@ func TestSignin(t *testing.T) {
 
 	// Setup
 	helpers.CleanupFixture(db)
-	signupPayload, _ := helpers.SignupFixture(app, 1)
+	helpers.SignupFixture(app, 0)
 
-	t.Run("It should return the JWT and authSuccess data", func(t *testing.T) {
+	t.Run("It should return the JWT", func(t *testing.T) {
 		assert := assert.New(t)
+		signupFakeData := helpers.SignupFakeData[0]
 		data := fiber.Map{
-			"email":    signupPayload.Email,
-			"password": signupPayload.Password,
+			"email":    signupFakeData.Email,
+			"password": signupFakeData.Password,
 		}
 		req := helpers.DoRequest("POST", path, data, "")
 		res, err := app.Test(req, -1)
 
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponseAuth(res)
+		response, err := helpers.GetResponseMap(res)
 		assert.Nil(err)
-		user := response.CurrentUser.User
-		person := response.CurrentUser.Person
-		business := response.CurrentBusiness
-		helpers.CheckJWT(response.Token, user, business.ID, assert)
-		assert.False(business.ID.IsZero())
-		assert.Equal(signupPayload.Domain, business.Domain)
-		assert.Equal(signupPayload.Business, business.Name)
-		assert.Len(response.UserBusinesses, 1)
-		assert.NotNil(person)
-		assert.NotNil(user)
-		assert.Empty(user.Password)
-		assert.Equal(signupPayload.Email, user.Email)
-		assert.Equal(enums.AccountStatusPending, user.AccountStatus)
-		assert.Equal(business.ID, person.BusinessID)
-		assert.Equal(signupPayload.GivenName, person.GivenName)
-		assert.Equal(signupPayload.FamilyName, person.FamilyName)
-		assert.Equal("owner", person.Role)
+		helpers.CheckJWT(response["token"].(string), assert)
 	})
 
 	t.Run("It should catch invalid email or password", func(t *testing.T) {

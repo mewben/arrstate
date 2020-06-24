@@ -26,8 +26,9 @@ func TestCreateLot(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	project := helpers.ProjectFixture(app, authResponse.Token, 1)
+	token1 := helpers.SignupFixture(app, 0)
+	project := helpers.ProjectFixture(app, token1, 0)
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should create lot", func(t *testing.T) {
 		assert := assert.New(t)
@@ -55,15 +56,16 @@ func TestCreateLot(t *testing.T) {
 			"notes":      fakeNotes,
 			"images":     fakeImages,
 		}
-		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+		req := helpers.DoRequest("POST", path, data, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := helpers.GetResponseLot(res)
+		ress, err := helpers.GetResponse(res, "lot")
 		assert.Nil(err)
-		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
+		response := ress.(*models.LotModel)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.CreatedBy)
 		assert.False(response.ID.IsZero())
 		assert.Equal(fakeProjectID, response.ProjectID.Hex())
 		assert.Equal(fakeName, response.Name)
@@ -165,7 +167,7 @@ func TestCreateLot(t *testing.T) {
 		}
 
 		for _, item := range cases {
-			req := helpers.DoRequest("POST", path, item.payload, authResponse.Token)
+			req := helpers.DoRequest("POST", path, item.payload, token1)
 			res, err := app.Test(req, -1)
 
 			// Assert

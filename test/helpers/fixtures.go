@@ -15,20 +15,17 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 )
 
-// fixture variables
-var signup1 *auth.SignupPayload
-var signup2 *auth.SignupPayload
-var project1 fiber.Map
-var project2 fiber.Map
-var lot1 fiber.Map
-var lot2 fiber.Map
-var person1 fiber.Map
-var person2 fiber.Map
+// fixture variables - array not slice so we can directly set index
+
+// SignupFakeData -
+var SignupFakeData [2]*auth.SignupPayload
+var project [2]fiber.Map
+var lot [2]fiber.Map
+var person [2]fiber.Map
 
 func init() {
-
 	// business
-	signup1 = &auth.SignupPayload{
+	SignupFakeData[0] = &auth.SignupPayload{
 		GivenName:  "testgn",
 		FamilyName: "testfn",
 		Business:   "Test Business",
@@ -36,7 +33,7 @@ func init() {
 		Email:      "test@email.com",
 		Password:   "password",
 	}
-	signup2 = &auth.SignupPayload{
+	SignupFakeData[1] = &auth.SignupPayload{
 		GivenName:  "testgn2",
 		FamilyName: "testfn2",
 		Business:   "Test Business2",
@@ -46,12 +43,12 @@ func init() {
 	}
 
 	// people
-	person1 = fiber.Map{
+	person[0] = fiber.Map{
 		"email":     "email1@email.com",
 		"role":      enums.RoleAgent,
 		"givenName": "given",
 	}
-	person2 = fiber.Map{
+	person[1] = fiber.Map{
 		"email":     "email2@email.com",
 		"role":      enums.RoleAgent,
 		"givenName": "given2",
@@ -61,25 +58,25 @@ func init() {
 	address := models.NewAddressModel()
 	address.Country = "PH"
 	address.State = "Bohol"
-	project1 = fiber.Map{
+	project[0] = fiber.Map{
 		"name":    "testproject",
 		"address": address,
 		"area":    100.5,
 		"notes":   "Sample Notes",
 	}
-	project2 = fiber.Map{
+	project[1] = fiber.Map{
 		"name": "testproject2",
 	}
 
 	// lots
-	lot1 = fiber.Map{
+	lot[0] = fiber.Map{
 		"name":       "testlot",
 		"area":       1.5,
 		"price":      100.5,
 		"priceAddon": 114,
 		"notes":      "Sample Notes",
 	}
-	lot2 = fiber.Map{
+	lot[1] = fiber.Map{
 		"name":  "testlot2",
 		"area":  2.5,
 		"price": 12.3,
@@ -112,12 +109,8 @@ func CleanupFixture(db *mongo.Database) {
 }
 
 // SignupFixture -
-func SignupFixture(app *fiber.App, n int) (*auth.SignupPayload, *models.AuthSuccessResponse) {
-	payload := signup1
-	if n == 2 {
-		payload = signup2
-	}
-	req := DoRequest("POST", "/auth/signup", payload, "")
+func SignupFixture(app *fiber.App, n int) string {
+	req := DoRequest("POST", "/auth/signup", SignupFakeData[n], "")
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test signup", err)
@@ -125,42 +118,49 @@ func SignupFixture(app *fiber.App, n int) (*auth.SignupPayload, *models.AuthSucc
 
 	log.Println("resauth 1", res)
 
-	response, err := GetResponseAuth(res)
+	response, err := GetResponseMap(res)
 	if err != nil {
 		log.Fatalln("err get response auth", err)
 	}
 
-	return payload, response
+	return response["token"].(string)
+}
+
+// MeFixture -
+func MeFixture(app *fiber.App, token string) *models.MeModel {
+	req := DoRequest("GET", "/api/me", nil, token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err app test me", err)
+	}
+	response, err := GetResponse(res, "me")
+	if err != nil {
+		log.Fatalln("err get response me", err)
+	}
+
+	return response.(*models.MeModel)
 }
 
 // ProjectFixture -
 func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
-	payload := project1
-	if n == 2 {
-		payload = project2
-	}
 
-	req := DoRequest("POST", "/api/projects", payload, token)
+	req := DoRequest("POST", "/api/projects", project[n], token)
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test project", err)
 	}
 
-	response, err := GetResponseProject(res)
+	response, err := GetResponse(res, "project")
 	if err != nil {
 		log.Fatalln("err get response project", err)
 	}
 
-	return response
+	return response.(*models.ProjectModel)
 }
 
 // LotFixture -
 func LotFixture(app *fiber.App, token string, projectID primitive.ObjectID, n int) *models.LotModel {
-	payload := lot1
-	if n == 2 {
-		payload = lot2
-	}
-
+	payload := lot[n]
 	payload["projectID"] = projectID
 
 	req := DoRequest("POST", "/api/lots", payload, token)
@@ -169,31 +169,27 @@ func LotFixture(app *fiber.App, token string, projectID primitive.ObjectID, n in
 		log.Fatalln("err app test lot", err)
 	}
 
-	response, err := GetResponseLot(res)
+	response, err := GetResponse(res, "lot")
 	if err != nil {
 		log.Fatalln("err get response lot", err)
 	}
 
-	return response
+	return response.(*models.LotModel)
 }
 
 // PersonFixture -
 func PersonFixture(app *fiber.App, token string, n int) *models.PersonModel {
-	payload := person1
-	if n == 2 {
-		payload = person2
-	}
 
-	req := DoRequest("POST", "/api/people", payload, token)
+	req := DoRequest("POST", "/api/people", person[n], token)
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test people", err)
 	}
 
-	response, err := GetResponsePerson(res)
+	response, err := GetResponse(res, "person")
 	if err != nil {
 		log.Fatalln("err get response people", err)
 	}
 
-	return response
+	return response.(*models.PersonModel)
 }

@@ -3,6 +3,7 @@ package auth
 import (
 	"log"
 
+	"github.com/gofiber/fiber"
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/api/businesses"
 	"github.com/mewben/realty278/pkg/api/people"
@@ -22,7 +23,7 @@ type SignupPayload struct {
 }
 
 // Signup -
-func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, error) {
+func (h *Handler) Signup(data *SignupPayload) (fiber.Map, error) {
 	// validate payload
 	if err := validate.Struct(data); err != nil {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
@@ -84,12 +85,11 @@ func (h *Handler) Signup(data *SignupPayload) (*models.AuthSuccessResponse, erro
 		return nil, err
 	}
 
-	response, err := h.AuthResponse(user.ID, business.ID)
+	token, err := user.GenerateJWT(user.ID, business.ID)
 	if err != nil {
-		log.Println("error authresponse", err)
-		// TODO: remove business, user, and people
-		return nil, err
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
-	return response, nil
+	// TODO: signup hooks
+	return fiber.Map{"token": token}, nil
 }

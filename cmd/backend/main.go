@@ -31,6 +31,7 @@ func fn(n interface{}) interface{} {
 }
 
 func main() {
+	log.Println("baccckend")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
 

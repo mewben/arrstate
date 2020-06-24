@@ -25,7 +25,8 @@ func TestCreatePerson(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
+	token1 := helpers.SignupFixture(app, 0)
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should create person inside business", func(t *testing.T) {
 		assert := assert.New(t)
@@ -52,15 +53,16 @@ func TestCreatePerson(t *testing.T) {
 			"commissionPerc": fakeCommissionPerc,
 			"customFields":   fakeCustom,
 		}
-		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+		req := helpers.DoRequest("POST", path, data, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := helpers.GetResponsePerson(res)
+		ress, err := helpers.GetResponse(res, "person")
 		assert.Nil(err)
-		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
+		response := ress.(*models.PersonModel)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.CreatedBy)
 		assert.Nil(response.UserID)
 		assert.False(response.ID.IsZero())
 		assert.Equal(fakeRole, response.Role)
@@ -111,7 +113,7 @@ func TestCreatePerson(t *testing.T) {
 		}
 
 		for _, payload := range payloads {
-			req := helpers.DoRequest("POST", path, payload, authResponse.Token)
+			req := helpers.DoRequest("POST", path, payload, token1)
 			res, err := app.Test(req, -1)
 
 			// Assert
@@ -132,7 +134,7 @@ func TestCreatePerson(t *testing.T) {
 			"role":      enums.RoleOwner,
 			"givenName": "givenname",
 		}
-		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+		req := helpers.DoRequest("POST", path, data, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)

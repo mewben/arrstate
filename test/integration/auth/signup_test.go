@@ -1,18 +1,21 @@
 package auth
 
 import (
+	"context"
 	"log"
 	"os"
 	"testing"
 
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/auth"
 	"github.com/mewben/realty278/pkg/errors"
+	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 )
@@ -27,13 +30,13 @@ func TestSignup(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 
-	t.Run("It should return the JWT and authSuccess data", func(t *testing.T) {
+	t.Run("It should return the JWT", func(t *testing.T) {
 		// Setup -
 		assert := assert.New(t)
 		fakeEmail := "test@email.com"
 		fakeBusiness := "Test Business"
 		fakeDomain := "test-domain"
-		fakeGivenname := "Given Name"
+		fakeGivenName := "Given Name"
 		fakeFamilyName := "Family Name"
 		fakePassword := "passworD"
 		data := fiber.Map{
@@ -41,7 +44,7 @@ func TestSignup(t *testing.T) {
 			"password":   fakePassword,
 			"business":   fakeBusiness,
 			"domain":     fakeDomain,
-			"givenName":  fakeGivenname,
+			"givenName":  fakeGivenName,
 			"familyName": fakeFamilyName,
 		}
 		req := helpers.DoRequest("POST", path, data, "")
@@ -51,25 +54,49 @@ func TestSignup(t *testing.T) {
 		// Assert -
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := helpers.GetResponseAuth(res)
+		response, err := helpers.GetResponseMap(res)
 		assert.Nil(err)
-		user := response.CurrentUser.User
-		person := response.CurrentUser.Person
-		business := response.CurrentBusiness
-		helpers.CheckJWT(response.Token, user, business.ID, assert)
-		assert.False(business.ID.IsZero())
-		assert.Equal(fakeDomain, business.Domain)
-		assert.Equal(fakeBusiness, business.Name)
-		assert.Len(response.UserBusinesses, 1)
-		assert.NotNil(person)
-		assert.NotNil(user)
-		assert.Empty(user.Password)
+		userID, businessID := helpers.CheckJWT(response["token"].(string), assert)
+
+		// get user
+		filter := bson.D{
+			{
+				Key:   "_id",
+				Value: userID,
+			},
+		}
+		user := &models.UserModel{}
+		err = db.Collection(enums.CollUsers).FindOne(context.TODO(), filter).Decode(&user)
+		assert.Nil(err)
 		assert.Equal(fakeEmail, user.Email)
-		assert.Equal(enums.AccountStatusPending, user.AccountStatus)
-		assert.Equal(business.ID, person.BusinessID)
-		assert.Equal(fakeGivenname, person.GivenName)
+		assert.NotEqual(fakePassword, user.Password)
+
+		// get person
+		filter = bson.D{
+			{
+				Key:   "userID",
+				Value: userID,
+			},
+		}
+		person := &models.PersonModel{}
+		err = db.Collection(enums.CollPeople).FindOne(context.TODO(), filter).Decode(&person)
+		assert.Nil(err)
+		assert.Equal(fakeGivenName, person.GivenName)
 		assert.Equal(fakeFamilyName, person.FamilyName)
-		assert.Equal("owner", person.Role)
+		assert.Equal(businessID, person.BusinessID)
+
+		// get business
+		filter = bson.D{
+			{
+				Key:   "_id",
+				Value: businessID,
+			},
+		}
+		business := &models.BusinessModel{}
+		err = db.Collection(enums.CollBusinesses).FindOne(context.TODO(), filter).Decode(&business)
+		assert.Nil(err)
+		assert.Equal(fakeBusiness, business.Name)
+		assert.Equal(fakeDomain, business.Domain)
 	})
 
 	t.Run("It should auto clean inputs", func(t *testing.T) {
@@ -96,10 +123,34 @@ func TestSignup(t *testing.T) {
 		// Assert -
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := helpers.GetResponseAuth(res)
+		response, err := helpers.GetResponseMap(res)
 		assert.Nil(err)
-		assert.Equal(response.CurrentBusiness.Domain, "test-domain-2")
-		assert.Equal(response.CurrentUser.User.Email, "test2@email.com")
+		userID, businessID := helpers.CheckJWT(response["token"].(string), assert)
+
+		// get user
+		filter := bson.D{
+			{
+				Key:   "_id",
+				Value: userID,
+			},
+		}
+		user := &models.UserModel{}
+		err = db.Collection(enums.CollUsers).FindOne(context.TODO(), filter).Decode(&user)
+		assert.Nil(err)
+		assert.Equal("test2@email.com", user.Email)
+
+		// get business
+		filter = bson.D{
+			{
+				Key:   "_id",
+				Value: businessID,
+			},
+		}
+		business := &models.BusinessModel{}
+		err = db.Collection(enums.CollBusinesses).FindOne(context.TODO(), filter).Decode(&business)
+		assert.Nil(err)
+		assert.Equal("test-domain-2", business.Domain)
+
 	})
 
 	t.Run("It should validate inputs", func(t *testing.T) {

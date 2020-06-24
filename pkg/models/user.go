@@ -18,9 +18,39 @@ type UserModel struct {
 	AccountStatus string             `bson:"accountStatus" json:"accountStatus"`
 }
 
+// CurrentUser -
+type CurrentUser struct {
+	User   *UserModel   `json:"user"`
+	Person *PersonModel `json:"person"`
+}
+
+// MeModel -
+type MeModel struct {
+	CurrentUser     *CurrentUser     `json:"currentUser"`
+	CurrentBusiness *BusinessModel   `json:"currentBusiness"`
+	UserBusinesses  []*BusinessModel `json:"userBusinesses"`
+}
+
 // NewUserModel -
 func NewUserModel() *UserModel {
 	return &UserModel{}
+}
+
+// NewCurrentUser -
+func NewCurrentUser(userID, businessID primitive.ObjectID) *CurrentUser {
+	return &CurrentUser{
+		User:   NewUserModel(),
+		Person: NewPersonModel(userID, businessID),
+	}
+}
+
+// NewMeModel -
+func NewMeModel(userID, businessID primitive.ObjectID) *MeModel {
+	return &MeModel{
+		CurrentUser:     NewCurrentUser(userID, businessID),
+		CurrentBusiness: NewBusinessModel(),
+		UserBusinesses:  make([]*BusinessModel, 0),
+	}
 }
 
 // GenerateJWT for signup/signin repsonse

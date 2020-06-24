@@ -25,10 +25,11 @@ func TestEditProject(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	_, authResponse2 := helpers.SignupFixture(app, 2)
-	project := helpers.ProjectFixture(app, authResponse.Token, 1)
-	project2 := helpers.ProjectFixture(app, authResponse2.Token, 2)
+	token1 := helpers.SignupFixture(app, 0)
+	token2 := helpers.SignupFixture(app, 1)
+	project := helpers.ProjectFixture(app, token1, 0)
+	project2 := helpers.ProjectFixture(app, token2, 1)
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should edit project", func(t *testing.T) {
 		assert := assert.New(t)
@@ -47,15 +48,16 @@ func TestEditProject(t *testing.T) {
 			"unit":    updUnit,
 			"notes":   updNotes,
 		}
-		req := helpers.DoRequest("PUT", path, data, authResponse.Token)
+		req := helpers.DoRequest("PUT", path, data, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponseProject(res)
+		ress, err := helpers.GetResponse(res, "project")
 		assert.Nil(err)
-		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
+		response := ress.(*models.ProjectModel)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.CreatedBy)
 		assert.Equal(project.ID, response.ID)
 		assert.Equal(updName, response.Name)
 		assert.EqualValues(updArea, response.Area)
@@ -63,7 +65,7 @@ func TestEditProject(t *testing.T) {
 		assert.Equal(updAddress.Country, response.Address.Country)
 		assert.Equal(updAddress.State, response.Address.State)
 		assert.Equal(updNotes, response.Notes)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.UpdatedBy)
+		assert.Equal(userID, response.UpdatedBy)
 
 	})
 
@@ -100,7 +102,7 @@ func TestEditProject(t *testing.T) {
 		}
 
 		for _, payload := range payloads {
-			req := helpers.DoRequest("PUT", path, payload, authResponse.Token)
+			req := helpers.DoRequest("PUT", path, payload, token1)
 			res, err := app.Test(req, -1)
 
 			// Assert
@@ -121,7 +123,7 @@ func TestEditProject(t *testing.T) {
 				"_id":  project2.ID,
 				"name": "edit another",
 			}
-			req := helpers.DoRequest("PUT", path, data, authResponse.Token)
+			req := helpers.DoRequest("PUT", path, data, token1)
 
 			res, err := app.Test(req, -1)
 			assert.Nil(err)

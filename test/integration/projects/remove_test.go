@@ -24,15 +24,15 @@ func TestRemoveProject(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	_, authResponse2 := helpers.SignupFixture(app, 2)
-	project := helpers.ProjectFixture(app, authResponse.Token, 1)
-	project2 := helpers.ProjectFixture(app, authResponse2.Token, 2)
+	token1 := helpers.SignupFixture(app, 0)
+	token2 := helpers.SignupFixture(app, 1)
+	project := helpers.ProjectFixture(app, token1, 0)
+	project2 := helpers.ProjectFixture(app, token2, 1)
 
 	t.Run("It should remove project", func(t *testing.T) {
 		assert := assert.New(t)
 		projectID := project.ID.Hex()
-		req := helpers.DoRequest("DELETE", path+"/"+projectID, nil, authResponse.Token)
+		req := helpers.DoRequest("DELETE", path+"/"+projectID, nil, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
@@ -47,7 +47,7 @@ func TestRemoveProject(t *testing.T) {
 		t.Run("It should not remove project from other business", func(t *testing.T) {
 			projectID := project2.ID.Hex()
 			assert := assert.New(t)
-			req := helpers.DoRequest("DELETE", path+"/"+projectID, nil, authResponse.Token)
+			req := helpers.DoRequest("DELETE", path+"/"+projectID, nil, token1)
 
 			res, err := app.Test(req, -1)
 			assert.Nil(err)

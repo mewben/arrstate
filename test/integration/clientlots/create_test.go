@@ -10,6 +10,7 @@ import (
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/api/clientlots"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
@@ -26,16 +27,17 @@ func TestCreateClientLot(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	_, authResponse2 := helpers.SignupFixture(app, 2)
-	project1 := helpers.ProjectFixture(app, authResponse.Token, 1)
-	project2 := helpers.ProjectFixture(app, authResponse2.Token, 1)
-	lot1 := helpers.LotFixture(app, authResponse.Token, project1.ID, 1)
-	lot2 := helpers.LotFixture(app, authResponse.Token, project1.ID, 1)
-	lot3 := helpers.LotFixture(app, authResponse2.Token, project2.ID, 1)
-	person1 := helpers.PersonFixture(app, authResponse.Token, 1)
-	person2 := helpers.PersonFixture(app, authResponse.Token, 2)
-	person3 := helpers.PersonFixture(app, authResponse2.Token, 2)
+	token1 := helpers.SignupFixture(app, 0)
+	token2 := helpers.SignupFixture(app, 1)
+	project1 := helpers.ProjectFixture(app, token1, 0)
+	project2 := helpers.ProjectFixture(app, token2, 0)
+	lot1 := helpers.LotFixture(app, token1, project1.ID, 0)
+	lot2 := helpers.LotFixture(app, token1, project1.ID, 0)
+	lot3 := helpers.LotFixture(app, token2, project2.ID, 0)
+	person1 := helpers.PersonFixture(app, token1, 0)
+	person2 := helpers.PersonFixture(app, token1, 1)
+	person3 := helpers.PersonFixture(app, token2, 1)
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should attach a person to a lot", func(t *testing.T) {
 		assert := assert.New(t)
@@ -52,17 +54,18 @@ func TestCreateClientLot(t *testing.T) {
 			"monthly":     fakeMonthly,
 			"date":        fakeDate,
 		}
-		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+		req := helpers.DoRequest("POST", path, data, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		resp, err := helpers.GetResponseClientLot(res)
+		ress, err := helpers.GetResponse(res, "clientlot")
 		assert.Nil(err)
+		resp := ress.(*clientlots.SingleResponse)
 		response := resp.ClientLot
 		updatedLot := resp.Lot
-		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.CreatedBy)
 		assert.False(response.ID.IsZero())
 		assert.Equal(lot1.ID, response.LotID)
 		assert.Equal(person1.ID, response.ClientID)
@@ -406,7 +409,7 @@ func TestCreateClientLot(t *testing.T) {
 		}
 
 		for _, item := range cases {
-			req := helpers.DoRequest("POST", path, item.payload, authResponse.Token)
+			req := helpers.DoRequest("POST", path, item.payload, token1)
 			res, err := app.Test(req, -1)
 
 			// Assert

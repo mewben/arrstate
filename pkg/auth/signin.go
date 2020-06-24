@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/gofiber/fiber"
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
@@ -17,7 +18,7 @@ type SigninPayload struct {
 }
 
 // Signin -
-func (h *Handler) Signin(data *SigninPayload) (*models.AuthSuccessResponse, error) {
+func (h *Handler) Signin(data *SigninPayload) (fiber.Map, error) {
 	log.Println("Signin")
 	// validate payload
 	if err := validate.Struct(data); err != nil {
@@ -56,13 +57,12 @@ func (h *Handler) Signin(data *SigninPayload) (*models.AuthSuccessResponse, erro
 	}
 	person := personFound.(*models.PersonModel)
 
-	response, err := h.AuthResponse(user.ID, person.BusinessID)
+	token, err := user.GenerateJWT(user.ID, person.BusinessID)
 	if err != nil {
-		log.Println("error authresponse", err)
-		// TODO: remove business, user, and people
-		return nil, err
+		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect, err)
 	}
+
 	// TODO: signin hooks
 
-	return response, nil
+	return fiber.Map{"token": token}, nil
 }

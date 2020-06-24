@@ -11,6 +11,7 @@ import (
 	"github.com/mewben/realty278/pkg/api/lots"
 	"github.com/mewben/realty278/pkg/api/people"
 	"github.com/mewben/realty278/pkg/api/projects"
+	"github.com/mewben/realty278/pkg/api/users"
 )
 
 // Routes -
@@ -26,6 +27,7 @@ func Routes(app *fiber.App, db *mongo.Database) {
 		AuthScheme:    "Bearer",
 	}))
 
+	users.Routes(g, db)
 	projects.Routes(g, db)
 	lots.Routes(g, db)
 	people.Routes(g, db)

@@ -26,10 +26,11 @@ func TestEditPerson(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	_, authResponse2 := helpers.SignupFixture(app, 2)
-	helpers.PersonFixture(app, authResponse.Token, 1) // person1
-	person2 := helpers.PersonFixture(app, authResponse2.Token, 1)
+	token1 := helpers.SignupFixture(app, 0)
+	token2 := helpers.SignupFixture(app, 1)
+	person1 := helpers.PersonFixture(app, token1, 0) // person1
+	person2 := helpers.PersonFixture(app, token2, 1)
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should edit person", func(t *testing.T) {
 		assert := assert.New(t)
@@ -48,7 +49,7 @@ func TestEditPerson(t *testing.T) {
 			"color":   "red",
 		}
 		data := fiber.Map{
-			"_id":            authResponse.CurrentUser.Person.ID,
+			"_id":            person1.ID,
 			"email":          updEmail,
 			"role":           updRole,
 			"givenName":      updGivenName,
@@ -58,15 +59,16 @@ func TestEditPerson(t *testing.T) {
 			"commissionPerc": updCommissionPerc,
 			"customFields":   updCustom,
 		}
-		req := helpers.DoRequest("PUT", path, data, authResponse.Token)
+		req := helpers.DoRequest("PUT", path, data, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponsePerson(res)
+		ress, err := helpers.GetResponse(res, "person")
 		assert.Nil(err)
-		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.UpdatedBy)
+		response := ress.(*models.PersonModel)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.UpdatedBy)
 		assert.Nil(response.UserID)
 		assert.False(response.ID.IsZero())
 		assert.Equal(updRole, response.Role)
@@ -93,61 +95,67 @@ func TestEditPerson(t *testing.T) {
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":  authResponse.CurrentUser.Person.ID,
+					"_id":  person1.ID,
 					"role": "",
+					"i":    1,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":       authResponse.CurrentUser.Person.ID,
+					"_id":       person1.ID,
 					"role":      enums.RoleAgent,
 					"givenName": "",
+					"i":         2,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":       authResponse.CurrentUser.Person.ID,
+					"_id":       person1.ID,
 					"role":      enums.RoleAgent,
 					"givenName": "givenName",
 					"email":     "",
+					"i":         3,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":       authResponse.CurrentUser.Person.ID,
+					"_id":       person1.ID,
 					"role":      enums.RoleAgent,
 					"givenName": "givenName",
 					"email":     "notavalidemail",
+					"i":         4,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":            authResponse.CurrentUser.Person.ID,
+					"_id":            person1.ID,
 					"role":           enums.RoleAgent,
 					"givenName":      "givenName",
 					"email":          "sample@email.com",
 					"commissionPerc": -34,
+					"i":              5,
 				},
 			},
 			{
 				errors.ErrUpdate,
 				fiber.Map{
 					// duplicate person for this business
-					"_id":            authResponse.CurrentUser.Person.ID,
+					"_id":            person1.ID,
 					"role":           enums.RoleAgent,
 					"givenName":      "givenNameerr",
-					"email":          "email1@email.com",
+					"email":          "test@email.com",
 					"commissionPerc": 34,
+					"i":              6,
 				},
 			},
 		}
 
 		for _, item := range cases {
-			req := helpers.DoRequest("PUT", path, item.payload, authResponse.Token)
+			req := helpers.DoRequest("PUT", path, item.payload, token1)
 			res, err := app.Test(req, -1)
 
 			// Assert
@@ -168,7 +176,7 @@ func TestEditPerson(t *testing.T) {
 			"email":     "eddfe@email.com",
 			"givenName": "given",
 		}
-		req := helpers.DoRequest("PUT", path, data, authResponse2.Token)
+		req := helpers.DoRequest("PUT", path, data, token2)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
@@ -188,7 +196,7 @@ func TestEditPerson(t *testing.T) {
 				"email":     "eddfe@email.com",
 				"givenName": "given",
 			}
-			req := helpers.DoRequest("PUT", path, data, authResponse.Token)
+			req := helpers.DoRequest("PUT", path, data, token1)
 
 			res, err := app.Test(req, -1)
 			assert.Nil(err)

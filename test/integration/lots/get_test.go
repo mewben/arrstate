@@ -9,6 +9,7 @@ import (
 
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/api/lots"
 	"github.com/mewben/realty278/test/helpers"
 )
 
@@ -22,23 +23,24 @@ func TestGetLots(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	_, authResponse2 := helpers.SignupFixture(app, 2)
-	project := helpers.ProjectFixture(app, authResponse.Token, 1)
-	project2 := helpers.ProjectFixture(app, authResponse2.Token, 2)
-	helpers.LotFixture(app, authResponse.Token, project.ID, 1)
-	helpers.LotFixture(app, authResponse.Token, project.ID, 2)
-	helpers.LotFixture(app, authResponse2.Token, project2.ID, 2)
+	token1 := helpers.SignupFixture(app, 0)
+	token2 := helpers.SignupFixture(app, 1)
+	project := helpers.ProjectFixture(app, token1, 0)
+	project2 := helpers.ProjectFixture(app, token2, 1)
+	helpers.LotFixture(app, token1, project.ID, 0)
+	helpers.LotFixture(app, token1, project.ID, 1)
+	helpers.LotFixture(app, token2, project2.ID, 1)
 
 	t.Run("It should get the list of lots", func(t *testing.T) {
 		assert := assert.New(t)
-		req := helpers.DoRequest("GET", path+"/"+project.ID.Hex(), nil, authResponse.Token)
+		req := helpers.DoRequest("GET", path+"/"+project.ID.Hex(), nil, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponseLots(res)
+		ress, err := helpers.GetResponse(res, "lots")
 		assert.Nil(err)
+		response := ress.(*lots.ResponseList)
 		assert.Len(response.Data, 2)
 		assert.Equal(response.Total, 2)
 	})

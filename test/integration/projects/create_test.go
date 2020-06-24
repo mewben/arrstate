@@ -27,7 +27,8 @@ func TestCreateProject(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
+	token := helpers.SignupFixture(app, 0)
+	userID, businessID := helpers.CheckJWT(token, assert.New(t))
 
 	t.Run("It should create project", func(t *testing.T) {
 		assert := assert.New(t)
@@ -53,15 +54,16 @@ func TestCreateProject(t *testing.T) {
 			"notes":   fakeNotes,
 			"images":  fakeImages,
 		}
-		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+		req := helpers.DoRequest("POST", path, data, token)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := helpers.GetResponseProject(res)
+		ress, err := helpers.GetResponse(res, "project")
 		assert.Nil(err)
-		assert.Equal(authResponse.CurrentBusiness.ID, response.BusinessID)
-		assert.Equal(authResponse.CurrentUser.User.ID, response.CreatedBy)
+		response := ress.(*models.ProjectModel)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.CreatedBy)
 		assert.False(response.ID.IsZero())
 		assert.Equal(fakeProject, response.Name)
 		assert.EqualValues(fakeArea, response.Area)
@@ -81,13 +83,14 @@ func TestCreateProject(t *testing.T) {
 		data := fiber.Map{
 			"name": "Project Name 2",
 		}
-		req := helpers.DoRequest("POST", path, data, authResponse.Token)
+		req := helpers.DoRequest("POST", path, data, token)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(201, res.StatusCode, res)
-		response, err := helpers.GetResponseProject(res)
+		ress, err := helpers.GetResponse(res, "project")
 		assert.Nil(err)
+		response := ress.(*models.ProjectModel)
 		assert.EqualValues(0, response.Area)
 		assert.Equal(enums.DefaultUnitArea, response.Unit)
 	})
@@ -114,7 +117,7 @@ func TestCreateProject(t *testing.T) {
 		}
 
 		for _, payload := range payloads {
-			req := helpers.DoRequest("POST", path, payload, authResponse.Token)
+			req := helpers.DoRequest("POST", path, payload, token)
 			res, err := app.Test(req, -1)
 
 			// Assert

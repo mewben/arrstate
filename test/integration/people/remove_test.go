@@ -23,15 +23,15 @@ func TestRemovePerson(t *testing.T) {
 
 	// setup
 	helpers.CleanupFixture(db)
-	_, authResponse := helpers.SignupFixture(app, 1)
-	_, authResponse2 := helpers.SignupFixture(app, 2)
-	person1 := helpers.PersonFixture(app, authResponse.Token, 1)
-	person2 := helpers.PersonFixture(app, authResponse2.Token, 2)
+	token1 := helpers.SignupFixture(app, 0)
+	token2 := helpers.SignupFixture(app, 1)
+	person1 := helpers.PersonFixture(app, token1, 0)
+	person2 := helpers.PersonFixture(app, token2, 1)
 
 	t.Run("It should remove person", func(t *testing.T) {
 		assert := assert.New(t)
 		personID := person1.ID.Hex()
-		req := helpers.DoRequest("DELETE", path+"/"+personID, nil, authResponse.Token)
+		req := helpers.DoRequest("DELETE", path+"/"+personID, nil, token1)
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
@@ -45,7 +45,7 @@ func TestRemovePerson(t *testing.T) {
 		t.Run("It should not remove from other business", func(t *testing.T) {
 			assert := assert.New(t)
 			personID := person2.ID.Hex()
-			req := helpers.DoRequest("DELETE", path+"/"+personID, nil, authResponse.Token)
+			req := helpers.DoRequest("DELETE", path+"/"+personID, nil, token1)
 
 			res, err := app.Test(req, -1)
 			assert.Nil(err)

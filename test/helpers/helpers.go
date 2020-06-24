@@ -10,7 +10,6 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/pkg/models"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -41,20 +40,31 @@ func DoRequest(method, path string, body interface{}, token string) *http.Reques
 	return req
 }
 
-// CheckJWT -
-func CheckJWT(token string, user *models.UserModel, businessID primitive.ObjectID, assert *assert.Assertions) {
+// CheckJWT and returns userID and businessID parsed from the token
+func CheckJWT(token string, assert *assert.Assertions) (userID, businessID primitive.ObjectID) {
 	assert.NotEmpty(token)
 	tokenSigningKey := viper.GetString("TOKEN_SIGNING_KEY")
 	assert.NotEmpty(tokenSigningKey)
+
 	t, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		return []byte(tokenSigningKey), nil
 	})
 	assert.Nil(err, t)
+
+	// assert claims
 	claims := t.Claims.(jwt.MapClaims)
 	exp := time.Now().Add(time.Hour * viper.GetDuration("TOKEN_EXPIRY")).Unix()
 	claimsExpiry := claims["exp"].(float64)
 	diff := float64(exp) - claimsExpiry
-	assert.Equal(user.ID.Hex(), claims["sub"])
 	assert.LessOrEqual(diff, float64(1))
-	assert.Equal(businessID.Hex(), claims["businessID"])
+	// userID
+	userID, err = primitive.ObjectIDFromHex(claims["sub"].(string))
+	assert.Nil(err)
+	assert.False(userID.IsZero())
+
+	// businessID
+	businessID, err = primitive.ObjectIDFromHex(claims["businessID"].(string))
+	assert.Nil(err)
+	assert.False(businessID.IsZero())
+	return
 }

@@ -19,7 +19,7 @@ import (
 func GetResponseError(res *http.Response) (*errors.HTTPError, error) {
 	responseError := &errors.HTTPError{}
 	if res.StatusCode == 500 {
-		msg, err := GetResponseMap(res)
+		msg, err := GetResponseString(res)
 		log.Println("- err 500:", msg)
 		responseError.Message = msg
 		return responseError, err
@@ -33,26 +33,14 @@ func GetResponseError(res *http.Response) (*errors.HTTPError, error) {
 	return responseError, err
 }
 
-// GetResponseMap general error
-func GetResponseMap(res *http.Response) (string, error) {
+// GetResponseString -
+func GetResponseString(res *http.Response) (string, error) {
 	body, err := ioutil.ReadAll(res.Body)
 	return string(body), err
-
 }
 
-// GetResponseAuth success signup/signin
-func GetResponseAuth(res *http.Response) (*models.AuthSuccessResponse, error) {
-	response := &models.AuthSuccessResponse{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
-}
-
-// GetResponseDelete success
-func GetResponseDelete(res *http.Response) (fiber.Map, error) {
+// GetResponseMap general error
+func GetResponseMap(res *http.Response) (fiber.Map, error) {
 	response := fiber.Map{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -60,77 +48,42 @@ func GetResponseDelete(res *http.Response) (fiber.Map, error) {
 	}
 	err = json.Unmarshal(body, &response)
 	return response, err
+
 }
 
-// GetResponseProject success
-func GetResponseProject(res *http.Response) (*models.ProjectModel, error) {
-	response := &models.ProjectModel{}
+// GetResponse success
+func GetResponse(res *http.Response, entity string) (interface{}, error) {
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
-	err = json.Unmarshal(body, &response)
-	return response, err
-}
 
-// GetResponseProjects success
-func GetResponseProjects(res *http.Response) (*projects.ResponseList, error) {
-	response := &projects.ResponseList{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
+	var response interface{}
+	if entity == "me" {
+		response = &models.MeModel{}
+	} else if entity == "project" {
+		response = &models.ProjectModel{}
+	} else if entity == "projects" {
+		response = &projects.ResponseList{}
+	} else if entity == "lot" {
+		response = &models.LotModel{}
+	} else if entity == "lots" {
+		response = &lots.ResponseList{}
+	} else if entity == "person" {
+		response = &models.PersonModel{}
+	} else if entity == "people" {
+		response = &people.ResponseList{}
+	} else if entity == "clientlot" {
+		response = &clientlots.SingleResponse{}
 	}
+
 	err = json.Unmarshal(body, &response)
 	return response, err
 }
 
-// GetResponseLot success
-func GetResponseLot(res *http.Response) (*models.LotModel, error) {
-	response := &models.LotModel{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
-}
-
-// GetResponseLots success
-func GetResponseLots(res *http.Response) (*lots.ResponseList, error) {
-	response := &lots.ResponseList{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
-}
-
-// GetResponsePerson success
-func GetResponsePerson(res *http.Response) (*models.PersonModel, error) {
-	response := &models.PersonModel{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
-}
-
-// GetResponsePersons success
-func GetResponsePersons(res *http.Response) (*people.ResponseList, error) {
-	response := &people.ResponseList{}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &response)
-	return response, err
-}
-
-// GetResponseClientLot success
-func GetResponseClientLot(res *http.Response) (*clientlots.SingleResponse, error) {
-	response := &clientlots.SingleResponse{}
+// GetResponseDelete success
+func GetResponseDelete(res *http.Response) (fiber.Map, error) {
+	response := fiber.Map{}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err

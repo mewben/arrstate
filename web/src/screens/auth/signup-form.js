@@ -1,8 +1,12 @@
 import React from "react"
+import { navigate } from "gatsby"
 import * as Yup from "yup"
+import { useMutation } from "react-query"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
 import { t } from "@Utils/t"
+import { requestApi, extractError } from "@Utils"
+import { useAuth } from "@Providers"
 
 const req = t("errors.required")
 
@@ -17,14 +21,30 @@ const validationSchema = Yup.object().shape({
     .required(t("errors.required")),
 })
 
+// ------- SignupForm -------- //
 const SignupForm = () => {
-  const onSubmit = data => {
-    console.log("data", data)
+  const { authSignIn } = useAuth()
+  const [mutate, { reset, error, isError }] = useMutation(formData => {
+    return requestApi("/auth/signup", "POST", {
+      data: formData,
+      noToken: true,
+    })
+  })
+
+  const onSubmit = async formData => {
+    reset()
+    const res = await mutate(formData)
+    if (res) {
+      console.log("ree", res.data)
+      authSignIn(res.data.token)
+      navigate("/", { replace: true })
+    }
   }
 
   return (
     <div>
       <Form onSubmit={onSubmit} validationSchema={validationSchema}>
+        {isError && <div>{extractError(error)}</div>}
         <TextField
           name="givenName"
           label={t("givenName")}

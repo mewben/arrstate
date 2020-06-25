@@ -13,7 +13,7 @@ const TextField = ({ name, type = "text", label, ...props }) => {
       <div>
         <input type={type} name={name} ref={register} {...props} />
       </div>
-      {!!errorMsg && <div>{errorMsg}</div>}
+      {!!errorMsg && <div style={{ color: "red" }}>{errorMsg}</div>}
     </div>
   )
 }

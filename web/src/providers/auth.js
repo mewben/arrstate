@@ -27,8 +27,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   const authSignout = () => {
-    authToken.clear()
-    setIsAuthenticated(!authToken.isExpired)
+    if (authToken) {
+      authToken.clear()
+      setIsAuthenticated(!authToken.isExpired)
+    }
   }
 
   return (

@@ -15,7 +15,8 @@
       "@Providers": ["./src/providers"],
       "@Providers/*": ["./src/providers/*"],
       "@Wrappers": ["./src/wrappers"],
-      "@Wrappers/*": ["./src/wrappers/*"]
+      "@Wrappers/*": ["./src/wrappers/*"],
+      "@Hooks": ["./src/hooks"]
     },
     "allowSyntheticDefaultImports": true
   },

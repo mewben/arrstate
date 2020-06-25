@@ -1,9 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-const Button = ({ children, type = "button", isDisabled }) => {
+const Button = ({ children, type = "button", isDisabled, ...props }) => {
   return (
-    <button type={type} disabled={isDisabled}>
+    <button type={type} disabled={isDisabled} {...props}>
       {children}
     </button>
   )

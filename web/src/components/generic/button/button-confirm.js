@@ -25,12 +25,7 @@ const ButtonConfirm = ({
   }
 
   return (
-    <Button
-      onClick={onClick}
-      type="button"
-      isDisabled={isDisabled}
-      onBlur={onBlur}
-    >
+    <Button onClick={onClick} isDisabled={isDisabled} onBlur={onBlur}>
       {isOn ? confirmComponent : children}
     </Button>
   )

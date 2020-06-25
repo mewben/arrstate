@@ -1,17 +1,15 @@
 import React from "react"
 
-import ProjectForm from "./form"
+import { Portal, Button } from "@Components/generic"
+import { ProjectForm } from "@Components/popups/project"
 
 const Header = ({ project }) => {
-  const [isOpenForm, setIsOpenForm] = React.useState(false)
-
   return (
     <div>
       <h1>{project.name}</h1>
-      <button onClick={() => setIsOpenForm(true)}>Edit Project</button>
-      {isOpenForm && (
-        <ProjectForm onClose={() => setIsOpenForm(false)} model={project} />
-      )}
+      <Portal openByClickOn={<Button>Edit Project</Button>}>
+        <ProjectForm model={project} />
+      </Portal>
     </div>
   )
 }

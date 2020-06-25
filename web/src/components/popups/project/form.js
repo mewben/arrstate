@@ -4,7 +4,7 @@ import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
-import { ButtonConfirm } from "@Components/generic/button"
+import { Button, ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
 import { requestApi, extractError } from "@Utils"
 
@@ -75,6 +75,7 @@ const ProjectForm = ({ model, onClose }) => {
         <TextField name="area" type="number" step="0.0001" min="0" />
         {isEdit && <ButtonConfirm onConfirm={onDelete} />}
         <SubmitButton>Submit</SubmitButton>
+        <Button onClick={onClose}>Close</Button>
       </Form>
     </div>
   )

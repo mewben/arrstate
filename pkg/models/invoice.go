@@ -15,10 +15,10 @@ type InvoiceModel struct {
 	Status        string              `bson:"status" json:"status"`
 	Discount      []DiscountModel     `bson:"discount" json:"discount"`
 	Tax           []TaxModel          `bson:"tax" json:"tax"`
-	SubTotal      float32             `bson:"subTotal" json:"subTotal" validate:"number,min=0'`
-	TotalDiscount float32             `bson:"totalDiscount" json:"totalDiscount" validate:"number,min=0'`
-	TotalTax      float32             `bson:"totalTax" json:"totalTax" validate:"number,min=0'`
-	Total         float32             `bson:"total" json:"total" validate:"required,number,min=0'`
+	SubTotal      float64             `bson:"subTotal" json:"subTotal" validate:"number,min=0'`
+	TotalDiscount float64             `bson:"totalDiscount" json:"totalDiscount" validate:"number,min=0'`
+	TotalTax      float64             `bson:"totalTax" json:"totalTax" validate:"number,min=0'`
+	Total         float64             `bson:"total" json:"total" validate:"required,number,min=0'`
 	IssueDate     *time.Time          `bson:"issueDate" json:"issueDate"`
 	DueDate       *time.Time          `bson:"dueDate" json:"dueDate"`
 	PaidAt        *time.Time          `bson:"paidAt" json:"paidAt"`

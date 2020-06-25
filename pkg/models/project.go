@@ -9,7 +9,7 @@ import (
 type ProjectModel struct {
 	Name    string       `bson:"name" json:"name" validate:"required"`
 	Address AddressModel `bson:"address" json:"address"`
-	Area    float32      `bson:"area" json:"area" validate:"number,min=0"`
+	Area    float64      `bson:"area" json:"area" validate:"number,min=0"`
 	Unit    string       `bson:"unit" json:"unit"`
 	// Extended
 	BaseModel     `bson:",inline"`
@@ -17,7 +17,7 @@ type ProjectModel struct {
 	MetaModel     `bson:",inline"`
 	// Computed
 	LotIDs    []primitive.ObjectID `bson:"lotIDs" json:"lotIDs"`
-	LotsArea  float32              `bson:"lotsArea" json:"lotsArea"`
+	LotsArea  float64              `bson:"lotsArea" json:"lotsArea"`
 	ClientIDs []primitive.ObjectID `bson:"clientIDs" json:"clientIDs"`
 	AgentIDs  []primitive.ObjectID `bson:"agentIDs" json:"agentIDs"`
 }

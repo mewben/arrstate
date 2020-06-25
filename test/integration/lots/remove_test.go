@@ -28,8 +28,8 @@ func TestRemoveLot(t *testing.T) {
 	token2 := helpers.SignupFixture(app, 1)
 	project := helpers.ProjectFixture(app, token1, 0)
 	project2 := helpers.ProjectFixture(app, token2, 1)
-	lot1 := helpers.LotFixture(app, token1, project.ID, 0)
-	lot2 := helpers.LotFixture(app, token2, project2.ID, 1)
+	lot1 := helpers.LotFixture(app, token1, &project.ID, 0)
+	lot2 := helpers.LotFixture(app, token2, &project2.ID, 1)
 
 	t.Run("It should remove lot", func(t *testing.T) {
 		lotID := lot1.ID.Hex()

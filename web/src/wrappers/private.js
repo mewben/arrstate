@@ -5,6 +5,7 @@ import { Loading } from "@Components/generic"
 import { useAuth } from "@Providers"
 import { useMe } from "@Hooks"
 import { extractError } from "@Utils"
+import { LayoutWrapper } from "@Wrappers"
 
 export const PrivateWrapper = ({ children }) => {
   const { isLoading, isAuthenticated } = useAuth()
@@ -16,7 +17,11 @@ export const PrivateWrapper = ({ children }) => {
     return <Redirect to="/signin" noThrow />
   }
 
-  return <MeWrapper>{children}</MeWrapper>
+  return (
+    <MeWrapper>
+      <LayoutWrapper>{children}</LayoutWrapper>
+    </MeWrapper>
+  )
 }
 
 const MeWrapper = ({ children }) => {

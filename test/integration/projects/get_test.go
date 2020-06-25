@@ -61,7 +61,7 @@ func TestGetProjects(t *testing.T) {
 	})
 
 	t.Run("Permissions", func(t *testing.T) {
-		t.Run("It should not get the project outside his business", func(t *testing.T) {
+		t.Run("It should not get the project outside the business", func(t *testing.T) {
 			assert := assert.New(t)
 			req := helpers.DoRequest("GET", path+"/"+project3.ID.Hex(), nil, token1)
 

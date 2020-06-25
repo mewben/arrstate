@@ -29,8 +29,8 @@ func TestEditLot(t *testing.T) {
 	token2 := helpers.SignupFixture(app, 1)
 	project := helpers.ProjectFixture(app, token1, 0)
 	project2 := helpers.ProjectFixture(app, token2, 1)
-	lot1 := helpers.LotFixture(app, token1, project.ID, 0)
-	lot2 := helpers.LotFixture(app, token2, project2.ID, 1)
+	lot1 := helpers.LotFixture(app, token1, &project.ID, 0)
+	lot2 := helpers.LotFixture(app, token2, &project2.ID, 1)
 	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should edit lot", func(t *testing.T) {
@@ -59,7 +59,7 @@ func TestEditLot(t *testing.T) {
 		assert.Equal(businessID, response.BusinessID)
 		assert.Equal(userID, response.CreatedBy)
 		assert.Equal(lot1.ID, response.ID)
-		assert.Equal(project.ID, response.ProjectID)
+		assert.Equal(project.ID, *response.ProjectID)
 		assert.Equal(updName, response.Name)
 		assert.EqualValues(updArea, response.Area)
 		assert.EqualValues(updPrice, response.Price)
@@ -145,7 +145,7 @@ func TestEditLot(t *testing.T) {
 		assert.Nil(err)
 		response := ress.(*models.LotModel)
 		assert.Equal(lot1.ID, response.ID)
-		assert.Equal(project.ID, response.ProjectID)
+		assert.Equal(project.ID, *response.ProjectID)
 		assert.Equal(updName, response.Name)
 	})
 

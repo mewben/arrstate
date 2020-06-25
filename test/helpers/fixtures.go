@@ -159,7 +159,7 @@ func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 }
 
 // LotFixture -
-func LotFixture(app *fiber.App, token string, projectID primitive.ObjectID, n int) *models.LotModel {
+func LotFixture(app *fiber.App, token string, projectID *primitive.ObjectID, n int) *models.LotModel {
 	payload := lot[n]
 	payload["projectID"] = projectID
 

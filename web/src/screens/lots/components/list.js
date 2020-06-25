@@ -1,24 +1,15 @@
 import React from "react"
 
-import { useLots } from "@Hooks"
-import { Empty, Portal, Button } from "@Components/generic"
+import { Empty } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
-import { LotForm } from "@Components/popups/lot"
 import { map } from "@Utils/lodash"
-import { ListItem } from "./components/lots"
+import { useLots } from "@Hooks"
+import ListItem from "./list-item"
 
-const ProjectLots = ({ project }) => {
-  const renderAdd = () => {
-    return (
-      <Portal openByClickOn={<Button>Add Lot</Button>}>
-        <LotForm project={project} />
-      </Portal>
-    )
-  }
+const List = () => {
   const renderContent = content => {
     return (
       <div>
-        <div>{renderAdd()}</div>
         {map(content?.list, item => {
           return <ListItem key={item._id} item={item} />
         })}
@@ -30,7 +21,6 @@ const ProjectLots = ({ project }) => {
     return (
       <div>
         <Empty />
-        {renderAdd()}
       </div>
     )
   }
@@ -38,11 +28,10 @@ const ProjectLots = ({ project }) => {
   return (
     <InfiniteScroll
       getMethod={useLots}
-      getMethodParams={{ projectID: project._id }}
       contentRenderer={renderContent}
       emptyRenderer={renderEmpty}
     />
   )
 }
 
-export default ProjectLots
+export default List

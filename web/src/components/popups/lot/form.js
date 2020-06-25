@@ -12,32 +12,43 @@ const req = t("errors.required")
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(req),
   area: Yup.number().min(0),
+  price: Yup.number().min(0),
+  priceAddon: Yup.number().min(0),
+  projectID: Yup.string(),
 })
 
-// ------ ProjectForm ------- //
-const ProjectForm = ({ model, onClose }) => {
+// ------ LotForm ------- //
+const LotForm = ({ model, project, onClose }) => {
   const isEdit = model?._id
   const [save, { reset, error, isError }] = useMutation(
     formData => {
-      return requestApi("/api/projects", isEdit ? "PUT" : "POST", {
+      return requestApi("/api/lots", isEdit ? "PUT" : "POST", {
         data: formData,
       })
     },
     {
-      onSuccess: ({ data }) =>
-        queryCache.setQueryData(["project", data._id], data),
+      onSuccess: ({ data }) => queryCache.setQueryData(["lot", data._id]),
     }
   )
 
   // TODO: handle error globally
   const [remove] = useMutation(() => {
-    return requestApi(`/api/projects/${model._id}`, "DELETE")
+    return requestApi(`/api/lots/${model._id}`, "DELETE")
   })
 
   const onSubmit = async formData => {
+    console.log("onSubmit", formData)
     reset()
     if (formData.area) {
       formData.area = +formData.area // convert to number
+    }
+
+    if (formData.price) {
+      formData.price = +formData.price
+    }
+
+    if (formData.priceAddon) {
+      formData.priceAddon = +formData.priceAddon
     }
 
     const res = await save({
@@ -45,7 +56,7 @@ const ProjectForm = ({ model, onClose }) => {
       ...formData,
     })
     if (res) {
-      isEdit ? onClose() : navigate(`/projects/${res?.data?._id}/lots`)
+      isEdit ? onClose() : navigate(`/lots/${res?.data?._id}`)
     }
   }
 
@@ -53,13 +64,15 @@ const ProjectForm = ({ model, onClose }) => {
     const res = await remove()
     console.log("res delete", res)
     if (res) {
-      navigate("/projects", { replace: true })
+      navigate("/lots", { replace: true })
     }
   }
 
   const initialModel = {
     name: "",
     area: 0,
+    price: 0,
+    priceAddon: 0,
     ...model,
   }
 
@@ -71,11 +84,26 @@ const ProjectForm = ({ model, onClose }) => {
         model={initialModel}
       >
         {isError && <div>{extractError(error)}</div>}
-        <TextField name="name" label={t("project.name")} autoFocus />
+        <TextField name="projectName" label={t("project.name")} readOnly />
+        <TextField name="name" label={t("lot.name")} autoFocus />
         <TextField
           name="area"
           type="number"
-          label={t("project.area")}
+          label={t("lot.area")}
+          step="0.0001"
+          min="0"
+        />
+        <TextField
+          name="price"
+          type="number"
+          label={t("lot.price")}
+          step="0.0001"
+          min="0"
+        />
+        <TextField
+          name="priceAddon"
+          type="number"
+          label={t("lot.priceAddon")}
           step="0.0001"
           min="0"
         />
@@ -87,4 +115,4 @@ const ProjectForm = ({ model, onClose }) => {
   )
 }
 
-export default ProjectForm
+export default LotForm

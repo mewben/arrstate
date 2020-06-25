@@ -80,6 +80,54 @@ func TestCreateLot(t *testing.T) {
 		assert.Equal(fakeImages[0].Description, response.Images[0].Description)
 	})
 
+	t.Run("It should create lot without projectID", func(t *testing.T) {
+		assert := assert.New(t)
+		fakeName := "Fake lot2"
+		fakeArea := 53.5
+		fakePrice := 100.5
+		fakePriceAddon := 10.1
+		fakeNotes := "Sample Notes"
+		fakeImages := []*models.ImageModel{
+			{
+				ID:          primitive.NewObjectID(),
+				Src:         "src",
+				Alt:         "alt",
+				Description: "description",
+			},
+		}
+
+		data := fiber.Map{
+			"name":       fakeName,
+			"area":       fakeArea,
+			"price":      fakePrice,
+			"priceAddon": fakePriceAddon,
+			"notes":      fakeNotes,
+			"images":     fakeImages,
+		}
+		req := helpers.DoRequest("POST", path, data, token1)
+
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(201, res.StatusCode, res)
+		ress, err := helpers.GetResponse(res, "lot")
+		assert.Nil(err)
+		response := ress.(*models.LotModel)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(userID, response.CreatedBy)
+		assert.False(response.ID.IsZero())
+		assert.Nil(response.ProjectID)
+		assert.Equal(fakeName, response.Name)
+		assert.EqualValues(fakeArea, response.Area)
+		assert.EqualValues(fakePrice, response.Price)
+		assert.EqualValues(fakePriceAddon, response.PriceAddon)
+		assert.Equal(fakeNotes, response.Notes)
+		assert.Len(response.Images, 1)
+		assert.Equal(fakeImages[0].ID, response.Images[0].ID)
+		assert.Equal(fakeImages[0].Src, response.Images[0].Src)
+		assert.Equal(fakeImages[0].Alt, response.Images[0].Alt)
+		assert.Equal(fakeImages[0].Description, response.Images[0].Description)
+	})
+
 	t.Run("It should validate lot inputs", func(t *testing.T) {
 		assert := assert.New(t)
 		projectID := project.ID.Hex()

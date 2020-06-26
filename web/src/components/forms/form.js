@@ -2,10 +2,11 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useForm, FormContext } from "react-hook-form"
 
-const Form = ({ model, validationSchema, onSubmit, children }) => {
+const Form = ({ model, validationSchema, onSubmit, children, ...props }) => {
   const methods = useForm({
     defaultValues: model,
     validationSchema,
+    ...props,
   })
 
   return (

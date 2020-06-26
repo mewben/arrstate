@@ -4,9 +4,10 @@ import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
+import { Error } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
-import { requestApi, extractError } from "@Utils"
+import { requestApi } from "@Utils"
 
 const req = t("errors.required")
 const validationSchema = Yup.object().shape({
@@ -17,7 +18,7 @@ const validationSchema = Yup.object().shape({
 // ------ ProjectForm ------- //
 const ProjectForm = ({ model, onClose }) => {
   const isEdit = model?._id
-  const [save, { reset, error, isError }] = useMutation(
+  const [save, { reset, error }] = useMutation(
     formData => {
       return requestApi("/api/projects", isEdit ? "PUT" : "POST", {
         data: formData,
@@ -36,9 +37,7 @@ const ProjectForm = ({ model, onClose }) => {
 
   const onSubmit = async formData => {
     reset()
-    if (formData.area) {
-      formData.area = +formData.area // convert to number
-    }
+    formData.area = +formData.area // convert to number
 
     const res = await save({
       ...model,
@@ -70,7 +69,7 @@ const ProjectForm = ({ model, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        {isError && <div>{extractError(error)}</div>}
+        <Error error={error} />
         <TextField name="name" label={t("project.name")} autoFocus />
         <TextField
           name="area"

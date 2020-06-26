@@ -2,9 +2,8 @@ import React from "react"
 import { Link } from "gatsby"
 import { Router } from "@reach/router"
 
-import { Loading } from "@Components/generic"
+import { Loading, Error } from "@Components/generic"
 import { useProject } from "@Hooks"
-import { extractError } from "@Utils"
 import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
 import ProjectLots from "./project-lots"
@@ -14,7 +13,7 @@ const ProjectSingle = ({ projectID }) => {
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
-    <div>{extractError(error)}</div>
+    <Error error={error} />
   ) : (
     <div>
       <Link to="/projects">Back to List of Projects</Link>

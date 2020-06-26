@@ -1,12 +1,16 @@
 import React from "react"
+import PropTypes from "prop-types"
 import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
 
-import { Form, TextField, SubmitButton } from "@Components/forms"
+import { Form, TextField, SelectField, SubmitButton } from "@Components/forms"
+import { Error, Loading } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
-import { requestApi, extractError } from "@Utils"
+import { useProjectOptions } from "@Hooks"
+import { get, map } from "@Utils/lodash"
+import { requestApi } from "@Utils"
 
 const req = t("errors.required")
 const validationSchema = Yup.object().shape({
@@ -14,13 +18,13 @@ const validationSchema = Yup.object().shape({
   area: Yup.number().min(0),
   price: Yup.number().min(0),
   priceAddon: Yup.number().min(0),
-  projectID: Yup.string(),
+  // projectID: Yup.mixed().notOneOf([null, undefined], req),
 })
 
 // ------ LotForm ------- //
-const LotForm = ({ model, project, onClose }) => {
+const LotForm = ({ model, projectID, onClose }) => {
   const isEdit = model?._id
-  const [save, { reset, error, isError }] = useMutation(
+  const [save, { reset, error }] = useMutation(
     formData => {
       return requestApi("/api/lots", isEdit ? "PUT" : "POST", {
         data: formData,
@@ -37,19 +41,13 @@ const LotForm = ({ model, project, onClose }) => {
   })
 
   const onSubmit = async formData => {
-    console.log("onSubmit", formData)
     reset()
-    if (formData.area) {
-      formData.area = +formData.area // convert to number
-    }
 
-    if (formData.price) {
-      formData.price = +formData.price
-    }
-
-    if (formData.priceAddon) {
-      formData.priceAddon = +formData.priceAddon
-    }
+    // prepare formData
+    formData.area = +formData.area // convert to number
+    formData.price = +formData.price
+    formData.priceAddon = +formData.priceAddon
+    formData.projectID = get(formData, "projectID.value", null)
 
     const res = await save({
       ...model,
@@ -68,12 +66,26 @@ const LotForm = ({ model, project, onClose }) => {
     }
   }
 
+  const {
+    status,
+    options: projectOptions,
+    selectedOption: projectOption,
+    error: projectError,
+  } = useProjectOptions(get(model, "projectID", projectID))
+
+  if (status === "loading") {
+    return <Loading />
+  } else if (status === "error") {
+    return <Error error={projectError} />
+  }
+
   const initialModel = {
     name: "",
     area: 0,
     price: 0,
     priceAddon: 0,
     ...model,
+    projectID: projectOption,
   }
 
   return (
@@ -83,9 +95,13 @@ const LotForm = ({ model, project, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        {isError && <div>{extractError(error)}</div>}
-        <TextField name="projectName" label={t("project.name")} readOnly />
+        <Error error={error} />
         <TextField name="name" label={t("lot.name")} autoFocus />
+        <SelectField
+          name="projectID"
+          label={t("lot.project")}
+          options={projectOptions}
+        />
         <TextField
           name="area"
           type="number"
@@ -113,6 +129,11 @@ const LotForm = ({ model, project, onClose }) => {
       </Form>
     </div>
   )
+}
+
+LotForm.propTypes = {
+  model: PropTypes.object,
+  projectID: PropTypes.string,
 }
 
 export default LotForm

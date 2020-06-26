@@ -2,9 +2,8 @@ import React from "react"
 import { Link } from "gatsby"
 import { Router } from "@reach/router"
 
-import { Loading } from "@Components/generic"
+import { Loading, Error } from "@Components/generic"
 import { useLot } from "@Hooks"
-import { extractError } from "@Utils"
 import { Header } from "./components"
 import LotOverview from "./lot-overview"
 
@@ -13,7 +12,7 @@ const LotSingle = ({ lotID }) => {
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
-    <div>{extractError(error)}</div>
+    <Error error={error} />
   ) : (
     <div>
       <Link to="/projects">Back to List of Lots</Link>

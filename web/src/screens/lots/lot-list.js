@@ -10,7 +10,7 @@ const LotList = () => {
     <div>
       <div>
         <h1>Lots</h1>
-        <Portal openByClickOn={<Button>New Lot</Button>}>
+        <Portal openByClickOn={<Button>New Lot</Button>} defaultOpen>
           <LotForm />
         </Portal>
       </div>

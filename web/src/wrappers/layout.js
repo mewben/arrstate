@@ -39,7 +39,11 @@ const MainMenu = () => {
   return (
     <nav>
       {map(mainmenu, menu => {
-        return <Link to={menu.path}>{menu.label}</Link>
+        return (
+          <Link key={menu.path} to={menu.path}>
+            {menu.label}
+          </Link>
+        )
       })}
     </nav>
   )

@@ -1,10 +1,9 @@
 import React from "react"
 import { Redirect } from "@reach/router"
 
-import { Loading } from "@Components/generic"
+import { Loading, Error } from "@Components/generic"
 import { useAuth } from "@Providers"
 import { useMe } from "@Hooks"
-import { extractError } from "@Utils"
 import { LayoutWrapper } from "@Wrappers"
 
 export const PrivateWrapper = ({ children }) => {
@@ -34,7 +33,7 @@ const MeWrapper = ({ children }) => {
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
-    <div>{extractError(error)}</div>
+    <Error error={error} />
   ) : (
     children
   )

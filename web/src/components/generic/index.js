@@ -1,4 +1,5 @@
 export { Button } from "./button/index"
 export { Loading } from "./loading/index"
 export { Empty } from "./empty/index"
+export { Error } from "./error/index"
 export { Portal } from "./portal/index"

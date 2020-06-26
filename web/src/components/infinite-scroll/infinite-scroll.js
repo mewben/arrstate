@@ -1,8 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import { Loading } from "@Components/generic"
-import { extractError } from "@Utils"
+import { Loading, Error } from "@Components/generic"
 
 // TODO: make this into an infinity scroll
 const InfiniteScroll = ({
@@ -18,7 +17,7 @@ const InfiniteScroll = ({
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
-    <div>{extractError(error)}</div>
+    <Error error={error} />
   ) : !data?.total ? (
     emptyRenderer()
   ) : (

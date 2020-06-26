@@ -7,7 +7,7 @@ const Header = ({ lot }) => {
   return (
     <div>
       <h1>{lot.name}</h1>
-      <Portal openByClickOn={<Button>Edit Project</Button>}>
+      <Portal openByClickOn={<Button>Edit Lot</Button>}>
         <LotForm model={lot} />
       </Portal>
     </div>

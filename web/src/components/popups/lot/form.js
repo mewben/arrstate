@@ -31,7 +31,7 @@ const LotForm = ({ model, projectID, onClose }) => {
       })
     },
     {
-      onSuccess: ({ data }) => queryCache.setQueryData(["lot", data._id]),
+      onSuccess: ({ data }) => queryCache.setQueryData(["lot", data._id], data),
     }
   )
 
@@ -48,6 +48,8 @@ const LotForm = ({ model, projectID, onClose }) => {
     formData.price = +formData.price
     formData.priceAddon = +formData.priceAddon
     formData.projectID = get(formData, "projectID.value", null)
+
+    console.log("formData", formData)
 
     const res = await save({
       ...model,

@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Empty, Portal, Button } from "@Components/generic"
+import { Empty, Portal, Button, Table, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { map } from "@Utils/lodash"
 import { useProjects } from "@Hooks"
@@ -18,11 +18,18 @@ const List = () => {
 
   const renderContent = content => {
     return (
-      <div>
-        <div>{renderAdd()}</div>
-        {map(content?.list, item => {
-          return <ListItem key={item._id} item={item} />
-        })}
+      <div className="p-4">
+        <Table>
+          <thead>
+            <Th>Project Name</Th>
+            <Th align="right">Area</Th>
+          </thead>
+          <tbody className="bg-white">
+            {map(content?.list, (item, index) => {
+              return <ListItem key={item._id} item={item} index={index} />
+            })}
+          </tbody>
+        </Table>
       </div>
     )
   }

@@ -24,7 +24,6 @@ export const LayoutWrapper = ({ children }) => {
         <div className="flex">
           <MainSidebar open={isMenuOpen} setIsOpen={setIsMenuOpen} />
           <main className="flex flex-col flex-1 overflow-hidden">
-            <button onClick={() => setIsMenuOpen(true)}>open</button>
             {children}
           </main>
         </div>

@@ -9,6 +9,7 @@ import { Error, Loading } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
 import { useProjectOptions } from "@Hooks"
+import { DrawerHeader } from "@Wrappers/layout"
 import { get, map } from "@Utils/lodash"
 import { requestApi } from "@Utils"
 
@@ -91,43 +92,59 @@ const LotForm = ({ model, projectID, onClose }) => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-screen sm:w-96">
+      <DrawerHeader title={isEdit ? model.name : "New Lot"} onClose={onClose} />
       <Form
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         model={initialModel}
       >
         <Error error={error} />
-        <TextField name="name" label={t("lot.name")} autoFocus />
-        <SelectField
-          name="projectID"
-          label={t("lot.project")}
-          options={projectOptions}
-        />
-        <TextField
-          name="area"
-          type="number"
-          label={t("lot.area")}
-          step="0.0001"
-          min="0"
-        />
-        <TextField
-          name="price"
-          type="number"
-          label={t("lot.price")}
-          step="0.0001"
-          min="0"
-        />
-        <TextField
-          name="priceAddon"
-          type="number"
-          label={t("lot.priceAddon")}
-          step="0.0001"
-          min="0"
-        />
-        {isEdit && <ButtonConfirm onConfirm={onDelete} />}
-        <SubmitButton>Submit</SubmitButton>
-        <Button onClick={onClose}>Close</Button>
+        <div className="grid grid-cols-6 gap-6 p-6">
+          <div className="col-span-6">
+            <TextField name="name" label={t("lot.name")} autoFocus />
+          </div>
+          <div className="col-span-6">
+            <SelectField
+              name="projectID"
+              label={t("lot.project")}
+              options={projectOptions}
+            />
+          </div>
+          <div className="col-span-6">
+            <TextField
+              name="area"
+              type="number"
+              label={t("lot.area")}
+              step="0.0001"
+              min="0"
+            />
+          </div>
+          <div className="col-span-6">
+            <TextField
+              name="price"
+              type="number"
+              label={t("lot.price")}
+              step="0.0001"
+              min="0"
+            />
+          </div>
+          <div className="col-span-6">
+            <TextField
+              name="priceAddon"
+              type="number"
+              label={t("lot.priceAddon")}
+              step="0.0001"
+              min="0"
+            />
+          </div>
+          <div className="col-span-6">
+            <div className="flex items-center justify-between">
+              <SubmitButton>Submit</SubmitButton>
+              {isEdit && <ButtonConfirm onConfirm={onDelete} />}
+            </div>
+          </div>
+        </div>
       </Form>
     </div>
   )

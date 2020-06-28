@@ -74,8 +74,8 @@ const ProjectForm = ({ model, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
+        <Error error={error} />
         <div className="grid grid-cols-6 gap-6 p-6">
-          <Error error={error} />
           <div className="col-span-6">
             <TextField name="name" label={t("project.name")} autoFocus />
           </div>

@@ -15,7 +15,7 @@ const LotSingle = ({ lotID }) => {
     <Error error={error} />
   ) : (
     <div>
-      <Link to="/projects">Back to List of Lots</Link>
+      <Link to="/lots">Back to List of Lots</Link>
       <Header lot={data} />
       <Router>
         <LotOverview path="/" lot={data} />

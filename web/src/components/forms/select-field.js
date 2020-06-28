@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { useFormContext, Controller } from "react-hook-form"
+import { Controller } from "react-hook-form"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import { FieldLabel } from "./field"
+import { FieldLabel, FieldError, InputWrapper } from "./field"
 
 import { get, random } from "@Utils/lodash"
 
@@ -15,36 +15,38 @@ const SelectField = ({
   multiple,
   ...props
 }) => {
-  const { errors } = useFormContext()
-  const errorMsg = get(errors, [name, "message"])
-
   return (
     <div>
       <FieldLabel label={label} />
-      <div>
-        <Controller
-          as={
-            <Autocomplete
-              id={`${name}.${random(0, 1000)}`}
-              options={options}
-              multiple={multiple}
-              disableClearable={disableClearable}
-              selectOnFocus={selectOnFocus}
-              size="small"
-              getOptionLabel={option => option.label}
-              renderInput={params => (
-                <div ref={params.InputProps.ref}>
-                  <input type="text" {...params.inputProps} />
-                </div>
-              )}
-            />
-          }
-          onChange={([, option]) => option}
-          name={name}
-          defaultValue={multiple ? [] : null}
-        />
-      </div>
-      {!!errorMsg && <div style={{ color: "red" }}>{errorMsg}</div>}
+      <Controller
+        as={
+          <Autocomplete
+            id={`${name}.${random(0, 1000)}`}
+            options={options}
+            multiple={multiple}
+            disableClearable={disableClearable}
+            selectOnFocus={selectOnFocus}
+            size="small"
+            getOptionLabel={option => option.label}
+            renderInput={params => (
+              <div
+                className="mt-1 flex relative rounded-md shadow-sm"
+                ref={params.InputProps.ref}
+              >
+                <input
+                  type="text"
+                  {...params.inputProps}
+                  className="form-input relative block w-full bg-transparent focus:z-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                />
+              </div>
+            )}
+          />
+        }
+        onChange={([, option]) => option}
+        name={name}
+        defaultValue={multiple ? [] : null}
+      />
+      <FieldError name={name} />
     </div>
   )
 }

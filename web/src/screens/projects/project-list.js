@@ -2,7 +2,6 @@ import React from "react"
 
 import { Portal, Button } from "@Components/generic"
 import { ProjectForm } from "@Components/popups/project"
-
 import { AppBar } from "@Wrappers/layout"
 import { List } from "./components"
 

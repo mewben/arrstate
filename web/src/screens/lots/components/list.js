@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Empty, Portal, Button } from "@Components/generic"
+import { Empty, Portal, Button, Table, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { map } from "@Utils/lodash"
 import { useLots } from "@Hooks"
@@ -9,6 +9,8 @@ import ListItem from "./list-item"
 
 const List = ({ projectID }) => {
   const renderAdd = () => {
+    if (!projectID) return null
+
     return (
       <Portal openByClickOn={<Button>Add Lot</Button>}>
         <LotForm projectID={projectID} />
@@ -18,11 +20,21 @@ const List = ({ projectID }) => {
 
   const renderContent = content => {
     return (
-      <div>
+      <div className="p-4">
         <div>{renderAdd()}</div>
-        {map(content?.list, item => {
-          return <ListItem key={item._id} item={item} />
-        })}
+        <Table>
+          <thead>
+            <Th>Lot No.</Th>
+            <Th align="right">Area</Th>
+            <Th align="right">Price</Th>
+            <Th align="right">Price Addon</Th>
+          </thead>
+          <tbody className="bg-white">
+            {map(content?.list, item => {
+              return <ListItem key={item._id} item={item} />
+            })}
+          </tbody>
+        </Table>
       </div>
     )
   }

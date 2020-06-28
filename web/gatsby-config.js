@@ -45,5 +45,7 @@ module.exports = {
         "@Hooks": path.join(__dirname, "src/hooks"),
       },
     },
+    `gatsby-plugin-material-ui`,
+    `gatsby-plugin-postcss`,
   ],
 }

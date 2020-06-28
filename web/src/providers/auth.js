@@ -27,10 +27,11 @@ export const AuthProvider = ({ children }) => {
   }
 
   const authSignout = () => {
-    if (authToken) {
-      authToken.clear()
-      setIsAuthenticated(!authToken.isExpired)
+    if (!authToken) {
+      authToken = new AuthToken()
     }
+    authToken.clear()
+    setIsAuthenticated(!authToken.isExpired)
   }
 
   return (

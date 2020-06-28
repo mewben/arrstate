@@ -1,5 +1,5 @@
 import React from "react"
-import { navigate } from "gatsby"
+import { Link, navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation } from "react-query"
 
@@ -39,21 +39,39 @@ const SigninForm = () => {
   }
 
   return (
-    <div>
+    <div className="mt-6 w-full max-w-sm">
       <Form
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         model={{ email: "melvinsoldia@gmail.com", password: "123456" }}
       >
         <Error error={error} />
-        <TextField
-          name="email"
-          label={t("email")}
-          autoComplete="off"
-          autoFocus
-        />
-        <TextField name="password" label={t("password")} type="password" />
-        <SubmitButton>{t("signin")}</SubmitButton>
+        <div class="grid grid-cols-6 gap-6">
+          <div className="col-span-6">
+            <TextField
+              name="email"
+              label={t("email")}
+              autoComplete="off"
+              autoFocus
+            />
+          </div>
+          <div className="col-span-6">
+            <TextField name="password" label={t("password")} type="password" />
+          </div>
+          <div className="col-span-6">
+            <SubmitButton size="xl" fullWidth>
+              {t("Sign in")}
+            </SubmitButton>
+            <div className="text-xs text-cool-gray-500 mt-2">
+              <Link
+                to="/forgot-password"
+                className="font-medium hover:text-gray-900"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+          </div>
+        </div>
       </Form>
     </div>
   )

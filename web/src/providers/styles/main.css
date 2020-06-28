@@ -3,3 +3,12 @@
 @tailwind components;
 
 @tailwind utilities;
+
+/***** CUSTOM *****/
+form .fieldset {
+  margin-top: 1.5rem;
+}
+
+form .fieldset:first-child {
+  margin-top: 0;
+}

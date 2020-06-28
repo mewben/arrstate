@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useFormContext, Controller } from "react-hook-form"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import FormLabel from "./form-label"
+import { FieldLabel } from "./field"
 
 import { get, random } from "@Utils/lodash"
 
@@ -20,7 +20,7 @@ const SelectField = ({
 
   return (
     <div>
-      <FormLabel label={label} />
+      <FieldLabel label={label} />
       <div>
         <Controller
           as={

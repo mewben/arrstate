@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "dokku": {
+      "postdeploy": "cd web && npm install && npm run build"
+    }
+  }
+}

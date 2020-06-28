@@ -22,7 +22,10 @@ const Button = ({
       : "px-2.5 py-1.5 text-xs"
   return (
     <span
-      class={cx("inline-flex rounded-md shadow-sm", fullWidth ? "w-full" : "")}
+      className={cx(
+        "inline-flex rounded-md shadow-sm",
+        fullWidth ? "w-full" : ""
+      )}
     >
       <button
         type={type}

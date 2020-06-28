@@ -21,8 +21,10 @@ const List = () => {
       <div className="p-4">
         <Table>
           <thead>
-            <Th>Project Name</Th>
-            <Th align="right">Area</Th>
+            <tr>
+              <Th>Project Name</Th>
+              <Th align="right">Area</Th>
+            </tr>
           </thead>
           <tbody className="bg-white">
             {map(content?.list, (item, index) => {

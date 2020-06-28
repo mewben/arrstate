@@ -24,10 +24,12 @@ const List = ({ projectID }) => {
         <div>{renderAdd()}</div>
         <Table>
           <thead>
-            <Th>Lot No.</Th>
-            <Th align="right">Area</Th>
-            <Th align="right">Price</Th>
-            <Th align="right">Price Addon</Th>
+            <tr>
+              <Th>Lot No.</Th>
+              <Th align="right">Area</Th>
+              <Th align="right">Price</Th>
+              <Th align="right">Price Addon</Th>
+            </tr>
           </thead>
           <tbody className="bg-white">
             {map(content?.list, item => {

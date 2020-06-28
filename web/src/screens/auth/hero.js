@@ -9,7 +9,10 @@ const Hero = () => {
         alt=""
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <img className="h-20 w-20" src={`../../logo.png`} />
+        <img
+          className="h-20 w-20 p-2 bg-white rounded-md bg-opacity-25"
+          src={`../../logo.png`}
+        />
       </div>
     </div>
   )

@@ -13,8 +13,6 @@ const ProjectsPage = () => {
         <ProjectList path="/projects" />
         <ProjectSingle path="/projects/:projectID/*" />
       </Router>
-      <hr />
-      <button onClick={() => authSignout()}>Signout</button>
     </PrivateWrapper>
   )
 }

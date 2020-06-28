@@ -26,8 +26,10 @@ const ProjectForm = ({ model, onClose }) => {
       })
     },
     {
-      onSuccess: ({ data }) =>
-        queryCache.setQueryData(["project", data._id], data),
+      onSuccess: ({ data }) => {
+        queryCache.invalidateQueries("projects", { exact: true })
+        queryCache.setQueryData(["project", data._id], data)
+      },
     }
   )
 

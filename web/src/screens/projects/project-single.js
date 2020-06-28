@@ -4,6 +4,7 @@ import { Router } from "@reach/router"
 
 import { Loading, Error } from "@Components/generic"
 import { useProject } from "@Hooks"
+import { AppBar } from "@Wrappers/layout"
 import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
 import ProjectLots from "./project-lots"
@@ -15,15 +16,17 @@ const ProjectSingle = ({ projectID }) => {
   ) : status === "error" ? (
     <Error error={error} />
   ) : (
-    <div>
-      <Link to="/projects">Back to List of Projects</Link>
-      <Header project={data} />
-      <SubMenu projectID={projectID} />
+    <>
+      <AppBar title={data.name}>
+        {/* <Link to="/projects">Back to List of Projects</Link>
+        <Header project={data} />
+        <SubMenu projectID={projectID} /> */}
+      </AppBar>
       <Router>
         <ProjectOverview path="/" project={data} />
         <ProjectLots path="lots" project={data} />
       </Router>
-    </div>
+    </>
   )
 }
 

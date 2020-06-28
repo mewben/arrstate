@@ -23,7 +23,7 @@ export const useProject = projectID => {
 
 // returns projectOptions and finds the selected option by projectID
 export const useProjectOptions = projectID => {
-  const { status, data, error } = useProjects()
+  const { status, data, error, isFetching } = useProjects()
 
   const { options, selectedOption } = React.useMemo(() => {
     let selectedOption = null
@@ -42,10 +42,10 @@ export const useProjectOptions = projectID => {
       options: sortBy(options, "label"),
       selectedOption,
     }
-  }, [data?.list])
+  }, [projectID, data?.list])
 
   return {
-    status,
+    status: isFetching ? "loading" : status,
     options,
     selectedOption,
     error,

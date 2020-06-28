@@ -7,6 +7,7 @@ import { Form, TextField, SubmitButton } from "@Components/forms"
 import { Error } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
+import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
 
 const req = t("errors.required")
@@ -63,24 +64,37 @@ const ProjectForm = ({ model, onClose }) => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-screen sm:w-96">
+      <DrawerHeader
+        title={isEdit ? model.name : "New Project"}
+        onClose={onClose}
+      />
       <Form
         onSubmit={onSubmit}
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <Error error={error} />
-        <TextField name="name" label={t("project.name")} autoFocus />
-        <TextField
-          name="area"
-          type="number"
-          label={t("project.area")}
-          step="0.0001"
-          min="0"
-        />
-        {isEdit && <ButtonConfirm onConfirm={onDelete} />}
-        <SubmitButton>Submit</SubmitButton>
-        <Button onClick={onClose}>Close</Button>
+        <div className="grid grid-cols-6 gap-6 p-6">
+          <Error error={error} />
+          <div className="col-span-6">
+            <TextField name="name" label={t("project.name")} autoFocus />
+          </div>
+          <div className="col-span-6">
+            <TextField
+              name="area"
+              type="number"
+              label={t("project.area")}
+              step="0.0001"
+              min="0"
+            />
+          </div>
+          <div className="col-span-6">
+            <div className="flex items-center justify-between">
+              <SubmitButton>Submit</SubmitButton>
+              {isEdit && <ButtonConfirm onConfirm={onDelete} />}
+            </div>
+          </div>
+        </div>
       </Form>
     </div>
   )

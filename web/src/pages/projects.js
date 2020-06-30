@@ -2,14 +2,12 @@ import React from "react"
 import { Router } from "@reach/router"
 
 import { PrivateWrapper } from "@Wrappers"
-import { useAuth } from "@Providers"
 import { ProjectList, ProjectSingle } from "@Screens/projects"
 
 const ProjectsPage = () => {
-  const { authSignout } = useAuth()
   return (
     <PrivateWrapper>
-      <Router>
+      <Router className="flex flex-col flex-1 overflow-hidden">
         <ProjectList path="/projects" />
         <ProjectSingle path="/projects/:projectID/*" />
       </Router>

@@ -24,10 +24,7 @@ export const PrivateWrapper = ({ children }) => {
 }
 
 const MeWrapper = ({ children }) => {
-  const { status, data, error } = useMe()
-  console.log("status", status)
-  console.log("data", data)
-  console.log("error", error)
+  const { status, error } = useMe()
   // TODO: redirect to /welcome if not yet onboarded
 
   return status === "loading" ? (

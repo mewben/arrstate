@@ -4,23 +4,58 @@ import { Router } from "@reach/router"
 
 import { Loading, Error } from "@Components/generic"
 import { useLot } from "@Hooks"
+import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
+import { map } from "@Utils/lodash"
 import { Header } from "./components"
 import LotOverview from "./lot-overview"
 
 const LotSingle = ({ lotID }) => {
   const { status, data, error } = useLot(lotID)
+  const submenu = [
+    {
+      label: "Overview",
+      path: `/lots/${lotID}`,
+    },
+    {
+      label: "Invoices",
+      path: `/lots/${lotID}/invoices`,
+    },
+    {
+      label: "Receipts",
+      path: `/lots/${lotID}/receipts`,
+    },
+  ]
+
+  const renderSubmenu = () => {
+    return (
+      <SubMenu>
+        {map(submenu, (item, i) => {
+          return (
+            <SubMenuItem key={i} to={item.path}>
+              {item.label}
+            </SubMenuItem>
+          )
+        })}
+      </SubMenu>
+    )
+  }
+
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
     <Error error={error} />
   ) : (
-    <div>
-      <Link to="/lots">Back to List of Lots</Link>
-      <Header lot={data} />
-      <Router>
+    <>
+      <AppBar
+        title={data.name}
+        backTo={data?.projectID ? `/projects/${data?.projectID}/lots` : "/lots"}
+        submenu={renderSubmenu()}
+      ></AppBar>
+      {/* <Header lot={data} /> */}
+      <Router className="flex-1 overflow-y-scroll pb-28">
         <LotOverview path="/" lot={data} />
       </Router>
-    </div>
+    </>
   )
 }
 

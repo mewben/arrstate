@@ -21,7 +21,7 @@ export const LayoutWrapper = ({ children }) => {
         }}
       />
       <div className="app-root h-screen w-screen overflow-hidden">
-        <div className="flex">
+        <div className="flex h-full">
           <MainSidebar open={isMenuOpen} setIsOpen={setIsMenuOpen} />
           <main className="flex flex-col flex-1 overflow-hidden">
             {children}

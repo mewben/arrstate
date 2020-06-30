@@ -7,7 +7,7 @@ import { LotList, LotSingle } from "@Screens/lots"
 const LotsPage = () => {
   return (
     <PrivateWrapper>
-      <Router>
+      <Router className="flex flex-col flex-1 overflow-hidden">
         <LotList path="/lots" />
         <LotSingle path="/lots/:lotID/*" />
       </Router>

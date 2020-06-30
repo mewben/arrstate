@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
@@ -18,7 +19,13 @@ func (h *Handler) Get() (*ResponseList, error) {
 			Value: h.Business.ID,
 		},
 	}
-	cursor, err := h.DB.Find(h.Ctx, enums.CollPeople, filter)
+	opts := options.Find().SetSort(bson.D{
+		{
+			Key:   "createdAt",
+			Value: -1,
+		},
+	})
+	cursor, err := h.DB.Find(h.Ctx, enums.CollPeople, filter, opts)
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFound)
 	}

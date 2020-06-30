@@ -21,9 +21,7 @@ const InfiniteScroll = ({
   ) : !data?.total ? (
     emptyRenderer()
   ) : (
-    <div className="h-screen overflow-y-scroll pb-28">
-      {contentRenderer(data)}
-    </div>
+    <div className="overflow-y-scroll pb-28">{contentRenderer(data)}</div>
   )
 }
 

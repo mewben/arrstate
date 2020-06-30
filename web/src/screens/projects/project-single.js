@@ -4,27 +4,62 @@ import { Router } from "@reach/router"
 
 import { Loading, Error } from "@Components/generic"
 import { useProject } from "@Hooks"
-import { AppBar } from "@Wrappers/layout"
-import { Header, SubMenu } from "./components"
+import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
+import { map } from "@Utils/lodash"
+// import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
 import ProjectLots from "./project-lots"
 
 const ProjectSingle = ({ projectID }) => {
   const { status, data, error } = useProject(projectID)
+
+  const submenu = [
+    {
+      label: "Overview",
+      path: `/projects/${projectID}`,
+    },
+    {
+      label: "Lots",
+      path: `/projects/${projectID}/lots`,
+    },
+    {
+      label: "Clients",
+      path: `/projects/${projectID}/clients`,
+    },
+    {
+      label: "Agents",
+      path: `/projects/${projectID}/agents`,
+    },
+  ]
+
+  const renderSubmenu = () => {
+    return (
+      <SubMenu>
+        {map(submenu, (item, i) => {
+          return (
+            <SubMenuItem key={i} to={item.path}>
+              {item.label}
+            </SubMenuItem>
+          )
+        })}
+      </SubMenu>
+    )
+  }
+
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
     <Error error={error} />
   ) : (
     <>
-      <AppBar title={data.name}>
+      <AppBar title={data.name} backTo="/projects" submenu={renderSubmenu()}>
         {/* <Link to="/projects">Back to List of Projects</Link>
         <Header project={data} />
         <SubMenu projectID={projectID} /> */}
       </AppBar>
-      <Router>
+      <Router className="flex-1 overflow-y-scroll pb-28">
         <ProjectOverview path="/" project={data} />
-        <ProjectLots path="lots" project={data} />
+        <ProjectLots path="/lots" project={data} />
       </Router>
     </>
   )

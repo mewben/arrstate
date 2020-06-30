@@ -21,7 +21,7 @@ import (
 var SignupFakeData [2]*auth.SignupPayload
 var project [2]fiber.Map
 var lot [2]fiber.Map
-var person [2]fiber.Map
+var person [3]fiber.Map
 
 func init() {
 	// business
@@ -45,13 +45,18 @@ func init() {
 	// people
 	person[0] = fiber.Map{
 		"email":     "email1@email.com",
-		"role":      enums.RoleAgent,
+		"role":      []string{enums.RoleAgent},
 		"givenName": "given",
 	}
 	person[1] = fiber.Map{
 		"email":     "email2@email.com",
-		"role":      enums.RoleAgent,
+		"role":      []string{enums.RoleClient},
 		"givenName": "given2",
+	}
+	person[2] = fiber.Map{
+		"email":     "email3@email.com",
+		"role":      []string{enums.RoleClient},
+		"givenName": "given3",
 	}
 
 	// projects

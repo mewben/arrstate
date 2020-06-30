@@ -2,9 +2,10 @@ import React from "react"
 import { Link } from "gatsby"
 import { Router } from "@reach/router"
 
-import { Loading, Error } from "@Components/generic"
+import { Loading, Error, Portal, Button } from "@Components/generic"
 import { useProject } from "@Hooks"
 import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
+import { ProjectForm } from "@Components/popups/project"
 import { map } from "@Utils/lodash"
 // import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
@@ -53,9 +54,9 @@ const ProjectSingle = ({ projectID }) => {
   ) : (
     <>
       <AppBar title={data.name} backTo="/projects" submenu={renderSubmenu()}>
-        {/* <Link to="/projects">Back to List of Projects</Link>
-        <Header project={data} />
-        <SubMenu projectID={projectID} /> */}
+        <Portal openByClickOn={<Button>Edit Project</Button>}>
+          <ProjectForm model={data} />
+        </Portal>
       </AppBar>
       <Router className="flex-1 overflow-y-scroll pb-28">
         <ProjectOverview path="/" project={data} />

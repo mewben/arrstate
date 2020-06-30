@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/mewben/realty278/internal/enums"
@@ -12,13 +13,8 @@ import (
 )
 
 // Get people
-func (h *Handler) Get() (*ResponseList, error) {
-	filter := bson.D{
-		{
-			Key:   "businessID",
-			Value: h.Business.ID,
-		},
-	}
+func (h *Handler) Get(role []string) (*ResponseList, error) {
+	filter := prepareFilter(role, h.Business.ID)
 	opts := options.Find().SetSort(bson.D{
 		{
 			Key:   "createdAt",
@@ -41,4 +37,27 @@ func (h *Handler) Get() (*ResponseList, error) {
 	}
 
 	return response, nil
+}
+
+func prepareFilter(roles []string, businessID primitive.ObjectID) bson.D {
+	filter := bson.D{
+		{
+			Key:   "businessID",
+			Value: businessID,
+		},
+	}
+
+	if len(roles) > 0 {
+		filter = append(filter, bson.E{
+			Key: "role",
+			Value: bson.D{
+				{
+					Key:   "$in",
+					Value: roles,
+				},
+			},
+		})
+	}
+
+	return filter
 }

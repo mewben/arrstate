@@ -75,6 +75,18 @@ func Indexes(db *mongo.Database) {
 			},
 			Options: options.Index().SetUnique(true),
 		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "role",
+					Value: 1,
+				},
+				{
+					Key:   "businessID",
+					Value: 1,
+				},
+			},
+		},
 	})
 	if err != nil {
 		log.Fatalln("error people index", err)

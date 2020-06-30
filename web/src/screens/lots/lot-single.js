@@ -2,9 +2,10 @@ import React from "react"
 import { Link } from "gatsby"
 import { Router } from "@reach/router"
 
-import { Loading, Error } from "@Components/generic"
+import { Loading, Error, Portal, Button } from "@Components/generic"
 import { useLot } from "@Hooks"
 import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
+import { LotForm } from "@Components/popups/lot"
 import { map } from "@Utils/lodash"
 import { Header } from "./components"
 import LotOverview from "./lot-overview"
@@ -50,7 +51,11 @@ const LotSingle = ({ lotID }) => {
         title={data.name}
         backTo={data?.projectID ? `/projects/${data?.projectID}/lots` : "/lots"}
         submenu={renderSubmenu()}
-      ></AppBar>
+      >
+        <Portal openByClickOn={<Button>Edit Lot</Button>}>
+          <LotForm model={data} />
+        </Portal>
+      </AppBar>
       {/* <Header lot={data} /> */}
       <Router className="flex-1 overflow-y-scroll pb-28">
         <LotOverview path="/" lot={data} />

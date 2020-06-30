@@ -9,7 +9,7 @@ import (
 type PersonModel struct {
 	UserID         *primitive.ObjectID `bson:"userID" json:"userID"` // can be nil
 	Status         string              `bson:"status" json:"status"`
-	Role           string              `bson:"role" json:"role" validate:"required"`
+	Role           []string            `bson:"role" json:"role" validate:"required"`
 	Email          string              `bson:"email" json:"email" validate:"email,required"`
 	GivenName      string              `bson:"givenName" json:"givenName" validate:"required"`
 	FamilyName     string              `bson:"familyName" json:"familyName"`

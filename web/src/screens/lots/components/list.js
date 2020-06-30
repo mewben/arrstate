@@ -26,6 +26,7 @@ const List = ({ projectID }) => {
           <thead>
             <tr>
               <Th>Lot No.</Th>
+              {!projectID && <Th>Project</Th>}
               <Th align="right">Area</Th>
               <Th align="right">Price</Th>
               <Th align="right">Price Addon</Th>
@@ -33,7 +34,9 @@ const List = ({ projectID }) => {
           </thead>
           <tbody className="bg-white">
             {map(content?.list, item => {
-              return <ListItem key={item._id} item={item} />
+              return (
+                <ListItem key={item._id} item={item} projectID={projectID} />
+              )
             })}
           </tbody>
         </Table>

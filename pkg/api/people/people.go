@@ -53,7 +53,15 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			return
 		}
 
-		response, err := h.Get()
+		var role []string
+		r := c.Fasthttp.QueryArgs().PeekMulti("role")
+		for _, rr := range r {
+			role = append(role, utils.GetString(rr))
+		}
+
+		log.Println("--role", role)
+
+		response, err := h.Get(role)
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)
@@ -79,7 +87,7 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			return
 		}
 
-		if payload.Role == enums.RoleOwner {
+		if utils.Contains(payload.Role, enums.RoleOwner) {
 			c.Status(400).JSON(errors.NewHTTPError(errors.ErrOwner))
 			return
 		}

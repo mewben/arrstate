@@ -73,7 +73,7 @@ func (h *Handler) Signup(data *SignupPayload) (fiber.Map, error) {
 		PersonModel: models.PersonModel{
 			UserID:     &user.ID,
 			Email:      data.Email,
-			Role:       enums.RoleOwner,
+			Role:       []string{enums.RoleOwner},
 			GivenName:  data.GivenName,
 			FamilyName: data.FamilyName,
 		},

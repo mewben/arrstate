@@ -9,6 +9,7 @@ import (
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/utils"
 )
 
 // Edit Person
@@ -19,7 +20,7 @@ func (h *Handler) Edit(data *Payload) (*models.PersonModel, error) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
-	if data.Role == enums.RoleOwner {
+	if utils.Contains(data.Role, enums.RoleOwner) {
 		return nil, errors.NewHTTPError(errors.ErrOwner)
 	}
 

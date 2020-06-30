@@ -2,9 +2,7 @@ import { useQuery } from "react-query"
 import { requestApi } from "@Utils"
 
 const fetchLots = async (_, params) => {
-  const { data } = await requestApi("/api/lots", "GET", {
-    params,
-  })
+  const { data } = await requestApi("/api/lots", "GET", { params })
   return data
 }
 

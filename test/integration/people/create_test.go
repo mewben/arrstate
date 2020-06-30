@@ -31,7 +31,7 @@ func TestCreatePerson(t *testing.T) {
 	t.Run("It should create person inside business", func(t *testing.T) {
 		assert := assert.New(t)
 		fakeEmail := "test3@email.com"
-		fakeRole := enums.RoleCoOwner
+		fakeRole := []string{enums.RoleCoOwner}
 		fakeGivenName := "given"
 		fakeFamilyName := "family"
 		fakeAddress := models.NewAddressModel()
@@ -84,28 +84,28 @@ func TestCreatePerson(t *testing.T) {
 				"role": "",
 			},
 			{
-				"role":      enums.RoleAgent,
+				"role":      []string{enums.RoleAgent},
 				"givenName": "",
 			},
 			{
-				"role":      enums.RoleAgent,
+				"role":      []string{enums.RoleAgent},
 				"givenName": "givenName",
 				"email":     "",
 			},
 			{
-				"role":      enums.RoleAgent,
+				"role":      []string{enums.RoleAgent},
 				"givenName": "givenName",
 				"email":     "notavalidemail",
 			},
 			{
-				"role":           enums.RoleAgent,
+				"role":           []string{enums.RoleAgent},
 				"givenName":      "givenName",
 				"email":          "sample@email.com",
 				"commissionPerc": -34,
 			},
 			{
 				// duplicate person for this business
-				"role":           enums.RoleAgent,
+				"role":           []string{enums.RoleAgent},
 				"givenName":      "givenName",
 				"email":          "test3@email.com",
 				"commissionPerc": -34,
@@ -131,7 +131,7 @@ func TestCreatePerson(t *testing.T) {
 		assert := assert.New(t)
 		data := fiber.Map{
 			"email":     "random1@email.com",
-			"role":      enums.RoleOwner,
+			"role":      []string{enums.RoleOwner},
 			"givenName": "givenname",
 		}
 		req := helpers.DoRequest("POST", path, data, token1)

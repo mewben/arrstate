@@ -35,7 +35,7 @@ func TestEditPerson(t *testing.T) {
 	t.Run("It should edit person", func(t *testing.T) {
 		assert := assert.New(t)
 		updEmail := "editemail@email.com"
-		updRole := enums.RoleClient
+		updRole := []string{enums.RoleClient}
 		updGivenName := "edit1"
 		updFamilyName := "edit2"
 		updAddress := models.NewAddressModel()
@@ -104,7 +104,7 @@ func TestEditPerson(t *testing.T) {
 				errors.ErrInputInvalid,
 				fiber.Map{
 					"_id":       person1.ID,
-					"role":      enums.RoleAgent,
+					"role":      []string{enums.RoleAgent},
 					"givenName": "",
 					"i":         2,
 				},
@@ -113,7 +113,7 @@ func TestEditPerson(t *testing.T) {
 				errors.ErrInputInvalid,
 				fiber.Map{
 					"_id":       person1.ID,
-					"role":      enums.RoleAgent,
+					"role":      []string{enums.RoleAgent},
 					"givenName": "givenName",
 					"email":     "",
 					"i":         3,
@@ -123,7 +123,7 @@ func TestEditPerson(t *testing.T) {
 				errors.ErrInputInvalid,
 				fiber.Map{
 					"_id":       person1.ID,
-					"role":      enums.RoleAgent,
+					"role":      []string{enums.RoleAgent},
 					"givenName": "givenName",
 					"email":     "notavalidemail",
 					"i":         4,
@@ -133,7 +133,7 @@ func TestEditPerson(t *testing.T) {
 				errors.ErrInputInvalid,
 				fiber.Map{
 					"_id":            person1.ID,
-					"role":           enums.RoleAgent,
+					"role":           []string{enums.RoleAgent},
 					"givenName":      "givenName",
 					"email":          "sample@email.com",
 					"commissionPerc": -34,
@@ -145,7 +145,7 @@ func TestEditPerson(t *testing.T) {
 				fiber.Map{
 					// duplicate person for this business
 					"_id":            person1.ID,
-					"role":           enums.RoleAgent,
+					"role":           []string{enums.RoleAgent},
 					"givenName":      "givenNameerr",
 					"email":          "test@email.com",
 					"commissionPerc": 34,
@@ -172,7 +172,7 @@ func TestEditPerson(t *testing.T) {
 		assert := assert.New(t)
 		data := fiber.Map{
 			"_id":       person2.ID,
-			"role":      enums.RoleOwner,
+			"role":      []string{enums.RoleOwner},
 			"email":     "eddfe@email.com",
 			"givenName": "given",
 		}
@@ -192,7 +192,7 @@ func TestEditPerson(t *testing.T) {
 			assert := assert.New(t)
 			data := fiber.Map{
 				"_id":       person2.ID,
-				"role":      enums.RoleAgent,
+				"role":      []string{enums.RoleAgent},
 				"email":     "eddfe@email.com",
 				"givenName": "given",
 			}

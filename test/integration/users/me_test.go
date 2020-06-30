@@ -53,6 +53,6 @@ func TestMe(t *testing.T) {
 		assert.Equal(business.ID, person.BusinessID)
 		assert.Equal(signupFakeData.GivenName, person.GivenName)
 		assert.Equal(signupFakeData.FamilyName, person.FamilyName)
-		assert.Equal("owner", person.Role)
+		assert.Contains(person.Role, "owner")
 	})
 }

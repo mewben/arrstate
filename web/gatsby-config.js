@@ -33,6 +33,7 @@ module.exports = {
           `/lots/*`,
           `/clients/*`,
           `/agents/*`,
+          `/people/*`,
           `/settings/*`,
         ],
       },

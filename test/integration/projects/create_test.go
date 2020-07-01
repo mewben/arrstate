@@ -64,6 +64,7 @@ func TestCreateProject(t *testing.T) {
 		response := ress.(*models.ProjectModel)
 		assert.Equal(businessID, response.BusinessID)
 		assert.Equal(userID, response.CreatedBy)
+		assert.Equal(userID, response.UpdatedBy)
 		assert.False(response.ID.IsZero())
 		assert.Equal(fakeProject, response.Name)
 		assert.EqualValues(fakeArea, response.Area)

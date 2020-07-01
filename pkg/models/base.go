@@ -28,6 +28,7 @@ func NewBaseModel(args ...primitive.ObjectID) BaseModel {
 		if !arg.IsZero() {
 			if i == 0 {
 				model.CreatedBy = arg
+				model.UpdatedBy = arg
 			} else if i == 1 {
 				model.BusinessID = arg
 			}

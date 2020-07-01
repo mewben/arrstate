@@ -18,9 +18,7 @@ const ListItem = ({ item, projectID }) => {
         </Link>
       </Td>
       {!projectID && (
-        <Td>
-          <Project id={item.projectID} />
-        </Td>
+        <Td>{!!item.projectID && <Project id={item.projectID} />}</Td>
       )}
       <Td align="right">{acc.formatNumber(item.area, 2)}</Td>
       <Td align="right">{acc.formatNumber(item.price, 2)}</Td>

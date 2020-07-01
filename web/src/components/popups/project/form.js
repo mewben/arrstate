@@ -5,7 +5,7 @@ import { useMutation, queryCache } from "react-query"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
 import { Error } from "@Components/generic"
-import { Button, ButtonConfirm } from "@Components/generic/button"
+import { ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"

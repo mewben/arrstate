@@ -1,7 +1,24 @@
 import React from "react"
 
+import { Portal, Button } from "@Components/generic"
+import { AgentForm } from "@Components/popups/people"
+import { AppBar } from "@Wrappers/layout"
+
+import { useAgents } from "@Hooks"
+import { List } from "./components"
+
 const AgentList = () => {
-  return <div>TODO</div>
+  useAgents()
+  return (
+    <>
+      <AppBar title="Agents">
+        <Portal openByClickOn={<Button>New Agent</Button>}>
+          <AgentForm />
+        </Portal>
+      </AppBar>
+      <List />
+    </>
+  )
 }
 
 export default AgentList

@@ -8,8 +8,7 @@ import {
   TextField,
   BaseTextField,
   SubmitButton,
-  InputWrapper,
-  FieldLabel,
+  InputGroup,
   FieldError,
 } from "@Components/forms"
 import { Error } from "@Components/generic"
@@ -24,10 +23,10 @@ const validationSchema = Yup.object().shape({
   familyName: Yup.string(),
   business: Yup.string().max(255).required(req),
   domain: Yup.string().max(255).required(req),
-  email: Yup.string().email(t("errors.email")).required(t("errors.required")),
+  email: Yup.string().email(t("errors.email")).required(req),
   password: Yup.string()
     .min(6, t("errors.minLength", { count: 6 }))
-    .required(t("errors.required")),
+    .required(req),
 })
 
 // ------- SignupForm -------- //
@@ -54,28 +53,21 @@ const SignupForm = () => {
     <div className="mt-6 w-full max-w-sm">
       <Form onSubmit={onSubmit} validationSchema={validationSchema}>
         <Error error={error} />
-        <div class="grid grid-cols-6 gap-6">
+        <div className="grid grid-cols-6 gap-6">
           <div className="col-span-6">
-            <FieldLabel label={t("name")} />
-            <InputWrapper>
-              <div className="flex w-full">
-                <div className="flex-1 min-w-0">
-                  <BaseTextField
-                    name="givenName"
-                    className="rounded-none rounded-l-md"
-                    placeholder={t("name.givenName")}
-                    autoFocus
-                  />
-                </div>
-                <div className="-ml-px flex-1 min-w-0">
-                  <BaseTextField
-                    name="familyName"
-                    className="rounded-none rounded-r-md"
-                    placeholder={t("name.familyName")}
-                  />
-                </div>
-              </div>
-            </InputWrapper>
+            <InputGroup label={t("name")}>
+              <BaseTextField
+                name="givenName"
+                className="rounded-none rounded-l-md"
+                placeholder={t("name.givenName")}
+                autoFocus
+              />
+              <BaseTextField
+                name="familyName"
+                className="rounded-none rounded-r-md"
+                placeholder={t("name.familyName")}
+              />
+            </InputGroup>
             <FieldError name="givenName" />
           </div>
           <div className="col-span-6">

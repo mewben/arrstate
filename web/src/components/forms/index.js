@@ -1,5 +1,6 @@
 export { default as Form } from "./form"
 export { InputWrapper, FieldLabel, FieldDescription, FieldError } from "./field"
+export { default as InputGroup } from "./input-group"
 export { default as SubmitButton } from "./submit-button"
 export {
   default as TextField,

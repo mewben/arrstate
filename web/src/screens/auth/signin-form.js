@@ -43,7 +43,7 @@ const SigninForm = () => {
       <Form
         onSubmit={onSubmit}
         validationSchema={validationSchema}
-        model={{ email: "melvinsoldia@gmail.com", password: "123456" }}
+        model={{ email: "soldio@gmail.com", password: "123456" }}
       >
         <Error error={error} />
         <div class="grid grid-cols-6 gap-6">

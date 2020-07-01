@@ -3,15 +3,15 @@ import React from "react"
 import { Empty, Portal, Button, Table, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { map } from "@Utils/lodash"
-import { useClients } from "@Hooks"
-import { ClientForm } from "@Components/popups/people"
+import { useAgents } from "@Hooks"
+import { AgentForm } from "@Components/popups/people"
 import ListItem from "./list-item"
 
 const List = () => {
   const renderAdd = () => {
     return (
-      <Portal openByClickOn={<Button>Add Client</Button>}>
-        <ClientForm />
+      <Portal openByClickOn={<Button>Add Agent</Button>}>
+        <AgentForm />
       </Portal>
     )
   }
@@ -46,7 +46,7 @@ const List = () => {
 
   return (
     <InfiniteScroll
-      getMethod={useClients}
+      getMethod={useAgents}
       contentRenderer={renderContent}
       emptyRenderer={renderEmpty}
     />

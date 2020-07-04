@@ -7,10 +7,10 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/pkg/api/clientlots"
-	"github.com/mewben/realty278/pkg/api/lots"
+	"github.com/mewben/realty278/pkg/api/clientproperties"
 	"github.com/mewben/realty278/pkg/api/people"
 	"github.com/mewben/realty278/pkg/api/projects"
+	"github.com/mewben/realty278/pkg/api/properties"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 )
@@ -65,16 +65,16 @@ func GetResponse(res *http.Response, entity string) (interface{}, error) {
 		response = &models.ProjectModel{}
 	} else if entity == "projects" {
 		response = &projects.ResponseList{}
-	} else if entity == "lot" {
-		response = &models.LotModel{}
-	} else if entity == "lots" {
-		response = &lots.ResponseList{}
+	} else if entity == "property" {
+		response = &models.PropertyModel{}
+	} else if entity == "properties" {
+		response = &properties.ResponseList{}
 	} else if entity == "person" {
 		response = &models.PersonModel{}
 	} else if entity == "people" {
 		response = &people.ResponseList{}
-	} else if entity == "clientlot" {
-		response = &clientlots.SingleResponse{}
+	} else if entity == "clientproperty" {
+		response = &clientproperties.SingleResponse{}
 	}
 
 	err = json.Unmarshal(body, &response)

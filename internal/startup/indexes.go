@@ -115,8 +115,8 @@ func Indexes(db *mongo.Database) {
 		log.Fatalln("error project index", err)
 	}
 
-	// Lots
-	_, err = db.Collection(enums.CollLots).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
+	// Properties
+	_, err = db.Collection(enums.CollProperties).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
 		{
 			Keys: bson.D{
 				{
@@ -138,12 +138,12 @@ func Indexes(db *mongo.Database) {
 		log.Fatalln("error project index", err)
 	}
 
-	// ClientLots
-	_, err = db.Collection(enums.CollClientLots).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
+	// ClientProperties
+	_, err = db.Collection(enums.CollClientProperties).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
 		{
 			Keys: bson.D{
 				{
-					Key:   "lotID",
+					Key:   "propertyID",
 					Value: 1,
 				},
 			},
@@ -158,7 +158,7 @@ func Indexes(db *mongo.Database) {
 		},
 	})
 	if err != nil {
-		log.Fatalln("error clientlot index", err)
+		log.Fatalln("error clientproperties index", err)
 	}
 
 }

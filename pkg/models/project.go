@@ -16,10 +16,9 @@ type ProjectModel struct {
 	CurrencyModel `bson:",inline"`
 	MetaModel     `bson:",inline"`
 	// Computed
-	LotIDs    []primitive.ObjectID `bson:"lotIDs" json:"lotIDs"`
-	LotsArea  float64              `bson:"lotsArea" json:"lotsArea"`
-	ClientIDs []primitive.ObjectID `bson:"clientIDs" json:"clientIDs"`
-	AgentIDs  []primitive.ObjectID `bson:"agentIDs" json:"agentIDs"`
+	PropertyIDs []primitive.ObjectID `bson:"propertyIDs" json:"propertyIDs"`
+	ClientIDs   []primitive.ObjectID `bson:"clientIDs" json:"clientIDs"`
+	AgentIDs    []primitive.ObjectID `bson:"agentIDs" json:"agentIDs"`
 }
 
 // NewProjectModel -

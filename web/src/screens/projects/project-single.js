@@ -9,7 +9,7 @@ import { ProjectForm } from "@Components/popups/project"
 import { map } from "@Utils/lodash"
 // import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
-import ProjectLots from "./project-lots"
+import ProjectProperties from "./project-properties"
 
 const ProjectSingle = ({ projectID }) => {
   const { status, data, error } = useProject(projectID)
@@ -20,8 +20,8 @@ const ProjectSingle = ({ projectID }) => {
       path: `/projects/${projectID}`,
     },
     {
-      label: "Lots",
-      path: `/projects/${projectID}/lots`,
+      label: "Properties",
+      path: `/projects/${projectID}/properties`,
     },
     {
       label: "Clients",
@@ -60,7 +60,7 @@ const ProjectSingle = ({ projectID }) => {
       </AppBar>
       <Router className="flex-1 overflow-y-scroll pb-28">
         <ProjectOverview path="/" project={data} />
-        <ProjectLots path="/lots" project={data} />
+        <ProjectProperties path="/properties" project={data} />
       </Router>
     </>
   )

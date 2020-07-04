@@ -20,7 +20,7 @@ import (
 // SignupFakeData -
 var SignupFakeData [2]*auth.SignupPayload
 var project [2]fiber.Map
-var lot [2]fiber.Map
+var property [2]fiber.Map
 var person [3]fiber.Map
 
 func init() {
@@ -73,16 +73,18 @@ func init() {
 		"name": "testproject2",
 	}
 
-	// lots
-	lot[0] = fiber.Map{
-		"name":       "testlot",
+	// properties
+	property[0] = fiber.Map{
+		"name":       "testproperty",
+		"type":       enums.PropertyTypeLot,
 		"area":       1.5,
 		"price":      100.5,
 		"priceAddon": 114,
 		"notes":      "Sample Notes",
 	}
-	lot[1] = fiber.Map{
-		"name":  "testlot2",
+	property[1] = fiber.Map{
+		"name":  "testproperty2",
+		"type":  enums.PropertyTypeHouse,
 		"area":  2.5,
 		"price": 12.3,
 	}
@@ -106,7 +108,7 @@ func CleanupFixture(db *mongo.Database) {
 		enums.CollUsers,
 		enums.CollPeople,
 		enums.CollProjects,
-		enums.CollLots,
+		enums.CollProperties,
 	}
 	for _, col := range collections {
 		db.Collection(col).DeleteMany(context.TODO(), bson.D{})
@@ -163,23 +165,23 @@ func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 	return response.(*models.ProjectModel)
 }
 
-// LotFixture -
-func LotFixture(app *fiber.App, token string, projectID *primitive.ObjectID, n int) *models.LotModel {
-	payload := lot[n]
+// PropertyFixture -
+func PropertyFixture(app *fiber.App, token string, projectID *primitive.ObjectID, n int) *models.PropertyModel {
+	payload := property[n]
 	payload["projectID"] = projectID
 
-	req := DoRequest("POST", "/api/lots", payload, token)
+	req := DoRequest("POST", "/api/properties", payload, token)
 	res, err := app.Test(req, -1)
 	if err != nil {
-		log.Fatalln("err app test lot", err)
+		log.Fatalln("err app test property", err)
 	}
 
-	response, err := GetResponse(res, "lot")
+	response, err := GetResponse(res, "property")
 	if err != nil {
-		log.Fatalln("err get response lot", err)
+		log.Fatalln("err get response property", err)
 	}
 
-	return response.(*models.LotModel)
+	return response.(*models.PropertyModel)
 }
 
 // PersonFixture -

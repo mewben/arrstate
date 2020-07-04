@@ -32,15 +32,15 @@ func DecodeSingle(result *mongo.SingleResult, collectionName string) interface{}
 		result.Decode(&project)
 		return project
 
-	case enums.CollLots:
-		lot := models.NewLotModel()
-		result.Decode(&lot)
-		return lot
+	case enums.CollProperties:
+		property := models.NewPropertyModel()
+		result.Decode(&property)
+		return property
 
-	case enums.CollClientLots:
-		clientlot := models.NewClientLotModel()
-		result.Decode(&clientlot)
-		return clientlot
+	case enums.CollClientProperties:
+		clientproperty := models.NewClientPropertyModel()
+		result.Decode(&clientproperty)
+		return clientproperty
 	}
 
 	return nil

@@ -9,7 +9,7 @@ const ListItem = ({ item }) => {
     <tr>
       <Td>
         <Link
-          to={`/projects/${item._id}/lots`}
+          to={`/projects/${item._id}/properties`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"
         >
           {item.name}

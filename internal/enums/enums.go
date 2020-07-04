@@ -18,4 +18,7 @@ const (
 	StatusCancelled  = "cancelled"
 	StatusTerminated = "terminated"
 	StatusApproved   = "approved"
+
+	PropertyTypeLot   = "lot"
+	PropertyTypeHouse = "house"
 )

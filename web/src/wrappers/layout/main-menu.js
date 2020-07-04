@@ -15,8 +15,8 @@ const MainMenu = () => {
       icon: <FolderOpenIcon />,
     },
     {
-      path: "/lots",
-      label: "Lots",
+      path: "/properties",
+      label: "Properties",
       icon: <TextureIcon />,
     },
     {

@@ -30,7 +30,7 @@ module.exports = {
       options: {
         prefixes: [
           `/projects/*`,
-          `/lots/*`,
+          `/properties/*`,
           `/clients/*`,
           `/agents/*`,
           `/people/*`,

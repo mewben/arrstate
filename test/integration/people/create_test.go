@@ -1,7 +1,6 @@
 package people
 
 import (
-	"log"
 	"os"
 	"testing"
 
@@ -17,7 +16,6 @@ import (
 )
 
 func TestCreatePerson(t *testing.T) {
-	log.Println("-- test create lot --")
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)

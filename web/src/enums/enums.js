@@ -4,3 +4,8 @@ export const ROLES = {
   AGENT: "agent",
   CLIENT: "client",
 }
+
+export const PROPERTY_TYPES = {
+  LOT: "lot",
+  HOUSE: "house",
+}

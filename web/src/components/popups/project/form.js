@@ -47,7 +47,7 @@ const ProjectForm = ({ model, onClose }) => {
       ...formData,
     })
     if (res) {
-      isEdit ? onClose() : navigate(`/projects/${res?.data?._id}/lots`)
+      isEdit ? onClose() : navigate(`/projects/${res?.data?._id}/properties`)
     }
   }
 

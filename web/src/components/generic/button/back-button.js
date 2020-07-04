@@ -11,7 +11,7 @@ const BackButton = ({ to }) => {
         to={to}
         className="text-xs font-medium text-gray-400 hover:text-gray-800"
       >
-        <ChevronLeftIcon fontSize="medium" />
+        <ChevronLeftIcon fontSize="default" />
       </Link>
     </div>
   )

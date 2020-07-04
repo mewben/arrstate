@@ -18,7 +18,7 @@ type SigninPayload struct {
 }
 
 // Signin -
-func (h *Handler) Signin(data *SigninPayload) (fiber.Map, error) {
+func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) {
 	log.Println("Signin")
 	// validate payload
 	if err := validate.Struct(data); err != nil {
@@ -43,17 +43,33 @@ func (h *Handler) Signin(data *SigninPayload) (fiber.Map, error) {
 		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
 	}
 
-	// todo: get business domain by subdomain or whitelabel domain
-	// for now, just get the the first id in person
+	// get business by domain
+	// TODO: whitelabel domain
+	filter = bson.D{
+		{
+			Key:   "domain",
+			Value: domain,
+		},
+	}
+	businessFound := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
+	if businessFound == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundBusiness)
+	}
+	business := businessFound.(*models.BusinessModel)
+
 	filter = bson.D{
 		{
 			Key:   "userID",
 			Value: user.ID,
 		},
+		{
+			Key:   "businessID",
+			Value: business.ID,
+		},
 	}
 	personFound := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
 	if personFound == nil {
-		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
+		return nil, errors.NewHTTPError(errors.ErrUserNotInBusiness)
 	}
 	person := personFound.(*models.PersonModel)
 

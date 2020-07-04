@@ -10,6 +10,7 @@ import (
 
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/services/database"
+	"github.com/mewben/realty278/pkg/utils"
 )
 
 // Handler -
@@ -54,7 +55,10 @@ func Routes(app *fiber.App, db *mongo.Database) {
 			return
 		}
 
-		response, err := h.Signin(payload)
+		// get business domain
+		domain := utils.GetSubdomain(string(c.Fasthttp.Request.Header.Peek("origin")))
+
+		response, err := h.Signin(payload, domain)
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)

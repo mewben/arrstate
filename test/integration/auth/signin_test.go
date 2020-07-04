@@ -35,6 +35,7 @@ func TestSignin(t *testing.T) {
 			"password": signupFakeData.Password,
 		}
 		req := helpers.DoRequest("POST", path, data, "")
+		req.Header.Add("origin", "http://test-domain.example.com")
 		res, err := app.Test(req, -1)
 
 		assert.Nil(err)

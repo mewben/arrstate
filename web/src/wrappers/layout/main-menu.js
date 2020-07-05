@@ -2,7 +2,6 @@ import React from "react"
 import { Link } from "gatsby"
 import FolderOpenIcon from "@material-ui/icons/FolderOpen"
 import TextureIcon from "@material-ui/icons/Texture"
-import GroupIcon from "@material-ui/icons/Group"
 import RecentActorsIcon from "@material-ui/icons/RecentActors"
 
 import { map } from "@Utils/lodash"
@@ -20,14 +19,9 @@ const MainMenu = () => {
       icon: <TextureIcon />,
     },
     {
-      path: "/clients",
-      label: "Clients",
+      path: "/people",
+      label: "People",
       icon: <RecentActorsIcon />,
-    },
-    {
-      path: "/agents",
-      label: "Agents",
-      icon: <GroupIcon />,
     },
   ]
 

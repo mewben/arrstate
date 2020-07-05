@@ -2,9 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Controller } from "react-hook-form"
 import Autocomplete from "@material-ui/lab/Autocomplete"
-import { FieldLabel, FieldError, InputWrapper } from "./field"
 
-import { get, random } from "@Utils/lodash"
+import { FieldLabel, FieldError } from "./field"
+import { keyBy, random, isObject } from "@Utils/lodash"
 
 const SelectField = ({
   name,
@@ -15,6 +15,10 @@ const SelectField = ({
   multiple,
   ...props
 }) => {
+  const optionsMap = React.useMemo(() => {
+    return keyBy(options, "value")
+  }, [options])
+
   return (
     <div>
       <FieldLabel label={label} />
@@ -27,7 +31,10 @@ const SelectField = ({
             disableClearable={disableClearable}
             selectOnFocus={selectOnFocus}
             size="small"
-            getOptionLabel={option => option.label}
+            getOptionLabel={option =>
+              isObject(option) ? option.label : optionsMap[option]?.label
+            }
+            getOptionSelected={(option, value) => option.value === value}
             renderInput={params => (
               <div
                 className="mt-1 flex relative rounded-md shadow-sm"
@@ -42,7 +49,7 @@ const SelectField = ({
             )}
           />
         }
-        onChange={([, option]) => option}
+        onChange={([, option]) => option?.value}
         name={name}
         defaultValue={multiple ? [] : null}
       />

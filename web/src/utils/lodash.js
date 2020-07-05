@@ -1,7 +1,10 @@
 export { default as get } from "lodash/get"
 export { default as set } from "lodash/set"
 export { default as map } from "lodash/map"
+export { default as forEach } from "lodash/forEach"
 export { default as keys } from "lodash/keys"
+export { default as keyBy } from "lodash/keyBy"
+export { default as values } from "lodash/values"
 export { default as filter } from "lodash/filter"
 export { default as find } from "lodash/find"
 
@@ -10,3 +13,5 @@ export { default as sortBy } from "lodash/sortBy"
 
 export { default as includes } from "lodash/includes"
 export { default as isEmpty } from "lodash/isEmpty"
+export { default as isObject } from "lodash/isObject"
+export { default as isArray } from "lodash/isArray"

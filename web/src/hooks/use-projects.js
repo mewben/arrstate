@@ -25,29 +25,19 @@ export const useProject = projectID => {
 export const useProjectOptions = projectID => {
   const { status, data, error, isFetching } = useProjects()
 
-  const { options, selectedOption } = React.useMemo(() => {
-    let selectedOption = null
+  const options = React.useMemo(() => {
     const options = map(data?.list, item => {
-      const option = {
+      return {
         value: item._id,
         label: item.name,
       }
-      if (projectID === item._id) {
-        selectedOption = option
-      }
-      return option
     })
-
-    return {
-      options: sortBy(options, "label"),
-      selectedOption,
-    }
+    return sortBy(options, "label")
   }, [projectID, data?.list])
 
   return {
     status: isFetching ? "loading" : status,
     options,
-    selectedOption,
     error,
   }
 }

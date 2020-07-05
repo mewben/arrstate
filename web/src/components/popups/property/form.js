@@ -4,18 +4,20 @@ import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
 
+import { PROPERTY_TYPES } from "@Enums"
 import { Form, TextField, SelectField, SubmitButton } from "@Components/forms"
 import { Error, Loading } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
 import { useProjectOptions } from "@Hooks"
 import { DrawerHeader } from "@Wrappers/layout"
-import { get, map } from "@Utils/lodash"
+import { get, map, values } from "@Utils/lodash"
 import { requestApi } from "@Utils"
 
 const req = t("errors.required")
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(req),
+  type: Yup.string().required(req),
   area: Yup.number().min(0),
   price: Yup.number().min(0),
   priceAddon: Yup.number().min(0),
@@ -49,7 +51,6 @@ const PropertyForm = ({ model, projectID, onClose }) => {
     formData.area = +formData.area // convert to number
     formData.price = +formData.price
     formData.priceAddon = +formData.priceAddon
-    formData.projectID = get(formData, "projectID.value", null)
 
     console.log("formData", formData)
 
@@ -73,9 +74,15 @@ const PropertyForm = ({ model, projectID, onClose }) => {
   const {
     status,
     options: projectOptions,
-    selectedOption: projectOption,
     error: projectError,
   } = useProjectOptions(get(model, "projectID", projectID))
+
+  const propertyTypeOptions = React.useMemo(() => {
+    return map(values(PROPERTY_TYPES), typ => ({
+      label: t(`${typ}`),
+      value: typ,
+    }))
+  }, [])
 
   if (status === "loading") {
     return <Loading />
@@ -84,12 +91,13 @@ const PropertyForm = ({ model, projectID, onClose }) => {
   }
 
   const initialModel = {
+    projectID,
     name: "",
+    type: PROPERTY_TYPES.LOT,
     area: 0,
     price: 0,
     priceAddon: 0,
     ...model,
-    projectID: projectOption,
   }
 
   return (
@@ -107,6 +115,13 @@ const PropertyForm = ({ model, projectID, onClose }) => {
         <div className="grid grid-cols-6 gap-6 p-6">
           <div className="col-span-6">
             <TextField name="name" label={t("property.name")} autoFocus />
+          </div>
+          <div className="col-span-6">
+            <SelectField
+              name="type"
+              label={t("property.type")}
+              options={propertyTypeOptions}
+            />
           </div>
           <div className="col-span-6">
             <SelectField

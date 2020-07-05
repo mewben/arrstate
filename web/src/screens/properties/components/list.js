@@ -25,7 +25,8 @@ const List = ({ projectID }) => {
         <Table>
           <thead>
             <tr>
-              <Th>Property No.</Th>
+              <Th>Property Code.</Th>
+              <Th>Type</Th>
               {!projectID && <Th>Project</Th>}
               <Th align="right">Area</Th>
               <Th align="right">Price</Th>

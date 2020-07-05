@@ -4,6 +4,7 @@ import acc from "accounting"
 
 import { useProject } from "@Hooks"
 import { Td } from "@Components/generic"
+import { t } from "@Utils/t"
 
 // Properties listitem
 const ListItem = ({ item, projectID }) => {
@@ -16,6 +17,9 @@ const ListItem = ({ item, projectID }) => {
         >
           {item.name}
         </Link>
+      </Td>
+      <Td>
+        <span>{t(`${item.type}`)}</span>
       </Td>
       {!projectID && (
         <Td>{!!item.projectID && <Project id={item.projectID} />}</Td>

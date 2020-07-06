@@ -2,7 +2,7 @@ import axios from "axios"
 
 import { authToken } from "@Providers"
 
-const backend = process.env.GATSBY_BACKEND
+// const backend = process.env.GATSBY_BACKEND
 
 export const requestApi = async (
   path = "",
@@ -20,7 +20,7 @@ export const requestApi = async (
 
   return axios({
     method,
-    url: backend + path,
+    url: path,
     headers,
     data,
     params,

@@ -6,6 +6,16 @@ module.exports = {
     description: `Realty Management made easy`,
     author: `@mewben`,
   },
+  proxy: [
+    {
+      prefix: "/auth",
+      url: "http://localhost:5000",
+    },
+    {
+      prefix: "/api",
+      url: "http://localhost:5000",
+    },
+  ],
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-transformer-sharp`,

@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Controller } from "react-hook-form"
 import TextField from "@material-ui/core/TextField"
+import Paper from "@material-ui/core/Paper"
 import Autocomplete from "@material-ui/lab/Autocomplete"
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore"
 
@@ -61,6 +62,7 @@ const SelectField = ({
             }}
             popupIcon={<UnfoldMoreIcon fontSize="small" />}
             forcePopupIcon={false}
+            PaperComponent={CustomPaper}
           />
         }
         onChange={([, option]) => {
@@ -107,6 +109,17 @@ const Tag = ({ label, onDelete, ...props }) => {
         </svg>
       </button>
     </span>
+  )
+}
+
+const CustomPaper = ({ children }) => {
+  return (
+    <Paper
+      variant="outlined"
+      className="text-sm mt-1 rounded-md bg-white shadow-lg"
+    >
+      {children}
+    </Paper>
   )
 }
 

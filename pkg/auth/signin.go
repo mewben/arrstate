@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"log"
 	"strings"
 
 	"github.com/gofiber/fiber"
@@ -13,39 +12,47 @@ import (
 
 // SigninPayload -
 type SigninPayload struct {
-	Email    string `json:"email" validate:"email,required"`
-	Password string `json:"password" validate:"required,min=6"`
+	Email      string `json:"email" validate:"email,required"`
+	Password   string `json:"password" validate:"required,min=6"`
+	GrantType  string `json:"grant_type"`
+	DeviceCode string `json:"deviceCode"`
 }
 
 // Signin -
 func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) {
-	log.Println("Signin")
-	// validate payload
-	if err := validate.Struct(data); err != nil {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
-	}
+	user := &models.UserModel{}
+	if data.GrantType == "device_code" && data.DeviceCode != "" {
+		// find user by device_code
+		filter := bson.M{"deviceCode": data.DeviceCode}
+		userFound := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
+		if userFound == nil {
+			return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
+		}
+		user = userFound.(*models.UserModel)
 
-	// get user by email
-	filter := bson.D{
-		{
-			Key:   "email",
-			Value: strings.ToLower(data.Email),
-		},
-	}
-	userFound := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
-	if userFound == nil {
-		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
-	}
+	} else {
+		// validate payload
+		if err := validate.Struct(data); err != nil {
+			return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
+		}
 
-	// compare password
-	user := userFound.(*models.UserModel)
-	if !user.ComparePassword(user.Password, data.Password) {
-		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
+		// get user by email
+		filter := bson.M{"email": strings.ToLower(data.Email)}
+		userFound := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
+		if userFound == nil {
+			return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
+		}
+		user = userFound.(*models.UserModel)
+		// compare password
+		if !user.ComparePassword(user.Password, data.Password) {
+			return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
+		}
+
 	}
 
 	// get business by domain
 	// TODO: whitelabel domain
-	filter = bson.D{
+	filter := bson.D{
 		{
 			Key:   "domain",
 			Value: domain,
@@ -78,7 +85,7 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect, err)
 	}
 
-	// TODO: signin hooks
+	h.SigninHook(user)
 
 	return fiber.Map{"token": token}, nil
 }

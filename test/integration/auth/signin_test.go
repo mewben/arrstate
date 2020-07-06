@@ -45,6 +45,29 @@ func TestSignin(t *testing.T) {
 		helpers.CheckJWT(response["token"].(string), assert)
 	})
 
+	t.Run("It should login using deviceCode", func(t *testing.T) {
+		assert := assert.New(t)
+		// signup
+		req := helpers.DoRequest("POST", "/auth/signup", helpers.SignupFakeData[1], "")
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		response, err := helpers.GetResponseMap(res)
+		assert.Nil(err)
+
+		signinPayload := fiber.Map{
+			"grant_type": "device_code",
+			"deviceCode": response["deviceCode"],
+		}
+		req = helpers.DoRequest("POST", path, signinPayload, "")
+		req.Header.Add("origin", "http://test-domain2.example.com")
+		res, err = app.Test(req, -1)
+		assert.Nil(err)
+		response, err = helpers.GetResponseMap(res)
+		assert.Nil(err)
+		helpers.CheckJWT(response["token"].(string), assert)
+
+	})
+
 	t.Run("It should catch invalid email or password", func(t *testing.T) {
 		assert := assert.New(t)
 		cases := []struct {

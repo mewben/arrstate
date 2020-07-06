@@ -50,10 +50,12 @@ func Routes(app *fiber.App, db *mongo.Database) {
 		h.Ctx = c.Fasthttp
 		payload := &SigninPayload{}
 
+		log.Println("signinb4parse")
 		if err := c.BodyParser(&payload); err != nil {
 			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 			return
 		}
+		log.Println("signinafterparse")
 
 		// get business domain
 		domain := utils.GetSubdomain(string(c.Fasthttp.Request.Header.Peek("origin")))

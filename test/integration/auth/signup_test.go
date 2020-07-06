@@ -30,7 +30,7 @@ func TestSignup(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 
-	t.Run("It should return the JWT", func(t *testing.T) {
+	t.Run("It should return the DeviceCode and domain", func(t *testing.T) {
 		// Setup -
 		assert := assert.New(t)
 		fakeEmail := "test@email.com"
@@ -56,13 +56,40 @@ func TestSignup(t *testing.T) {
 		assert.Equal(201, res.StatusCode, res)
 		response, err := helpers.GetResponseMap(res)
 		assert.Nil(err)
-		userID, businessID := helpers.CheckJWT(response["token"].(string), assert)
+		assert.NotEmpty(response["deviceCode"])
+		// userID, businessID := helpers.CheckJWT(response["token"].(string), assert)
 
-		// get user
+		// get business
 		filter := bson.D{
 			{
+				Key:   "domain",
+				Value: response["domain"],
+			},
+		}
+		business := &models.BusinessModel{}
+		err = db.Collection(enums.CollBusinesses).FindOne(context.TODO(), filter).Decode(&business)
+		assert.Nil(err)
+		assert.Equal(fakeBusiness, business.Name)
+		assert.Equal(fakeDomain, business.Domain)
+
+		// get person
+		filter = bson.D{
+			{
+				Key:   "businessID",
+				Value: business.ID,
+			},
+		}
+		person := &models.PersonModel{}
+		err = db.Collection(enums.CollPeople).FindOne(context.TODO(), filter).Decode(&person)
+		assert.Nil(err)
+		assert.Equal(fakeGivenName, person.GivenName)
+		assert.Equal(fakeFamilyName, person.FamilyName)
+
+		// get user
+		filter = bson.D{
+			{
 				Key:   "_id",
-				Value: userID,
+				Value: person.UserID,
 			},
 		}
 		user := &models.UserModel{}
@@ -71,32 +98,6 @@ func TestSignup(t *testing.T) {
 		assert.Equal(fakeEmail, user.Email)
 		assert.NotEqual(fakePassword, user.Password)
 
-		// get person
-		filter = bson.D{
-			{
-				Key:   "userID",
-				Value: userID,
-			},
-		}
-		person := &models.PersonModel{}
-		err = db.Collection(enums.CollPeople).FindOne(context.TODO(), filter).Decode(&person)
-		assert.Nil(err)
-		assert.Equal(fakeGivenName, person.GivenName)
-		assert.Equal(fakeFamilyName, person.FamilyName)
-		assert.Equal(businessID, person.BusinessID)
-
-		// get business
-		filter = bson.D{
-			{
-				Key:   "_id",
-				Value: businessID,
-			},
-		}
-		business := &models.BusinessModel{}
-		err = db.Collection(enums.CollBusinesses).FindOne(context.TODO(), filter).Decode(&business)
-		assert.Nil(err)
-		assert.Equal(fakeBusiness, business.Name)
-		assert.Equal(fakeDomain, business.Domain)
 	})
 
 	t.Run("It should auto clean inputs", func(t *testing.T) {
@@ -125,31 +126,43 @@ func TestSignup(t *testing.T) {
 		assert.Equal(201, res.StatusCode, res)
 		response, err := helpers.GetResponseMap(res)
 		assert.Nil(err)
-		userID, businessID := helpers.CheckJWT(response["token"].(string), assert)
-
-		// get user
-		filter := bson.D{
-			{
-				Key:   "_id",
-				Value: userID,
-			},
-		}
-		user := &models.UserModel{}
-		err = db.Collection(enums.CollUsers).FindOne(context.TODO(), filter).Decode(&user)
-		assert.Nil(err)
-		assert.Equal("test2@email.com", user.Email)
+		// userID, businessID := helpers.CheckJWT(response["token"].(string), assert)
 
 		// get business
-		filter = bson.D{
+		filter := bson.D{
 			{
-				Key:   "_id",
-				Value: businessID,
+				Key:   "domain",
+				Value: response["domain"],
 			},
 		}
 		business := &models.BusinessModel{}
 		err = db.Collection(enums.CollBusinesses).FindOne(context.TODO(), filter).Decode(&business)
 		assert.Nil(err)
 		assert.Equal("test-domain-2", business.Domain)
+
+		// get person
+		filter = bson.D{
+			{
+				Key:   "businessID",
+				Value: business.ID,
+			},
+		}
+		person := &models.PersonModel{}
+		err = db.Collection(enums.CollPeople).FindOne(context.TODO(), filter).Decode(&person)
+		assert.Nil(err)
+		assert.NotNil(person)
+
+		// get user
+		filter = bson.D{
+			{
+				Key:   "_id",
+				Value: person.UserID,
+			},
+		}
+		user := &models.UserModel{}
+		err = db.Collection(enums.CollUsers).FindOne(context.TODO(), filter).Decode(&user)
+		assert.Nil(err)
+		assert.Equal("test2@email.com", user.Email)
 
 	})
 
@@ -301,7 +314,5 @@ func TestSignup(t *testing.T) {
 	t.Run("It should cleanup business, user, people on signup error", func(t *testing.T) {
 		// TODO: not urgent
 	})
-
-	// startup.DisconnectMongo(db)
 
 }

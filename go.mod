@@ -12,6 +12,7 @@ require (
 	github.com/gofiber/recover v0.1.1
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gosimple/slug v1.9.0
+	github.com/labstack/gommon v0.3.0
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.6.1
 	go.mongodb.org/mongo-driver v1.3.4

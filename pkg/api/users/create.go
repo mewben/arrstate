@@ -40,7 +40,8 @@ func (h *Handler) Create(data *Payload) (*models.UserModel, error) {
 	}
 	user.Email = cleanedEmail
 	user.Password = hashedPassword
-	user.AccountStatus = enums.AccountStatusPending
+	user.AccountStatus = enums.AccountStatusActive
+	user.DeviceCode = data.DeviceCode
 
 	doc, err := h.DB.InsertOne(h.Ctx, enums.CollUsers, user)
 	if err != nil || doc == nil {

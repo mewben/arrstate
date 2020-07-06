@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber"
+	"github.com/labstack/gommon/random"
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/api/businesses"
 	"github.com/mewben/realty278/pkg/api/people"
@@ -52,8 +53,9 @@ func (h *Handler) Signup(data *SignupPayload) (fiber.Map, error) {
 		Ctx: h.Ctx,
 	}
 	userPayload := &users.Payload{
-		Email:    data.Email,
-		Password: data.Password,
+		Email:      data.Email,
+		Password:   data.Password,
+		DeviceCode: random.String(32),
 	}
 	user, err := userHandler.Create(userPayload)
 	if err != nil {
@@ -85,11 +87,11 @@ func (h *Handler) Signup(data *SignupPayload) (fiber.Map, error) {
 		return nil, err
 	}
 
-	token, err := user.GenerateJWT(user.ID, business.ID)
-	if err != nil {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
-	}
+	// token, err := user.GenerateJWT(user.ID, business.ID)
+	// if err != nil {
+	// 	return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
+	// }
 
 	// TODO: signup hooks
-	return fiber.Map{"token": token}, nil
+	return fiber.Map{"deviceCode": user.DeviceCode, "domain": business.Domain}, nil
 }

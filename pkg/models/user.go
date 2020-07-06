@@ -16,6 +16,7 @@ type UserModel struct {
 	Email         string             `bson:"email" json:"email"`
 	Password      string             `bson:"password" json:"-"`
 	AccountStatus string             `bson:"accountStatus" json:"accountStatus"`
+	DeviceCode    string             `bson:"deviceCode" json:"deviceCode"`
 }
 
 // CurrentUser -

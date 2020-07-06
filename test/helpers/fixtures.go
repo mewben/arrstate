@@ -123,9 +123,23 @@ func SignupFixture(app *fiber.App, n int) string {
 		log.Fatalln("err app test signup", err)
 	}
 
-	log.Println("resauth 1", res)
-
 	response, err := GetResponseMap(res)
+	if err != nil {
+		log.Fatalln("err get response auth", err)
+	}
+
+	signinPayload := fiber.Map{
+		"grant_type": "device_code",
+		"deviceCode": response["deviceCode"],
+	}
+	req = DoRequest("POST", "/auth/signin", signinPayload, "")
+	req.Header.Add("origin", "http://test-domain.example.com")
+	res, err = app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err app test signup", err)
+	}
+
+	response, err = GetResponseMap(res)
 	if err != nil {
 		log.Fatalln("err get response auth", err)
 	}

@@ -39,6 +39,14 @@ func Indexes(db *mongo.Database) {
 				},
 			},
 		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "deviceCode",
+					Value: 1,
+				},
+			},
+		},
 	})
 	if err != nil {
 		log.Fatalln("error user index", err)

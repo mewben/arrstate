@@ -88,7 +88,7 @@ const Tag = ({ label, onDelete, ...props }) => {
   return (
     <span
       {...props}
-      className="flex items-center px-2.5 py-1.5 rounded-md text-xs font-medium leading-4 bg-gray-100 border border-gray-200 text-gray-800 m-0.5"
+      className="flex items-center px-2.5 py-1.5 rounded-sm text-sm font-medium leading-4 bg-gray-100 border border-gray-200 text-gray-800 m-0.5"
     >
       {label}
       <button

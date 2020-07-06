@@ -97,6 +97,7 @@ func TestSignup(t *testing.T) {
 		assert.Nil(err)
 		assert.Equal(fakeEmail, user.Email)
 		assert.NotEqual(fakePassword, user.Password)
+		assert.NotEmpty(user.DeviceCode)
 
 	})
 

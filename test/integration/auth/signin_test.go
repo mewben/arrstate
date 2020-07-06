@@ -1,17 +1,21 @@
 package auth
 
 import (
+	"context"
 	"log"
 	"os"
 	"testing"
 
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
 
+	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/auth"
 	"github.com/mewben/realty278/pkg/errors"
+	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 )
@@ -45,7 +49,7 @@ func TestSignin(t *testing.T) {
 		helpers.CheckJWT(response["token"].(string), assert)
 	})
 
-	t.Run("It should login using deviceCode", func(t *testing.T) {
+	t.Run("It should login using deviceCode and remove it after", func(t *testing.T) {
 		assert := assert.New(t)
 		// signup
 		req := helpers.DoRequest("POST", "/auth/signup", helpers.SignupFakeData[1], "")
@@ -64,7 +68,19 @@ func TestSignin(t *testing.T) {
 		assert.Nil(err)
 		response, err = helpers.GetResponseMap(res)
 		assert.Nil(err)
-		helpers.CheckJWT(response["token"].(string), assert)
+		userID, _ := helpers.CheckJWT(response["token"].(string), assert)
+
+		// get user
+		filter := bson.D{
+			{
+				Key:   "_id",
+				Value: userID,
+			},
+		}
+		user := &models.UserModel{}
+		err = db.Collection(enums.CollUsers).FindOne(context.TODO(), filter).Decode(&user)
+		assert.Nil(err)
+		assert.Empty(user.DeviceCode)
 
 	})
 

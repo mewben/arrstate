@@ -43,9 +43,13 @@ const SignupForm = () => {
     reset()
     const res = await mutate(formData)
     if (res) {
-      console.log("ree", res.data)
-      authSignIn(res.data.token)
-      navigate("/", { replace: true })
+      const params = new URLSearchParams()
+      params.set("deviceCode", res.data.deviceCode)
+      window.location.assign(
+        `${process.env.GATSBY_HTTP_PROTOCOL}${res.data.domain}.${
+          process.env.GATSBY_DOMAIN
+        }/cb?${params.toString()}`
+      )
     }
   }
 

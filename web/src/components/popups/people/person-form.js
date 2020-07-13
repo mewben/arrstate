@@ -96,36 +96,29 @@ const PersonForm = ({ model, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <Error error={error} />
-
-        <div className="grid grid-cols-6 gap-6 p-6">
-          <div className="col-span-6">
-            <InputGroup label={t("name")}>
-              <BaseTextField
-                name="givenName"
-                className="rounded-none rounded-l-md"
-                placeholder={t("name.givenName")}
-                autoFocus
-              />
-              <BaseTextField
-                name="familyName"
-                className="rounded-none rounded-r-md"
-                placeholder={t("name.familyName")}
-              />
-            </InputGroup>
-            <FieldError name="givenName" />
-          </div>
-          <div className="col-span-6">
-            <SelectField
-              name="role"
-              label={t("role")}
-              options={roleOptions}
-              multiple
+        <div className="grid grid-cols-12 gap-6 p-6">
+          <Error error={error} className="col-span-12" />
+          <InputGroup name="givenName" id="givenName" label={t("name")}>
+            <BaseTextField
+              name="givenName"
+              id="givenName"
+              inputClassName="rounded-none rounded-l-md"
+              placeholder={t("name.givenName")}
+              autoFocus
             />
-          </div>
-          <div className="col-span-6">
-            <TextField name="email" label={t("email")} />
-          </div>
+            <BaseTextField
+              name="familyName"
+              inputClassName="rounded-none rounded-r-md"
+              placeholder={t("name.familyName")}
+            />
+          </InputGroup>
+          <SelectField
+            name="role"
+            label={t("role")}
+            options={roleOptions}
+            multiple
+          />
+          <TextField name="email" label={t("email")} />
           <div className="col-span-6">
             <div className="flex items-center justify-between">
               <SubmitButton>Submit</SubmitButton>

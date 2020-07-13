@@ -3,7 +3,13 @@ import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
 
-import { Form, TextField, SubmitButton } from "@Components/forms"
+import {
+  Form,
+  TextField,
+  NumberField,
+  SubmitButton,
+  DisconnectedInputMask,
+} from "@Components/forms"
 import { Error } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
@@ -13,7 +19,7 @@ import { requestApi } from "@Utils"
 const req = t("errors.required")
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(req),
-  area: Yup.number().min(0),
+  area: Yup.number().min(0).nullable(),
 })
 
 // ------ ProjectForm ------- //
@@ -40,8 +46,6 @@ const ProjectForm = ({ model, onClose }) => {
 
   const onSubmit = async formData => {
     reset()
-    formData.area = +formData.area // convert to number
-
     const res = await save({
       ...model,
       ...formData,
@@ -61,7 +65,7 @@ const ProjectForm = ({ model, onClose }) => {
 
   const initialModel = {
     name: "",
-    area: 0,
+    area: null,
     ...model,
   }
 
@@ -82,13 +86,7 @@ const ProjectForm = ({ model, onClose }) => {
             <TextField name="name" label={t("project.name")} autoFocus />
           </div>
           <div className="col-span-6">
-            <TextField
-              name="area"
-              type="number"
-              label={t("project.area")}
-              step="0.0001"
-              min="0"
-            />
+            <NumberField name="area" label={t("project.area")} min={0} />
           </div>
           <div className="col-span-6">
             <div className="flex items-center justify-between">

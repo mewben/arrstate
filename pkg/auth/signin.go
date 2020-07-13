@@ -85,7 +85,7 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect, err)
 	}
 
-	h.SigninHook(user)
+	go h.SigninHook(user)
 
 	return fiber.Map{"token": token}, nil
 }

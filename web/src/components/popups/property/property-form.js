@@ -5,22 +5,27 @@ import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
 
 import { PROPERTY_TYPES } from "@Enums"
-import { Form, TextField, SelectField, SubmitButton } from "@Components/forms"
+import {
+  Form,
+  TextField,
+  NumberField,
+  SelectField,
+  SubmitButton,
+} from "@Components/forms"
 import { Error, Loading } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
-import { t } from "@Utils/t"
+import { t, req } from "@Utils/t"
 import { useProjectOptions } from "@Hooks"
 import { DrawerHeader } from "@Wrappers/layout"
 import { get, map, values } from "@Utils/lodash"
 import { requestApi } from "@Utils"
 
-const req = t("errors.required")
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(req),
-  type: Yup.string().required(req),
-  area: Yup.number().min(0),
-  price: Yup.number().min(0),
-  priceAddon: Yup.number().min(0),
+  type: Yup.string().required(req).nullable(),
+  area: Yup.number().min(0).nullable(),
+  price: Yup.number().min(0).nullable(),
+  priceAddon: Yup.number().min(0).nullable(),
   // projectID: Yup.mixed().notOneOf([null, undefined], req),
 })
 
@@ -46,12 +51,6 @@ const PropertyForm = ({ model, projectID, onClose }) => {
 
   const onSubmit = async formData => {
     reset()
-
-    // prepare formData
-    formData.area = +formData.area // convert to number
-    formData.price = +formData.price
-    formData.priceAddon = +formData.priceAddon
-
     console.log("formData", formData)
 
     const res = await save({
@@ -75,7 +74,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
     status,
     options: projectOptions,
     error: projectError,
-  } = useProjectOptions(get(model, "projectID", projectID))
+  } = useProjectOptions()
 
   const propertyTypeOptions = React.useMemo(() => {
     return map(values(PROPERTY_TYPES), typ => ({
@@ -94,9 +93,9 @@ const PropertyForm = ({ model, projectID, onClose }) => {
     projectID,
     name: "",
     type: PROPERTY_TYPES.LOT,
-    area: 0,
-    price: 0,
-    priceAddon: 0,
+    area: null,
+    price: null,
+    priceAddon: null,
     ...model,
   }
 
@@ -111,53 +110,28 @@ const PropertyForm = ({ model, projectID, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <Error error={error} />
-        <div className="grid grid-cols-6 gap-6 p-6">
-          <div className="col-span-6">
-            <TextField name="name" label={t("property.name")} autoFocus />
-          </div>
-          <div className="col-span-6">
-            <SelectField
-              name="type"
-              label={t("property.type")}
-              options={propertyTypeOptions}
-            />
-          </div>
-          <div className="col-span-6">
-            <SelectField
-              name="projectID"
-              label={t("property.project")}
-              options={projectOptions}
-            />
-          </div>
-          <div className="col-span-6">
-            <TextField
-              name="area"
-              type="number"
-              label={t("property.area")}
-              step="0.0001"
-              min="0"
-            />
-          </div>
-          <div className="col-span-6">
-            <TextField
-              name="price"
-              type="number"
-              label={t("property.price")}
-              step="0.0001"
-              min="0"
-            />
-          </div>
-          <div className="col-span-6">
-            <TextField
-              name="priceAddon"
-              type="number"
-              label={t("property.priceAddon")}
-              step="0.0001"
-              min="0"
-            />
-          </div>
-          <div className="col-span-6">
+        <div className="grid grid-cols-12 gap-6 p-6">
+          <Error error={error} className="col-span-12" />
+          <TextField name="name" label={t("property.name")} autoFocus />
+          <SelectField
+            name="type"
+            label={t("property.type")}
+            options={propertyTypeOptions}
+            disableClearable
+          />
+          <SelectField
+            name="projectID"
+            label={t("property.project")}
+            options={projectOptions}
+          />
+          <NumberField name="area" label={t("property.area")} min={0} />
+          <NumberField name="price" label={t("property.price")} min={0} />
+          <NumberField
+            name="priceAddon"
+            label={t("property.priceAddon")}
+            min={0}
+          />
+          <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>Submit</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}

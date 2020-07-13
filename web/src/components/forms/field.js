@@ -2,12 +2,6 @@ import React from "react"
 import { useFormContext } from "react-hook-form"
 import { get } from "@Utils/lodash"
 
-export const InputWrapper = ({ children }) => {
-  return (
-    <div className="mt-1 flex relative rounded-md shadow-sm">{children}</div>
-  )
-}
-
 export const FieldLabel = ({ id, label, hint }) => {
   if (!label) {
     return null

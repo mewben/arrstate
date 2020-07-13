@@ -1,13 +1,13 @@
 import React from "react"
 
-import { ReduxProvider, StylesProvider, AuthProvider } from "@Providers"
+import { ReactQueryProvider, StylesProvider, AuthProvider } from "@Providers"
 
 export const wrapRootElement = ({ element }) => {
   return (
-    <ReduxProvider>
+    <ReactQueryProvider>
       <StylesProvider>
         <AuthProvider>{element}</AuthProvider>
       </StylesProvider>
-    </ReduxProvider>
+    </ReactQueryProvider>
   )
 }

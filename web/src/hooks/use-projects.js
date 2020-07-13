@@ -1,7 +1,7 @@
 import React from "react"
 import { useQuery } from "react-query"
 import { requestApi } from "@Utils"
-import { map, sortBy } from "@Utils/lodash"
+import { map, sortBy, keyBy } from "@Utils/lodash"
 
 const fetchProjects = async () => {
   const { data } = await requestApi("/api/projects")
@@ -9,6 +9,7 @@ const fetchProjects = async () => {
 }
 
 const fetchProject = async (_, projectID) => {
+  if (!projectID) return null
   const { data } = await requestApi(`/api/projects/${projectID}`)
   return data
 }
@@ -21,8 +22,22 @@ export const useProject = projectID => {
   return useQuery(["project", projectID], fetchProject)
 }
 
+// export const useProjectsMap = () => {
+//   const { status, data, error, isFetching } = useProjects()
+
+//   const projectsMap = React.useMemo(() => {
+//     return keyBy(data?.list, "_id")
+//   }, [data?.list])
+
+//   return {
+//     status: isFetching ? "loading" : status,
+//     projectsMap,
+//     error,
+//   }
+// }
+
 // returns projectOptions and finds the selected option by projectID
-export const useProjectOptions = projectID => {
+export const useProjectOptions = () => {
   const { status, data, error, isFetching } = useProjects()
 
   const options = React.useMemo(() => {
@@ -33,7 +48,7 @@ export const useProjectOptions = projectID => {
       }
     })
     return sortBy(options, "label")
-  }, [projectID, data?.list])
+  }, [data?.list])
 
   return {
     status: isFetching ? "loading" : status,

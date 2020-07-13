@@ -1,18 +1,21 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { useForm, FormContext } from "react-hook-form"
+import { useForm, FormProvider } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers"
 
 const Form = ({ model, validationSchema, onSubmit, children, ...props }) => {
   const methods = useForm({
     defaultValues: model,
-    validationSchema,
+    resolver: yupResolver(validationSchema),
     ...props,
   })
 
   return (
-    <FormContext {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
-    </FormContext>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
+        {children}
+      </form>
+    </FormProvider>
   )
 }
 

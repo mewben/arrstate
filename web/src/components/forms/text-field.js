@@ -4,25 +4,14 @@ import { useFormContext } from "react-hook-form"
 import cx from "clsx"
 
 import { random } from "@Utils/lodash"
-import { InputWrapper, FieldLabel, FieldError, FieldDescription } from "./field"
-
-export const DisconnectedTextField = ({ type = "text", label, ...props }) => {
-  return (
-    <div>
-      <FieldLabel label={label} />
-      <InputWrapper>
-        <input type={type} {...props} />
-      </InputWrapper>
-    </div>
-  )
-}
+import InputWrapper from "./input-wrapper"
 
 export const BaseTextField = ({
   name,
   id,
   type = "text",
-  className,
-  hasEndAddon,
+  inputClassName,
+  endAddon,
   ...props
 }) => {
   const { register } = useFormContext()
@@ -34,37 +23,21 @@ export const BaseTextField = ({
       ref={register}
       className={cx(
         "form-input relative block w-full bg-transparent focus:z-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5",
-        hasEndAddon ? "rounded-none rounded-l-md" : "",
-        className
+        !!endAddon ? "rounded-none rounded-l-md" : "",
+        inputClassName
       )}
       {...props}
     />
   )
 }
 
-const TextField = ({ name, type, label, description, endAddon, ...props }) => {
+const TextField = ({ name, ...props }) => {
   const id = `${name}.${random(1, 100)}`
 
   return (
-    <div>
-      <FieldLabel id={id} label={label} />
-      <InputWrapper>
-        <BaseTextField
-          id={id}
-          name={name}
-          type={type}
-          hasEndAddon={!!endAddon}
-          {...props}
-        />
-        {!!endAddon && (
-          <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
-            {endAddon}
-          </span>
-        )}
-      </InputWrapper>
-      <FieldDescription description={description} />
-      <FieldError name={name} />
-    </div>
+    <InputWrapper name={name} id={id} {...props}>
+      <BaseTextField name={name} id={id} {...props} />
+    </InputWrapper>
   )
 }
 

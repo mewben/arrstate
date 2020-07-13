@@ -1,10 +1,8 @@
 export { default as Form } from "./form"
-export { InputWrapper, FieldLabel, FieldDescription, FieldError } from "./field"
+export { default as InputWrapper } from "./input-wrapper"
+export { FieldLabel, FieldDescription, FieldError } from "./field"
 export { default as InputGroup } from "./input-group"
 export { default as SubmitButton } from "./submit-button"
-export {
-  default as TextField,
-  BaseTextField,
-  DisconnectedTextField,
-} from "./text-field"
-export { default as SelectField } from "./select-field"
+export { default as TextField, BaseTextField } from "./text-field"
+export { default as NumberField } from "./number-field"
+export { SelectField, PeopleSelectField } from "./select"

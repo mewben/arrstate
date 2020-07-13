@@ -10,8 +10,8 @@ const fetchPeople = async (_, params) => {
   return data
 }
 
-export const usePeople = () => {
-  return useQuery(["people"], fetchPeople)
+export const usePeople = ({ role = [] } = {}) => {
+  return useQuery(["people", { role }], fetchPeople)
 }
 
 export const useClients = () => {

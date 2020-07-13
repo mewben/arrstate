@@ -7,7 +7,6 @@ import { useProperty } from "@Hooks"
 import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
 import { PropertyForm } from "@Components/popups/property"
 import { map } from "@Utils/lodash"
-import { Header } from "./components"
 import PropertyOverview from "./property-overview"
 
 const PropertySingle = ({ propertyID }) => {
@@ -60,7 +59,6 @@ const PropertySingle = ({ propertyID }) => {
           <PropertyForm model={data} />
         </Portal>
       </AppBar>
-      {/* <Header property={data} /> */}
       <Router className="flex-1 overflow-y-scroll pb-28">
         <PropertyOverview path="/" property={data} />
       </Router>

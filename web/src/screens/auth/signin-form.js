@@ -45,20 +45,16 @@ const SigninForm = () => {
         validationSchema={validationSchema}
         model={{ email: "soldio@gmail.com", password: "123456" }}
       >
-        <Error error={error} />
-        <div className="grid grid-cols-6 gap-6">
-          <div className="col-span-6">
-            <TextField
-              name="email"
-              label={t("email")}
-              autoComplete="off"
-              autoFocus
-            />
-          </div>
-          <div className="col-span-6">
-            <TextField name="password" label={t("password")} type="password" />
-          </div>
-          <div className="col-span-6">
+        <div className="grid grid-cols-12 gap-6">
+          <Error error={error} className="col-span-12" />
+          <TextField
+            name="email"
+            label={t("email")}
+            autoComplete="off"
+            autoFocus
+          />
+          <TextField name="password" label={t("password")} type="password" />
+          <div className="col-span-12">
             <SubmitButton size="xl" fullWidth>
               {t("Sign in")}
             </SubmitButton>

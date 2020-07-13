@@ -23,6 +23,7 @@ const List = () => {
           <thead>
             <tr>
               <Th>Name</Th>
+              <Th>Role</Th>
             </tr>
           </thead>
           <tbody className="bg-white">

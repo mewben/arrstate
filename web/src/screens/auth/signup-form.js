@@ -56,42 +56,32 @@ const SignupForm = () => {
   return (
     <div className="mt-6 w-full max-w-sm">
       <Form onSubmit={onSubmit} validationSchema={validationSchema}>
-        <Error error={error} />
-        <div className="grid grid-cols-6 gap-6">
-          <div className="col-span-6">
-            <InputGroup label={t("name")}>
-              <BaseTextField
-                name="givenName"
-                className="rounded-none rounded-l-md"
-                placeholder={t("name.givenName")}
-                autoFocus
-              />
-              <BaseTextField
-                name="familyName"
-                className="rounded-none rounded-r-md"
-                placeholder={t("name.familyName")}
-              />
-            </InputGroup>
-            <FieldError name="givenName" />
-          </div>
-          <div className="col-span-6">
-            <TextField name="business" label={t("business")} />
-          </div>
-          <div className="col-span-6">
-            <TextField
-              name="domain"
-              label={t("domain")}
-              description={t("You can change the name and domain anytime.")}
-              endAddon=".realtydomain.com"
+        <div className="grid grid-cols-12 gap-6">
+          <Error error={error} className="col-span-12" />
+          <InputGroup name="givenName" id="givenName" label={t("name")}>
+            <BaseTextField
+              name="givenName"
+              id="givenName"
+              inputClassName="rounded-none rounded-l-md"
+              placeholder={t("name.givenName")}
+              autoFocus
             />
-          </div>
-          <div className="col-span-6">
-            <TextField name="email" label={t("email")} />
-          </div>
-          <div className="col-span-6">
-            <TextField name="password" type="password" label={t("password")} />
-          </div>
-          <div className="col-span-6">
+            <BaseTextField
+              name="familyName"
+              inputClassName="rounded-none rounded-r-md"
+              placeholder={t("name.familyName")}
+            />
+          </InputGroup>
+          <TextField name="business" label={t("business")} />
+          <TextField
+            name="domain"
+            label={t("domain")}
+            description={t("You can change the name and domain anytime.")}
+            endAddon=".realtydomain.com"
+          />
+          <TextField name="email" label={t("email")} />
+          <TextField name="password" type="password" label={t("password")} />
+          <div className="col-span-12">
             <SubmitButton size="xl" fullWidth>
               {t("Sign up")}
             </SubmitButton>

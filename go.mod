@@ -6,7 +6,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.3.0
 	github.com/gofiber/cors v0.2.1
-	github.com/gofiber/fiber v1.12.1
+	github.com/gofiber/fiber v1.12.4
 	github.com/gofiber/jwt v0.1.1
 	github.com/gofiber/logger v0.2.3
 	github.com/gofiber/recover v0.1.1

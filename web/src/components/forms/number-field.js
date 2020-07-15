@@ -10,13 +10,16 @@ const MaskedNumberInput = ({
   value,
   onChange,
   endAddon,
+  endAddonInline,
+  startAddon,
+  startAddonInline,
   inputClassName,
   max = 9999999,
   ...props
 }) => {
   return (
     <NumberFormat
-      type="number"
+      type="tel"
       onValueChange={({ floatValue }) => onChange(floatValue)}
       value={value}
       thousandSeparator=","

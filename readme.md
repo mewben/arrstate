@@ -23,6 +23,9 @@
 Backend: Go
 Frontend: React (create-react-app)
 
+To connect to mongo shell in docker:
+docker exec -it 8ead3156cf5c mongo "mongodb://root:passwd123@localhost:27017/realtydevdb?authSource=admin"
+
 ## Testing
 
 - To run sequentially:

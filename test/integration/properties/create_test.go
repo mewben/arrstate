@@ -73,6 +73,7 @@ func TestCreateProperty(t *testing.T) {
 		assert.Equal(fakeProjectID, response.ProjectID.Hex())
 		assert.Equal(fakeName, response.Name)
 		assert.Equal(fakeType, response.Type)
+		assert.Equal(enums.StatusAvailable, response.Status)
 		assert.EqualValues(fakeArea, response.Area)
 		assert.EqualValues(fakePrice, response.Price)
 		assert.EqualValues(fakePriceAddon, response.PriceAddon)

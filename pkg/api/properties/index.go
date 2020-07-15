@@ -160,4 +160,30 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		c.Status(200).JSON(response)
 
 	})
+
+	g.Post("/properties/acquire", func(c *fiber.Ctx) {
+		log.Println("properties.acquire")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		payload := &AcquisitionPayload{}
+		if err := c.BodyParser(&payload); err != nil {
+			log.Println("errrbodyparser", err)
+			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
+			return
+		}
+
+		response, err := h.Acquire(payload)
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+	})
 }

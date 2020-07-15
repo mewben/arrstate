@@ -29,7 +29,7 @@ func TestMe(t *testing.T) {
 	t.Run("It should get me details", func(t *testing.T) {
 		assert := assert.New(t)
 		req := helpers.DoRequest("GET", path, nil, token)
-		signupFakeData := helpers.SignupFakeData[0]
+		signupFakeData := helpers.FakeSignup[0]
 
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
@@ -49,7 +49,7 @@ func TestMe(t *testing.T) {
 		assert.NotNil(user)
 		assert.Empty(user.Password)
 		assert.Equal(signupFakeData.Email, user.Email)
-		assert.Equal(enums.AccountStatusPending, user.AccountStatus)
+		assert.Equal(enums.AccountStatusActive, user.AccountStatus)
 		assert.Equal(business.ID, person.BusinessID)
 		assert.Equal(signupFakeData.GivenName, person.GivenName)
 		assert.Equal(signupFakeData.FamilyName, person.FamilyName)

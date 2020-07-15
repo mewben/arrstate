@@ -79,7 +79,7 @@ const SignupForm = () => {
             description={t("You can change the name and domain anytime.")}
             endAddon=".realtydomain.com"
           />
-          <TextField name="email" label={t("email")} />
+          <TextField name="email" type="email" label={t("email")} />
           <TextField name="password" type="password" label={t("password")} />
           <div className="col-span-12">
             <SubmitButton size="xl" fullWidth>

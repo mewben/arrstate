@@ -18,7 +18,13 @@ const (
 	StatusCancelled  = "cancelled"
 	StatusTerminated = "terminated"
 	StatusApproved   = "approved"
+	StatusAvailable  = "available"
+	StatusOnGoing    = "ongoing"
+	StatusAcquired   = "acquired"
 
 	PropertyTypeLot   = "lot"
 	PropertyTypeHouse = "house"
+
+	PaymentSchemeCash        = "cash"
+	PaymentSchemeInstallment = "installment"
 )

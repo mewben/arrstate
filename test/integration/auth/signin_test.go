@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
@@ -33,7 +34,7 @@ func TestSignin(t *testing.T) {
 
 	t.Run("It should return the JWT", func(t *testing.T) {
 		assert := assert.New(t)
-		signupFakeData := helpers.SignupFakeData[0]
+		signupFakeData := helpers.FakeSignup[0]
 		data := fiber.Map{
 			"email":    signupFakeData.Email,
 			"password": signupFakeData.Password,
@@ -52,7 +53,7 @@ func TestSignin(t *testing.T) {
 	t.Run("It should login using deviceCode and remove it after", func(t *testing.T) {
 		assert := assert.New(t)
 		// signup
-		req := helpers.DoRequest("POST", "/auth/signup", helpers.SignupFakeData[1], "")
+		req := helpers.DoRequest("POST", "/auth/signup", helpers.FakeSignup[1], "")
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		response, err := helpers.GetResponseMap(res)
@@ -78,6 +79,8 @@ func TestSignin(t *testing.T) {
 			},
 		}
 		user := &models.UserModel{}
+		// delay to complete go func in deleting the deviceCode
+		time.Sleep(time.Second * 1)
 		err = db.Collection(enums.CollUsers).FindOne(context.TODO(), filter).Decode(&user)
 		assert.Nil(err)
 		assert.Empty(user.DeviceCode)

@@ -17,15 +17,15 @@ import (
 
 // fixture variables - array not slice so we can directly set index
 
-// SignupFakeData -
-var SignupFakeData [2]*auth.SignupPayload
-var project [2]fiber.Map
-var property [2]fiber.Map
-var person [3]fiber.Map
+// FakeSignup -
+var FakeSignup [2]*auth.SignupPayload
+var FakeProject [2]fiber.Map
+var FakeProperty [2]fiber.Map
+var FakePerson [3]fiber.Map
 
 func init() {
 	// business
-	SignupFakeData[0] = &auth.SignupPayload{
+	FakeSignup[0] = &auth.SignupPayload{
 		GivenName:  "testgn",
 		FamilyName: "testfn",
 		Business:   "Test Business",
@@ -33,7 +33,7 @@ func init() {
 		Email:      "test@email.com",
 		Password:   "password",
 	}
-	SignupFakeData[1] = &auth.SignupPayload{
+	FakeSignup[1] = &auth.SignupPayload{
 		GivenName:  "testgn2",
 		FamilyName: "testfn2",
 		Business:   "Test Business2",
@@ -43,17 +43,17 @@ func init() {
 	}
 
 	// people
-	person[0] = fiber.Map{
+	FakePerson[0] = fiber.Map{
 		"email":     "email1@email.com",
 		"role":      []string{enums.RoleAgent},
 		"givenName": "given",
 	}
-	person[1] = fiber.Map{
+	FakePerson[1] = fiber.Map{
 		"email":     "email2@email.com",
 		"role":      []string{enums.RoleClient},
 		"givenName": "given2",
 	}
-	person[2] = fiber.Map{
+	FakePerson[2] = fiber.Map{
 		"email":     "email3@email.com",
 		"role":      []string{enums.RoleClient},
 		"givenName": "given3",
@@ -63,18 +63,18 @@ func init() {
 	address := models.NewAddressModel()
 	address.Country = "PH"
 	address.State = "Bohol"
-	project[0] = fiber.Map{
+	FakeProject[0] = fiber.Map{
 		"name":    "testproject",
 		"address": address,
 		"area":    100.5,
 		"notes":   "Sample Notes",
 	}
-	project[1] = fiber.Map{
+	FakeProject[1] = fiber.Map{
 		"name": "testproject2",
 	}
 
 	// properties
-	property[0] = fiber.Map{
+	FakeProperty[0] = fiber.Map{
 		"name":       "testproperty",
 		"type":       enums.PropertyTypeLot,
 		"area":       1.5,
@@ -82,7 +82,7 @@ func init() {
 		"priceAddon": 114,
 		"notes":      "Sample Notes",
 	}
-	property[1] = fiber.Map{
+	FakeProperty[1] = fiber.Map{
 		"name":  "testproperty2",
 		"type":  enums.PropertyTypeHouse,
 		"area":  2.5,
@@ -117,7 +117,7 @@ func CleanupFixture(db *mongo.Database) {
 
 // SignupFixture -
 func SignupFixture(app *fiber.App, n int) string {
-	req := DoRequest("POST", "/auth/signup", SignupFakeData[n], "")
+	req := DoRequest("POST", "/auth/signup", FakeSignup[n], "")
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test signup", err)
@@ -133,7 +133,7 @@ func SignupFixture(app *fiber.App, n int) string {
 		"deviceCode": response["deviceCode"],
 	}
 	req = DoRequest("POST", "/auth/signin", signinPayload, "")
-	req.Header.Add("origin", "http://test-domain.example.com")
+	req.Header.Add("origin", "http://"+FakeSignup[n].Domain+".example.com")
 	res, err = app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test signup", err)
@@ -165,7 +165,7 @@ func MeFixture(app *fiber.App, token string) *models.MeModel {
 // ProjectFixture -
 func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 
-	req := DoRequest("POST", "/api/projects", project[n], token)
+	req := DoRequest("POST", "/api/projects", FakeProject[n], token)
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test project", err)
@@ -181,7 +181,7 @@ func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 
 // PropertyFixture -
 func PropertyFixture(app *fiber.App, token string, projectID *primitive.ObjectID, n int) *models.PropertyModel {
-	payload := property[n]
+	payload := FakeProperty[n]
 	payload["projectID"] = projectID
 
 	req := DoRequest("POST", "/api/properties", payload, token)
@@ -201,7 +201,7 @@ func PropertyFixture(app *fiber.App, token string, projectID *primitive.ObjectID
 // PersonFixture -
 func PersonFixture(app *fiber.App, token string, n int) *models.PersonModel {
 
-	req := DoRequest("POST", "/api/people", person[n], token)
+	req := DoRequest("POST", "/api/people", FakePerson[n], token)
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err app test people", err)

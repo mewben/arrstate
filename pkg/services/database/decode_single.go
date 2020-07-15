@@ -37,10 +37,6 @@ func DecodeSingle(result *mongo.SingleResult, collectionName string) interface{}
 		result.Decode(&property)
 		return property
 
-	case enums.CollClientProperties:
-		clientproperty := models.NewClientPropertyModel()
-		result.Decode(&clientproperty)
-		return clientproperty
 	}
 
 	return nil

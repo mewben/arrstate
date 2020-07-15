@@ -145,28 +145,4 @@ func Indexes(db *mongo.Database) {
 	if err != nil {
 		log.Fatalln("error project index", err)
 	}
-
-	// ClientProperties
-	_, err = db.Collection(enums.CollClientProperties).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
-		{
-			Keys: bson.D{
-				{
-					Key:   "propertyID",
-					Value: 1,
-				},
-			},
-		},
-		{
-			Keys: bson.D{
-				{
-					Key:   "businessID",
-					Value: 1,
-				},
-			},
-		},
-	})
-	if err != nil {
-		log.Fatalln("error clientproperties index", err)
-	}
-
 }

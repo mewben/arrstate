@@ -33,6 +33,7 @@ func (h *Handler) Create(data *Payload) (*models.PropertyModel, error) {
 	property.ProjectID = data.ProjectID
 	property.Name = data.Name
 	property.Type = data.Type
+	property.Status = enums.StatusAvailable
 	property.Area = data.Area
 	property.Price = data.Price
 	property.PriceAddon = data.PriceAddon

@@ -49,6 +49,7 @@ const SigninForm = () => {
           <Error error={error} className="col-span-12" />
           <TextField
             name="email"
+            type="email"
             label={t("email")}
             autoComplete="off"
             autoFocus

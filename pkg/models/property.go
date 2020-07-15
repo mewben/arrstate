@@ -1,6 +1,22 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+// AcquisitionModel -
+type AcquisitionModel struct {
+	ClientID      *primitive.ObjectID `bson:"clientID" json:"clientID"`
+	AgentID       *primitive.ObjectID `bson:"agentID" json:"agentID"`
+	PaymentScheme string              `bson:"paymentScheme" json:"paymentScheme"`
+	PaymentPeriod string              `bson:"paymentPeriod" json:"paymentPeriod"` // monthly, yearly
+	Terms         int                 `bson:"terms" json:"terms"`                 // 60 months
+	AcquiredAt    *time.Time          `bson:"acquiredAt" json:"acquiredAt"`
+	CompletedAt   *time.Time          `bson:"completedAt" json:"completedAt"`
+	MetaModel     `bson:",inline"`
+}
 
 // PropertyModel -
 type PropertyModel struct {
@@ -14,8 +30,8 @@ type PropertyModel struct {
 	// Extended
 	BaseModel `bson:",inline"`
 	MetaModel `bson:",inline"`
-	// Set on Hooks
-	ClientPropertyID *primitive.ObjectID `bson:"clientPropertyID" json:"clientPropertyID"`
+
+	Acquisition AcquisitionModel `bson:"acquisition" json:"acquisition"`
 }
 
 // NewPropertyModel -

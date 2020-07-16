@@ -78,7 +78,7 @@ func init() {
 		"name":       "testproperty",
 		"type":       enums.PropertyTypeLot,
 		"area":       1.5,
-		"price":      100.5,
+		"price":      100000.5,
 		"priceAddon": 114,
 		"notes":      "Sample Notes",
 	}
@@ -86,7 +86,7 @@ func init() {
 		"name":  "testproperty2",
 		"type":  enums.PropertyTypeHouse,
 		"area":  2.5,
-		"price": 12.3,
+		"price": 120000.3,
 	}
 
 }

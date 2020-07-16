@@ -37,9 +37,13 @@ type ResponseList struct {
 // use a single instance of Validate, it caches struct info
 var validate = validator.New()
 var allowedPropertyTypes []string
+var allowedPaymentSchemes []string
+var allowedPaymentPeriods []string
 
 func init() {
 	allowedPropertyTypes = []string{enums.PropertyTypeLot, enums.PropertyTypeHouse}
+	allowedPaymentSchemes = []string{enums.PaymentSchemeCash, enums.PaymentSchemeInstallment}
+	allowedPaymentPeriods = []string{enums.PaymentPeriodMonthly, enums.PaymentPeriodYearly}
 }
 
 // Routes -

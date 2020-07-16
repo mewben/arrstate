@@ -27,4 +27,7 @@ const (
 
 	PaymentSchemeCash        = "cash"
 	PaymentSchemeInstallment = "installment"
+
+	PaymentPeriodMonthly = "monthly"
+	PaymentPeriodYearly  = "yearly"
 )

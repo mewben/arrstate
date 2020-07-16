@@ -8,31 +8,81 @@ import (
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/utils"
 )
 
 // AcquisitionPayload -
 type AcquisitionPayload struct {
 	PropertyID *primitive.ObjectID `bson:"propertyID" json:"propertyID"`
 	models.AcquisitionModel
+	DownPayment float64 `json:"downPayment"`
 }
 
 // Acquire property
 func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, error) {
-	// Validate payload
+	// 1. Validate Property
 	if data.PropertyID == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundProperty)
+	}
+	foundProperty := h.DB.FindByID(h.Ctx, enums.CollProperties, *data.PropertyID, h.Business.ID)
+	if foundProperty == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundProperty)
+	}
+	property := foundProperty.(*models.PropertyModel)
+	if property.Status != enums.StatusAvailable {
+		return nil, errors.NewHTTPError(errors.ErrPropertyAlreadyTaken)
+	}
+
+	// 2. validate Client
+	if data.ClientID == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+	}
+	foundClient := h.DB.FindByID(h.Ctx, enums.CollPeople, *data.ClientID, h.Business.ID)
+	if foundClient == nil {
+		return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+	}
+
+	// 3. validate Agent
+	if data.AgentID != nil {
+		foundAgent := h.DB.FindByID(h.Ctx, enums.CollPeople, *data.AgentID, h.Business.ID)
+		if foundAgent == nil {
+			return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+		}
+	}
+
+	// 4. validate paymentScheme
+	if !utils.Contains(allowedPaymentSchemes, data.PaymentScheme) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 	}
 
-	// get current document
-	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollProperties, *data.PropertyID, h.Business.ID)
-	if foundOldDoc == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
-	}
-	oldDoc := foundOldDoc.(*models.PropertyModel)
-
 	// prepare acquisition model
+	status := enums.StatusOnGoing
+	updatedAts := fiber.Map{
+		"updatedAt":              "$$NOW",
+		"acquisition.acquiredAt": "$$NOW",
+	}
+	if data.PaymentScheme == enums.PaymentSchemeInstallment {
+		// validate further
+		// 5. validate paymentPeriod
+		if !utils.Contains(allowedPaymentPeriods, data.PaymentPeriod) {
+			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+		}
+		// 6. validate terms
+		if data.Terms <= 0 {
+			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+		}
+		// 7. validate downpayment
+		if data.DownPayment <= 0 {
+			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+		}
+
+	} else if data.PaymentScheme == enums.PaymentSchemeCash {
+		updatedAts["acquisition.completedAt"] = "$$NOW"
+		status = enums.StatusAcquired
+	}
+
 	upd := fiber.Map{
-		"status":      enums.StatusAcquired,
+		"status":      status,
 		"acquisition": data.AcquisitionModel,
 	}
 
@@ -46,16 +96,12 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 		},
 		bson.D{
 			{
-				Key: "$set",
-				Value: fiber.Map{
-					"updatedAt":               "$$NOW",
-					"acquisition.acquiredAt":  "$$NOW",
-					"acquisition.completedAt": "$$NOW",
-				},
+				Key:   "$set",
+				Value: updatedAts,
 			},
 		},
 	}
-	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProperties, oldDoc.ID, op)
+	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProperties, property.ID, op)
 	if doc == nil {
 		return nil, errors.NewHTTPError(errors.ErrUpdate)
 	}
@@ -63,7 +109,7 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 	// hooks,
 	// create invoices
 
-	property := doc.(*models.PropertyModel)
+	property = doc.(*models.PropertyModel)
 
 	return property, nil
 }

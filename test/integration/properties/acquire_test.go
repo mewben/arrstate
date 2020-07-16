@@ -7,16 +7,19 @@ import (
 
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/services"
 	"github.com/mewben/realty278/test/helpers"
 )
 
 func TestAcquireProperty(t *testing.T) {
-	log.Println("-- test create clientproperty --")
+	log.Println("-- test acquire property --")
 	os.Setenv("ENV", "TESTING")
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
@@ -30,11 +33,12 @@ func TestAcquireProperty(t *testing.T) {
 	project2 := helpers.ProjectFixture(app, token2, 0)
 	property1 := helpers.PropertyFixture(app, token1, &project1.ID, 0)
 	property2 := helpers.PropertyFixture(app, token1, &project1.ID, 0)
-	property3 := helpers.PropertyFixture(app, token2, &project2.ID, 0)
+	property3 := helpers.PropertyFixture(app, token1, &project1.ID, 0)
+	property4 := helpers.PropertyFixture(app, token2, &project2.ID, 0)
 	person1 := helpers.PersonFixture(app, token1, 0)
 	person2 := helpers.PersonFixture(app, token1, 1)
-	person3 := helpers.PersonFixture(app, token2, 1)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	// person3 := helpers.PersonFixture(app, token2, 1)
+	// userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should let a client acquire a property in cash", func(t *testing.T) {
 		assert := assert.New(t)
@@ -62,28 +66,211 @@ func TestAcquireProperty(t *testing.T) {
 		assert.NotNil(acquisition.AcquiredAt)
 		assert.Equal(acquisition.AcquiredAt, acquisition.CompletedAt)
 
-		// assert created invoices
+		// TODO: assert created invoices
+		// invoices := make([]*models.InvoiceModel, 0)
+		// cursor, err := db.Collection(enums.CollInvoices).Find(context.TODO(), bson.M{"propertyID": property1.ID})
+		// assert.Nil(err)
+		// err = cursor.All(context.TODO(), &invoices)
+		// assert.Nil(err)
+		// assert.Len(invoices, 1)
+
+		// TODO: assert created agent commissions
+
 	})
 
 	t.Run("It should let a client acquire a property in installment", func(t *testing.T) {
-		// assert := assert.New(t)
+		assert := assert.New(t)
 		data := fiber.Map{
 			"propertyID":    property2.ID,
 			"clientID":      person1.ID,
-			"paymentScheme": enums.PaymentSchemeCash,
+			"paymentScheme": enums.PaymentSchemeInstallment,
+			"paymentPeriod": enums.PaymentPeriodMonthly,
+			"terms":         12, // 12 months
+			"downPayment":   10000,
+		}
+		req := helpers.DoRequest("POST", path, data, token1)
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(200, res.StatusCode, res)
+		ress, err := helpers.GetResponse(res, "property")
+		assert.Nil(err)
+		response := ress.(*models.PropertyModel)
+		assert.Equal(enums.StatusOnGoing, response.Status)
+		// assert acquisition
+		acquisition := response.Acquisition
+		assert.Equal(person1.ID, *acquisition.ClientID)
+		assert.Nil(acquisition.AgentID)
+		assert.Equal(enums.PaymentSchemeInstallment, acquisition.PaymentScheme)
+		assert.Equal(enums.PaymentPeriodMonthly, acquisition.PaymentPeriod)
+		assert.Equal(12, acquisition.Terms)
+		assert.NotNil(acquisition.AcquiredAt)
+		assert.Nil(acquisition.CompletedAt)
+
+		// TODO: assert created invoices
+
+		// TODO: assert agent commissions
+	})
+
+	t.Run("It should validate inputs", func(t *testing.T) {
+		assert := assert.New(t)
+		cases := []struct {
+			err     string
+			payload fiber.Map
+		}{
+			{
+				errors.ErrNotFoundProperty,
+				fiber.Map{
+					"i": 1,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID": "someid",
+					"i":          2,
+				},
+			},
+			{
+				errors.ErrNotFoundProperty,
+				fiber.Map{
+					"propertyID": primitive.NewObjectID(),
+					"i":          3,
+				},
+			},
+			{
+				errors.ErrPropertyAlreadyTaken,
+				fiber.Map{
+					"propertyID": property2.ID,
+					"i":          4,
+				},
+			},
+			{
+				errors.ErrNotFoundPerson,
+				fiber.Map{
+					"propertyID": property3.ID,
+					"i":          5,
+				},
+			},
+			{
+				errors.ErrNotFoundPerson,
+				fiber.Map{
+					"propertyID": property3.ID,
+					"clientID":   primitive.NewObjectID(),
+					"i":          6,
+				},
+			},
+			{
+				errors.ErrNotFoundPerson,
+				fiber.Map{
+					"propertyID": property3.ID,
+					"clientID":   person1.ID,
+					"agentID":    primitive.NewObjectID(),
+					"i":          7,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID":    property3.ID,
+					"clientID":      person1.ID,
+					"agentID":       person2.ID,
+					"paymentScheme": "notcashorinstallment",
+					"i":             8,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID":    property3.ID,
+					"clientID":      person1.ID,
+					"agentID":       person2.ID,
+					"paymentScheme": enums.PaymentSchemeInstallment,
+					"paymentPeriod": "notmonthlyoryearly",
+					"i":             9,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID":    property3.ID,
+					"clientID":      person1.ID,
+					"agentID":       person2.ID,
+					"paymentScheme": enums.PaymentSchemeInstallment,
+					"paymentPeriod": enums.PaymentPeriodMonthly,
+					"terms":         0,
+					"i":             10,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID":    property3.ID,
+					"clientID":      person1.ID,
+					"agentID":       person2.ID,
+					"paymentScheme": enums.PaymentSchemeInstallment,
+					"paymentPeriod": enums.PaymentPeriodMonthly,
+					"terms":         -3,
+					"i":             11,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID":    property3.ID,
+					"clientID":      person1.ID,
+					"agentID":       person2.ID,
+					"paymentScheme": enums.PaymentSchemeInstallment,
+					"paymentPeriod": enums.PaymentPeriodMonthly,
+					"terms":         12,
+					"downPayment":   0,
+					"i":             12,
+				},
+			},
+			{
+				errors.ErrInputInvalid,
+				fiber.Map{
+					"propertyID":    property3.ID,
+					"clientID":      person1.ID,
+					"agentID":       person2.ID,
+					"paymentScheme": enums.PaymentSchemeInstallment,
+					"paymentPeriod": enums.PaymentPeriodMonthly,
+					"terms":         12,
+					"downPayment":   -100,
+					"i":             13,
+				},
+			},
 		}
 
-		log.Println("data", data)
+		for _, item := range cases {
+			req := helpers.DoRequest("POST", path, item.payload, token1)
+			res, err := app.Test(req, -1)
 
+			// assert
+			assert.Nil(err)
+			assert.Equal(400, res.StatusCode, item.payload)
+			response, err := helpers.GetResponseError(res)
+			assert.Nil(err)
+			assert.Equal(services.T(item.err), response.Message, item.payload)
+		}
 	})
 
 	t.Run("Permissions", func(t *testing.T) {
 		t.Run("It should not acquire from another business", func(t *testing.T) {
-			// assert := assert.New(t)
-			log.Println("property3", property3)
-			log.Println("person3", person3)
-			log.Println("userID", userID)
-			log.Println("businessID", businessID)
+			assert := assert.New(t)
+			data := fiber.Map{
+				"propertyID":    property4.ID,
+				"clientID":      person1.ID,
+				"paymentScheme": enums.PaymentSchemeCash,
+				"agentID":       person2.ID,
+			}
+			req := helpers.DoRequest("POST", path, data, token1)
+			res, err := app.Test(req, -1)
+			assert.Nil(err)
+			assert.Equal(400, res.StatusCode, res)
+			response, err := helpers.GetResponseError(res)
+			assert.Nil(err)
+			assert.Equal(services.T(errors.ErrNotFoundProperty), response.Message, response)
+
 		})
 	})
 }

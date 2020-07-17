@@ -8,7 +8,7 @@ import (
 )
 
 // FindOneAndUpdate - returns the document model
-func (s *Service) FindOneAndUpdate(ctx context.Context, collectionName string, filter interface{}, update interface{}, opts ...*options.FindOneAndUpdateOptions) interface{} {
+func (s *Service) FindOneAndUpdate(ctx context.Context, collectionName string, filter interface{}, update interface{}, opts ...*options.FindOneAndUpdateOptions) (interface{}, error) {
 	if len(opts) == 0 {
 		// set to return the updated document
 		opt := options.FindOneAndUpdate().SetReturnDocument(options.After)
@@ -18,7 +18,7 @@ func (s *Service) FindOneAndUpdate(ctx context.Context, collectionName string, f
 
 	if result.Err() != nil {
 		log.Println("findoneandupdate err", result.Err())
-		return nil
+		return nil, result.Err()
 	}
 
 	return DecodeSingle(result, collectionName)

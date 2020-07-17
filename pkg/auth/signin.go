@@ -24,7 +24,7 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 	if data.GrantType == "device_code" && data.DeviceCode != "" {
 		// find user by device_code
 		filter := bson.M{"deviceCode": data.DeviceCode}
-		userFound := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
+		userFound, _ := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
 		if userFound == nil {
 			return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
 		}
@@ -38,7 +38,7 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 
 		// get user by email
 		filter := bson.M{"email": strings.ToLower(data.Email)}
-		userFound := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
+		userFound, _ := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
 		if userFound == nil {
 			return nil, errors.NewHTTPError(errors.ErrSigninIncorrect)
 		}
@@ -58,9 +58,9 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 			Value: domain,
 		},
 	}
-	businessFound := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
-	if businessFound == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFoundBusiness)
+	businessFound, err := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
+	if err != nil {
+		return nil, err
 	}
 	business := businessFound.(*models.BusinessModel)
 
@@ -74,7 +74,7 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 			Value: business.ID,
 		},
 	}
-	personFound := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
+	personFound, _ := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
 	if personFound == nil {
 		return nil, errors.NewHTTPError(errors.ErrUserNotInBusiness)
 	}

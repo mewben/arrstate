@@ -1,4 +1,4 @@
-package properties
+package invoices
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -8,17 +8,18 @@ import (
 	"github.com/mewben/realty278/pkg/models"
 )
 
-// GetOne property
-func (h *Handler) GetOne(id string) (*models.PropertyModel, error) {
+// GetOne invoice
+func (h *Handler) GetOne(id string) (*models.InvoiceModel, error) {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 	}
 
-	doc, err := h.DB.FindByID(h.Ctx, enums.CollProperties, oid, h.Business.ID)
+	doc, err := h.DB.FindByID(h.Ctx, enums.CollInvoices, oid, h.Business.ID)
 	if err != nil {
 		return nil, err
 	}
-	return doc.(*models.PropertyModel), nil
+
+	return doc.(*models.InvoiceModel), nil
 
 }

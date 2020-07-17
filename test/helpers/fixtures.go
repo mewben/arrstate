@@ -18,10 +18,13 @@ import (
 // fixture variables - array not slice so we can directly set index
 
 // FakeSignup -
-var FakeSignup [2]*auth.SignupPayload
-var FakeProject [2]fiber.Map
-var FakeProperty [2]fiber.Map
-var FakePerson [3]fiber.Map
+var (
+	FakeSignup   [2]*auth.SignupPayload
+	FakeProject  [2]fiber.Map
+	FakeProperty [2]fiber.Map
+	FakePerson   [3]fiber.Map
+	FakeInvoice  [2]fiber.Map
+)
 
 func init() {
 	// business
@@ -89,6 +92,13 @@ func init() {
 		"price": 120000.3,
 	}
 
+	// invoices
+	FakeInvoice[0] = fiber.Map{
+		"invoiceSeq": "1",
+		"subTotal":   0,
+		"total":      0,
+	}
+
 }
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyz")
@@ -109,6 +119,8 @@ func CleanupFixture(db *mongo.Database) {
 		enums.CollPeople,
 		enums.CollProjects,
 		enums.CollProperties,
+		enums.CollInvoices,
+		enums.CollBlocks,
 	}
 	for _, col := range collections {
 		db.Collection(col).DeleteMany(context.TODO(), bson.D{})
@@ -193,6 +205,32 @@ func PropertyFixture(app *fiber.App, token string, projectID *primitive.ObjectID
 	response, err := GetResponse(res, "property")
 	if err != nil {
 		log.Fatalln("err get response property", err)
+	}
+
+	return response.(*models.PropertyModel)
+}
+
+// AcquireFixture -
+func AcquireFixture(app *fiber.App, token string) *models.PropertyModel {
+	property := PropertyFixture(app, token, nil, 0)
+	client := PersonFixture(app, token, 0)
+	data := fiber.Map{
+		"propertyID":    property.ID,
+		"clientID":      client.ID,
+		"paymentScheme": enums.PaymentSchemeInstallment,
+		"paymentPeriod": enums.PaymentPeriodMonthly,
+		"terms":         12,
+		"downPayment":   10000,
+	}
+	req := DoRequest("POST", "/api/properties/acquire", data, token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err app test acquire property", err)
+	}
+
+	response, err := GetResponse(res, "property")
+	if err != nil {
+		log.Fatalln("err get response acquire property", err)
 	}
 
 	return response.(*models.PropertyModel)

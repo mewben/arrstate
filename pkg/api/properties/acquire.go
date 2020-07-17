@@ -13,7 +13,7 @@ import (
 
 // AcquisitionPayload -
 type AcquisitionPayload struct {
-	PropertyID *primitive.ObjectID `bson:"propertyID" json:"propertyID"`
+	PropertyID *primitive.ObjectID `json:"propertyID"`
 	models.AcquisitionModel
 	DownPayment float64 `json:"downPayment"`
 }
@@ -24,9 +24,9 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 	if data.PropertyID == nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFoundProperty)
 	}
-	foundProperty := h.DB.FindByID(h.Ctx, enums.CollProperties, *data.PropertyID, h.Business.ID)
-	if foundProperty == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFoundProperty)
+	foundProperty, err := h.DB.FindByID(h.Ctx, enums.CollProperties, *data.PropertyID, h.Business.ID)
+	if err != nil {
+		return nil, err
 	}
 	property := foundProperty.(*models.PropertyModel)
 	if property.Status != enums.StatusAvailable {
@@ -37,16 +37,16 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 	if data.ClientID == nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
 	}
-	foundClient := h.DB.FindByID(h.Ctx, enums.CollPeople, *data.ClientID, h.Business.ID)
-	if foundClient == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+	_, err = h.DB.FindByID(h.Ctx, enums.CollPeople, *data.ClientID, h.Business.ID)
+	if err != nil {
+		return nil, err
 	}
 
 	// 3. validate Agent
 	if data.AgentID != nil {
-		foundAgent := h.DB.FindByID(h.Ctx, enums.CollPeople, *data.AgentID, h.Business.ID)
-		if foundAgent == nil {
-			return nil, errors.NewHTTPError(errors.ErrNotFoundPerson)
+		_, err = h.DB.FindByID(h.Ctx, enums.CollPeople, *data.AgentID, h.Business.ID)
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -101,8 +101,8 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 			},
 		},
 	}
-	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProperties, property.ID, op)
-	if doc == nil {
+	doc, err := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProperties, property.ID, op)
+	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrUpdate)
 	}
 

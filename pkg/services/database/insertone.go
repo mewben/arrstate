@@ -21,7 +21,9 @@ func (s *Service) InsertOne(ctx context.Context, collectionName string, document
 			Value: result.InsertedID,
 		},
 	}
-	doc := s.FindOne(ctx, collectionName, filter)
+	doc, err := s.FindOne(ctx, collectionName, filter)
+
+	// save to cache TODO
 
 	return doc, err
 }

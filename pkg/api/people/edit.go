@@ -25,9 +25,9 @@ func (h *Handler) Edit(data *Payload) (*models.PersonModel, error) {
 	}
 
 	// get current document
-	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollPeople, data.ID, h.Business.ID)
-	if foundOldDoc == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
+	foundOldDoc, err := h.DB.FindByID(h.Ctx, enums.CollPeople, data.ID, h.Business.ID)
+	if err != nil {
+		return nil, err
 	}
 	oldDoc := foundOldDoc.(*models.PersonModel)
 
@@ -58,8 +58,8 @@ func (h *Handler) Edit(data *Payload) (*models.PersonModel, error) {
 		},
 	}
 
-	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollPeople, oldDoc.ID, op)
-	if doc == nil {
+	doc, err := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollPeople, oldDoc.ID, op)
+	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrUpdate)
 	}
 

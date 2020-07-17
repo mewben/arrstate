@@ -27,7 +27,7 @@ func (h *Handler) Create(data *Payload) (*models.UserModel, error) {
 			Value: cleanedEmail,
 		},
 	}
-	userFound := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
+	userFound, _ := h.DB.FindOne(h.Ctx, enums.CollUsers, filter)
 	if userFound != nil {
 		return nil, errors.NewHTTPError(errors.ErrUserDuplicate)
 	}

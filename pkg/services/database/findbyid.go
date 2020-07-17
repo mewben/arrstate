@@ -9,7 +9,7 @@ import (
 
 // FindByID - returns the document model
 // gets from cache first then db
-func (s *Service) FindByID(ctx context.Context, collectionName string, oid, businessID primitive.ObjectID) interface{} {
+func (s *Service) FindByID(ctx context.Context, collectionName string, oid, businessID primitive.ObjectID) (interface{}, error) {
 	// TODO: hit cache first
 
 	filter := bson.D{

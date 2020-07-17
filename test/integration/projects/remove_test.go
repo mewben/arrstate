@@ -54,7 +54,7 @@ func TestRemoveProject(t *testing.T) {
 			assert.Equal(400, res.StatusCode, res)
 			response, err := helpers.GetResponseError(res)
 			assert.Nil(err)
-			assert.Equal(services.T(errors.ErrNotFound), response.Message, response)
+			assert.Equal(services.T(errors.ErrNotFoundProject), response.Message, response)
 		})
 	})
 }

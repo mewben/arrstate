@@ -17,9 +17,9 @@ func (h *Handler) Remove(id string) (fiber.Map, error) {
 	}
 
 	// get current document
-	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollProperties, oid, h.Business.ID)
-	if foundOldDoc == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
+	foundOldDoc, err := h.DB.FindByID(h.Ctx, enums.CollProperties, oid, h.Business.ID)
+	if err != nil {
+		return nil, err
 	}
 	oldDoc := foundOldDoc.(*models.PropertyModel)
 

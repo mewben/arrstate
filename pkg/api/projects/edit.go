@@ -20,8 +20,8 @@ func (h *Handler) Edit(data *Payload) (*models.ProjectModel, error) {
 	}
 
 	// get current document
-	foundOldDoc := h.DB.FindByID(h.Ctx, enums.CollProjects, data.ID, h.Business.ID)
-	if foundOldDoc == nil {
+	foundOldDoc, err := h.DB.FindByID(h.Ctx, enums.CollProjects, data.ID, h.Business.ID)
+	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFound)
 	}
 	oldDoc := foundOldDoc.(*models.ProjectModel)
@@ -49,8 +49,8 @@ func (h *Handler) Edit(data *Payload) (*models.ProjectModel, error) {
 		},
 	}
 
-	doc := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProjects, oldDoc.ID, op)
-	if doc == nil {
+	doc, err := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProjects, oldDoc.ID, op)
+	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrUpdate)
 	}
 

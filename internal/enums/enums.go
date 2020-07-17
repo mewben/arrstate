@@ -2,6 +2,12 @@ package enums
 
 // Enums
 const (
+	EntityBusiness = "business"
+	EntityProject  = "project"
+	EntityPerson   = "person"
+	EntityProperty = "property"
+	EntityInvoice  = "invoice"
+
 	RoleOwner   = "owner"
 	RoleCoOwner = "co-owner"
 	RoleAgent   = "agent"
@@ -30,4 +36,8 @@ const (
 
 	PaymentPeriodMonthly = "monthly"
 	PaymentPeriodYearly  = "yearly"
+
+	InvoiceBlockIntro   = "intro"
+	InvoiceBlockItem    = "item"
+	InvoiceBlockSummary = "summary"
 )

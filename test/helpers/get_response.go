@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber"
+	"github.com/mewben/realty278/pkg/api/invoices"
 	"github.com/mewben/realty278/pkg/api/people"
 	"github.com/mewben/realty278/pkg/api/projects"
 	"github.com/mewben/realty278/pkg/api/properties"
@@ -72,6 +73,8 @@ func GetResponse(res *http.Response, entity string) (interface{}, error) {
 		response = &models.PersonModel{}
 	} else if entity == "people" {
 		response = &people.ResponseList{}
+	} else if entity == "invoices" {
+		response = &invoices.ResponseList{}
 	}
 
 	err = json.Unmarshal(body, &response)

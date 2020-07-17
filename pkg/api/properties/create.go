@@ -23,9 +23,9 @@ func (h *Handler) Create(data *Payload) (*models.PropertyModel, error) {
 
 	// get project if exists
 	if data.ProjectID != nil {
-		foundProject := h.DB.FindByID(h.Ctx, enums.CollProjects, *data.ProjectID, h.Business.ID)
-		if foundProject == nil {
-			return nil, errors.NewHTTPError(errors.ErrNotFoundProject)
+		_, err := h.DB.FindByID(h.Ctx, enums.CollProjects, *data.ProjectID, h.Business.ID)
+		if err != nil {
+			return nil, err
 		}
 	}
 

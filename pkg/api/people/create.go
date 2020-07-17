@@ -29,7 +29,7 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 			Value: h.Business.ID,
 		},
 	}
-	personFound := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
+	personFound, _ := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
 	if personFound != nil {
 		return nil, errors.NewHTTPError(errors.ErrDomainDuplicate)
 	}

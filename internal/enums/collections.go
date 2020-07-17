@@ -8,4 +8,5 @@ const (
 	CollProjects   = "projects"
 	CollProperties = "properties"
 	CollInvoices   = "invoices"
+	CollBlocks     = "blocks"
 )

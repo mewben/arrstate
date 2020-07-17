@@ -27,7 +27,8 @@ func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 			Value: cleanedDomain,
 		},
 	}
-	businessFound := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
+	businessFound, _ := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
+	log.Println("---businessFound:", businessFound)
 	if businessFound != nil {
 		return nil, errors.NewHTTPError(errors.ErrDomainDuplicate)
 	}

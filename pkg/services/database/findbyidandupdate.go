@@ -10,7 +10,7 @@ import (
 
 // FindByIDAndUpdate - returns the document model
 // This is just a little helper to call on FindOneAndUpdate
-func (s *Service) FindByIDAndUpdate(ctx context.Context, collectionName string, oid primitive.ObjectID, update interface{}, opts ...*options.FindOneAndUpdateOptions) interface{} {
+func (s *Service) FindByIDAndUpdate(ctx context.Context, collectionName string, oid primitive.ObjectID, update interface{}, opts ...*options.FindOneAndUpdateOptions) (interface{}, error) {
 
 	filter := bson.D{
 		{

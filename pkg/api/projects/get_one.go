@@ -15,9 +15,9 @@ func (h *Handler) GetOne(id string) (*models.ProjectModel, error) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 	}
 
-	doc := h.DB.FindByID(h.Ctx, enums.CollProjects, oid, h.Business.ID)
-	if doc == nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
+	doc, err := h.DB.FindByID(h.Ctx, enums.CollProjects, oid, h.Business.ID)
+	if err != nil {
+		return nil, err
 	}
 	return doc.(*models.ProjectModel), nil
 }

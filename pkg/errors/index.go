@@ -9,6 +9,7 @@ const (
 	ErrNotFoundProject    = "errors.notFound.project"
 	ErrNotFoundProperty   = "errors.notFound.property"
 	ErrNotFoundPerson     = "errors.notFound.person"
+	ErrNotFoundInvoice    = "errors.notFound.invoice"
 	ErrUserNotInBusiness  = "errors.user.notInBusiness"
 	ErrInputInvalid       = "errors.inputInvalid"
 	ErrDomainDuplicate    = "errors.domain.duplicate"

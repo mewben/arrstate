@@ -10,6 +10,7 @@ const (
 	ErrNotFoundProperty   = "errors.notFound.property"
 	ErrNotFoundPerson     = "errors.notFound.person"
 	ErrNotFoundInvoice    = "errors.notFound.invoice"
+	ErrNotFoundBlock      = "errors.notFound.block"
 	ErrUserNotInBusiness  = "errors.user.notInBusiness"
 	ErrInputInvalid       = "errors.inputInvalid"
 	ErrDomainDuplicate    = "errors.domain.duplicate"
@@ -26,4 +27,7 @@ const (
 
 	// property errors
 	ErrPropertyAlreadyTaken = "errors.property.alreadyTaken"
+
+	// block errors
+	ErrBlockTypeNotAllowed = "errors.blocks.notAllowed"
 )

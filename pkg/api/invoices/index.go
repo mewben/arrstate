@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	validator "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -41,6 +42,9 @@ type ResponseList struct {
 	Total int                    `json:"total"`
 	Data  []*models.InvoiceModel `json:"list"`
 }
+
+// use a single instance of Validate, it caches struct info
+var validate = validator.New()
 
 // Routes -
 func Routes(g *fiber.Group, db *mongo.Database) {

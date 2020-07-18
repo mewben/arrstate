@@ -7,6 +7,8 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 
+	"github.com/mewben/realty278/pkg/api/blocks"
+	"github.com/mewben/realty278/pkg/api/businesses"
 	"github.com/mewben/realty278/pkg/api/invoices"
 	"github.com/mewben/realty278/pkg/api/people"
 	"github.com/mewben/realty278/pkg/api/projects"
@@ -27,10 +29,12 @@ func Routes(app *fiber.App, db *mongo.Database) {
 		AuthScheme:    "Bearer",
 	}))
 
+	businesses.Routes(g, db)
 	users.Routes(g, db)
 	projects.Routes(g, db)
 	properties.Routes(g, db)
 	people.Routes(g, db)
 	invoices.Routes(g, db)
+	blocks.Routes(g, db)
 
 }

@@ -14,6 +14,7 @@ import (
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/realty278/pkg/api/blocks"
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/test/helpers"
 )
@@ -39,7 +40,7 @@ func TestCreateInvoice(t *testing.T) {
 		issueDate := time.Now()
 		dueDate := time.Now().Add(time.Hour * 24)
 
-		blocks := []fiber.Map{
+		blocksData := []fiber.Map{
 			{
 				"type": enums.InvoiceBlockIntro,
 			},
@@ -59,6 +60,9 @@ func TestCreateInvoice(t *testing.T) {
 				"amount":      200,
 				"quantity":    1,
 			},
+			{
+				"type": enums.InvoiceBlockSummary,
+			},
 		}
 
 		data := fiber.Map{
@@ -74,7 +78,7 @@ func TestCreateInvoice(t *testing.T) {
 			"propertyID": property1.ID,
 			"issueDate":  issueDate,
 			"dueDate":    dueDate,
-			"blocks":     blocks,
+			"blocks":     blocksData,
 			"discount":   "10%",
 			"tax":        20, // 20%
 		}
@@ -108,17 +112,21 @@ func TestCreateInvoice(t *testing.T) {
 		assert.Equal(userID, response.CreatedBy)
 		assert.Equal(userID, response.UpdatedBy)
 		assert.False(response.ID.IsZero())
-		assert.Equal(person1.ID, response.From.ID)
+		assert.Equal(person1.ID, *response.From.ID)
 		assert.Equal(enums.EntityPerson, response.From.EntityType)
-		assert.Equal(person2.ID, response.To.ID)
+		assert.Equal(person2.ID, *response.To.ID)
 		assert.Equal(enums.EntityPerson, response.To.EntityType)
-		assert.Equal(project1.ID, response.PropertyID)
-		assert.Equal(property1.ID, response.PropertyID)
-		assert.Equal(issueDate, response.IssueDate)
-		assert.Equal(dueDate, response.DueDate)
-		assert.Len(response.Blocks, 3)
+		assert.Equal(project1.ID, *response.ProjectID)
+		assert.Equal(property1.ID, *response.PropertyID)
+		isd1, _ := time.Parse("02 Jan 06 15:04", issueDate.String())
+		isd2, _ := time.Parse("02 Jan 06 15:04", response.IssueDate.String())
+		assert.Equal(isd1, isd2)
+		isd1, _ = time.Parse("02 Jan 06 15:04", dueDate.String())
+		isd2, _ = time.Parse("02 Jan 06 15:04", response.DueDate.String())
+		assert.Equal(isd1, isd2)
+		assert.Len(response.Blocks, 4)
 		assert.Equal(enums.StatusPending, response.Status)
-		assert.Equal("1", response.InvoiceSeq)
+		assert.Equal("1", response.No)
 		assert.EqualValues(20, response.Tax)
 		assert.EqualValues(81.8, response.TaxAmount)
 		assert.Equal("10%", response.Discount)
@@ -140,7 +148,7 @@ func TestCreateInvoice(t *testing.T) {
 		}
 		blocksCursor, err := db.Collection(enums.CollBlocks).Find(context.TODO(), filter)
 		assert.Nil(err)
-		blocksList := make([]*models.BlockI, 0)
+		blocksList := make([]*blocks.BlockI, 0)
 		err = blocksCursor.All(context.TODO(), &blocksList)
 		assert.Nil(err)
 		log.Println("blocksList", blocksList)

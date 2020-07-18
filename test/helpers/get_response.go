@@ -61,6 +61,8 @@ func GetResponse(res *http.Response, entity string) (interface{}, error) {
 	var response interface{}
 	if entity == "me" {
 		response = &models.MeModel{}
+	} else if entity == "business" {
+		response = &models.BusinessModel{}
 	} else if entity == "project" {
 		response = &models.ProjectModel{}
 	} else if entity == "projects" {
@@ -73,6 +75,8 @@ func GetResponse(res *http.Response, entity string) (interface{}, error) {
 		response = &models.PersonModel{}
 	} else if entity == "people" {
 		response = &people.ResponseList{}
+	} else if entity == "invoice" {
+		response = &models.InvoiceModel{}
 	} else if entity == "invoices" {
 		response = &invoices.ResponseList{}
 	}

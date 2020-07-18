@@ -28,7 +28,6 @@ func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 		},
 	}
 	businessFound, _ := h.DB.FindOne(h.Ctx, enums.CollBusinesses, filter)
-	log.Println("---businessFound:", businessFound)
 	if businessFound != nil {
 		return nil, errors.NewHTTPError(errors.ErrDomainDuplicate)
 	}
@@ -37,6 +36,7 @@ func (h *Handler) Create(data *Payload) (*models.BusinessModel, error) {
 	business := models.NewBusinessModel()
 	business.Name = data.Name
 	business.Domain = cleanedDomain
+	business.Invoices.NextSeq = 1
 	doc, err := h.DB.InsertOne(h.Ctx, enums.CollBusinesses, business)
 	if err != nil || doc == nil {
 		log.Println("insertonerr", err)

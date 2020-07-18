@@ -3,6 +3,7 @@ package database
 import (
 	"go.mongodb.org/mongo-driver/mongo"
 
+	"github.com/gofiber/fiber"
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
@@ -61,6 +62,14 @@ func DecodeSingle(result *mongo.SingleResult, collectionName string) (interface{
 		invoice := models.NewInvoiceModel()
 		result.Decode(&invoice)
 		return invoice, nil
+
+	case enums.CollBlocks:
+		if err != nil {
+			return nil, errors.NewHTTPError(errors.ErrNotFoundBlock)
+		}
+		block := fiber.Map{}
+		result.Decode(&block)
+		return block, nil
 	}
 
 	return nil, errors.NewHTTPError(errors.ErrNotFound)

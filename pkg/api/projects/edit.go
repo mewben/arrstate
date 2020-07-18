@@ -22,7 +22,7 @@ func (h *Handler) Edit(data *Payload) (*models.ProjectModel, error) {
 	// get current document
 	foundOldDoc, err := h.DB.FindByID(h.Ctx, enums.CollProjects, data.ID, h.Business.ID)
 	if err != nil {
-		return nil, errors.NewHTTPError(errors.ErrNotFound)
+		return nil, err
 	}
 	oldDoc := foundOldDoc.(*models.ProjectModel)
 

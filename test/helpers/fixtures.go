@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"math/rand"
+	"time"
 
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/bson"
@@ -94,10 +95,12 @@ func init() {
 
 	// invoices
 	FakeInvoice[0] = fiber.Map{
-		"invoiceSeq": "1",
-		"subTotal":   0,
-		"total":      0,
+		"tax":       12.5,
+		"discount":  "5%",
+		"issueDate": time.Now(),
+		"dueDate":   time.Now().Add(24 * time.Hour),
 	}
+	FakeInvoice[1] = fiber.Map{}
 
 }
 
@@ -238,7 +241,6 @@ func AcquireFixture(app *fiber.App, token string) *models.PropertyModel {
 
 // PersonFixture -
 func PersonFixture(app *fiber.App, token string, n int) *models.PersonModel {
-
 	req := DoRequest("POST", "/api/people", FakePerson[n], token)
 	res, err := app.Test(req, -1)
 	if err != nil {
@@ -251,4 +253,20 @@ func PersonFixture(app *fiber.App, token string, n int) *models.PersonModel {
 	}
 
 	return response.(*models.PersonModel)
+}
+
+// InvoiceFixture -
+func InvoiceFixture(app *fiber.App, token string, n int) *models.InvoiceModel {
+	req := DoRequest("POST", "/api/invoices", FakeInvoice[n], token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err invoice fixture", err)
+	}
+
+	response, err := GetResponse(res, "invoice")
+	if err != nil {
+		log.Fatalln("err get response invoice", err)
+	}
+
+	return response.(*models.InvoiceModel)
 }

@@ -105,11 +105,13 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrUpdate)
 	}
+	property = doc.(*models.PropertyModel)
 
 	// hooks,
 	// create invoices
-
-	property = doc.(*models.PropertyModel)
+	if err := h.AcquireHook(data, property); err != nil {
+		return nil, err
+	}
 
 	return property, nil
 }

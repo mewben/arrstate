@@ -2,7 +2,6 @@ package blocks
 
 import (
 	"context"
-	"encoding/json"
 	"log"
 
 	validator "github.com/go-playground/validator/v10"
@@ -149,13 +148,6 @@ func (block *InvoiceItemBlock) AfterCreate(ctx context.Context, db *database.Ser
 	if err = blocksCursor.All(ctx, &blocks); err != nil {
 		return err
 	}
-
-	j, _ := json.MarshalIndent(blocks, "", "  ")
-	log.Println("currentblocks: ", string(j))
-
-	j, _ = json.MarshalIndent(block, "", "  ")
-	log.Println("thisblock: ", string(j))
-
 	// 3. calculate total invoice amounts by looping through the blocks type=item
 	subTotal := block.Total
 	for _, block := range blocks {

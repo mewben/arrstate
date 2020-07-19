@@ -28,8 +28,12 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 		} else {
 			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 		}
+	} else {
+		invoice.From = &models.FromToModel{
+			ID:         &h.Business.ID,
+			EntityType: enums.EntityBusiness,
+		}
 	}
-	log.Println("2222")
 	// 2. check toID
 	if data.To != nil {
 		if data.To.EntityType == enums.EntityPerson {
@@ -42,7 +46,6 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 		}
 	}
-	log.Println("3333")
 	// 3. check projectID
 	if data.ProjectID != nil {
 		_, err := h.DB.FindByID(h.Ctx, enums.CollProjects, *data.ProjectID, h.Business.ID)

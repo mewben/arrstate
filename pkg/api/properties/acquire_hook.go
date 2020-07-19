@@ -1,34 +1,100 @@
 package properties
 
 import (
+	"fmt"
 	"log"
+	"math"
+	"time"
 
+	"github.com/gofiber/fiber"
+	"github.com/mewben/realty278/internal/enums"
+	"github.com/mewben/realty278/pkg/api/invoices"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/utils"
 )
 
 // AcquireHook -
 // generate invoices
-func (h *Handler) AcquireHook(property *models.PropertyModel, downPayment int64) error {
+func (h *Handler) AcquireHook(acquisition *AcquisitionPayload, property *models.PropertyModel) error {
 	log.Println("acquire hoook")
-	// acquisition := property.Acquisition
-	// invoices := make([]interface{}, 0)
+	invoicesPayload := make([]*invoices.Payload, 0)
+	issueDate := time.Now()
 
-	// if data.PaymentScheme == enums.PaymentSchemeCash {
-	// 	invoice := models.NewInvoiceModel(h.User.ID, h.Business.ID)
-	// 	invoice.ID = primitive.NewObjectID()
-	// 	invoice.Total = downPayment
+	if acquisition.PaymentScheme == enums.PaymentSchemeCash {
+		dueDate := utils.EndOfMonth(issueDate)
+		// create only one invoice
+		invoicesPayload = append(invoicesPayload, &invoices.Payload{
+			DueDate: &dueDate,
+			Blocks: []fiber.Map{
+				{
+					"type":   enums.InvoiceBlockItem,
+					"title":  property.Name + " - Cash",
+					"amount": property.Price,
+				},
+			},
+		})
+	} else if acquisition.PaymentScheme == enums.PaymentSchemeInstallment {
+		// downpayment
+		dueDates := make([]time.Time, acquisition.Terms+1)
 
-	// 	// create invoice items block
+		dueDates[0] = utils.EndOfMonth(issueDate)
+		dueDate := dueDates[0]
 
-	// 	invoices = append(invoices, &models.InvoiceModel{
+		invoicesPayload = append(invoicesPayload, &invoices.Payload{
+			DueDate: &dueDates[0],
+			Blocks: []fiber.Map{
+				{
+					"type":   enums.InvoiceBlockItem,
+					"title":  property.Name + " - Down Payment",
+					"amount": acquisition.DownPayment,
+				},
+			},
+		})
+		// (totalPrice - downPayment) / terms
+		var recurringAmount int64
+		recurringAmount = int64(math.Round(float64(property.Price-acquisition.DownPayment)) / float64(acquisition.Terms))
+		// 12 invoices if terms = 12
+		for i := 1; i <= acquisition.Terms; i++ {
+			dueDates[i] = dueDate.AddDate(0, 0, 1)
+			dueDates[i] = utils.EndOfMonth(dueDates[i])
+			dueDate = dueDates[i]
+			log.Println("dueDate:", dueDate)
+			invoicesPayload = append(invoicesPayload, &invoices.Payload{
+				DueDate: &dueDates[i],
+				Blocks: []fiber.Map{
+					{
+						"type":   enums.InvoiceBlockItem,
+						"title":  fmt.Sprintf("%s %d/%d", property.Name, i, acquisition.Terms),
+						"amount": recurringAmount,
+					},
+				},
+			})
+		}
+		log.Println("dueDates:", dueDates)
+	}
 
-	// 	})
-	// }
-
-	// if (len(invoices) > 0) {
-	// 	_, err := h.DB.InsertMany(h.Ctx, enums.CollInvoices, invoices)
-	// 	return err
-	// }
+	if len(invoicesPayload) > 0 {
+		h := invoices.Handler{
+			Ctx:      h.Ctx,
+			DB:       h.DB,
+			User:     h.User,
+			Business: h.Business,
+		}
+		log.Println("before create invoices")
+		for _, payload := range invoicesPayload {
+			payload.To = &models.FromToModel{
+				ID:         acquisition.ClientID,
+				EntityType: enums.EntityPerson,
+			}
+			payload.ProjectID = property.ProjectID
+			payload.PropertyID = &property.ID
+			payload.IssueDate = &issueDate
+			if _, err := h.Create(payload); err != nil {
+				// TODO: handle rollback
+				return err
+			}
+		}
+	}
 
 	return nil
 

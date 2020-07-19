@@ -1,12 +1,14 @@
 package properties
 
 import (
+	"context"
 	"log"
 	"os"
 	"testing"
 
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/realty278/internal/enums"
@@ -38,7 +40,7 @@ func TestAcquireProperty(t *testing.T) {
 	person1 := helpers.PersonFixture(app, token1, 0)
 	person2 := helpers.PersonFixture(app, token1, 1)
 	// person3 := helpers.PersonFixture(app, token2, 1)
-	// userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should let a client acquire a property in cash", func(t *testing.T) {
 		assert := assert.New(t)
@@ -66,13 +68,17 @@ func TestAcquireProperty(t *testing.T) {
 		assert.NotNil(acquisition.AcquiredAt)
 		assert.Equal(acquisition.AcquiredAt, acquisition.CompletedAt)
 
-		// TODO: assert created invoices
-		// invoices := make([]*models.InvoiceModel, 0)
-		// cursor, err := db.Collection(enums.CollInvoices).Find(context.TODO(), bson.M{"propertyID": property1.ID})
-		// assert.Nil(err)
-		// err = cursor.All(context.TODO(), &invoices)
-		// assert.Nil(err)
-		// assert.Len(invoices, 1)
+		// assert created invoices
+		invoices := make([]*models.InvoiceModel, 0)
+		cursor, err := db.Collection(enums.CollInvoices).Find(context.TODO(), bson.M{"propertyID": property1.ID})
+		assert.Nil(err)
+		err = cursor.All(context.TODO(), &invoices)
+		assert.Nil(err)
+		assert.Len(invoices, 1)
+		invoice := invoices[0]
+		assert.Equal(businessID, *invoice.From.ID)
+		assert.Equal(userID, invoice.CreatedBy)
+		assert.EqualValues(10000050, invoice.Total)
 
 		// TODO: assert created agent commissions
 
@@ -106,8 +112,22 @@ func TestAcquireProperty(t *testing.T) {
 		assert.NotNil(acquisition.AcquiredAt)
 		assert.Nil(acquisition.CompletedAt)
 
-		// TODO: assert created invoices
+		// assert created invoices
+		invoices := make([]*models.InvoiceModel, 0)
+		cursor, err := db.Collection(enums.CollInvoices).Find(context.TODO(), bson.M{"propertyID": property2.ID})
+		assert.Nil(err)
+		err = cursor.All(context.TODO(), &invoices)
+		assert.Nil(err)
+		assert.Len(invoices, 13)
+		invoice := invoices[0]
+		assert.Equal(businessID, *invoice.From.ID)
+		assert.Equal(userID, invoice.CreatedBy)
+		assert.EqualValues(10000, invoice.Total)
 
+		// first recurring payment
+		invoice = invoices[1]
+		assert.EqualValues(832504, invoice.Total)
+		assert.EqualValues(1, 2)
 		// TODO: assert agent commissions
 	})
 

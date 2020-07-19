@@ -4,11 +4,13 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/gofiber/fiber"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/api/blocks"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Create invoice
@@ -74,6 +76,25 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 	// TODO: amounts will be calculated on the blocks hooks
 	invoice.Total = 0
 	invoice.SubTotal = 0
+
+	// prepare blocks
+	if len(data.Blocks) == 0 {
+		data.Blocks = []fiber.Map{
+			{
+				"type": enums.InvoiceBlockIntro,
+			},
+			{
+				"type": enums.InvoiceBlockItem,
+			},
+			{
+				"type": enums.InvoiceBlockSummary,
+			},
+		}
+	} else {
+		// append intro and summary
+		data.Blocks = append([]fiber.Map{{"type": enums.InvoiceBlockIntro}}, data.Blocks...)
+		data.Blocks = append(data.Blocks, fiber.Map{"type": enums.InvoiceBlockSummary})
+	}
 
 	// insert invoice
 	doc, err := h.DB.InsertOne(h.Ctx, enums.CollInvoices, invoice)

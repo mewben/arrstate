@@ -39,9 +39,6 @@ func TestCreateInvoice(t *testing.T) {
 
 		blocksData := []fiber.Map{
 			{
-				"type": enums.InvoiceBlockIntro,
-			},
-			{
 				"type":        enums.InvoiceBlockItem,
 				"title":       "Item A",
 				"description": "Description A",
@@ -56,9 +53,6 @@ func TestCreateInvoice(t *testing.T) {
 				"description": "Description B",
 				"amount":      20000,
 				"quantity":    1,
-			},
-			{
-				"type": enums.InvoiceBlockSummary,
 			},
 		}
 

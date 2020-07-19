@@ -34,7 +34,7 @@ type Payload struct {
 	DueDate    *time.Time          `json:"dueDate"`
 	Blocks     []fiber.Map         `json:"blocks"`
 	Discount   string              `json:"discount"`
-	Tax        float64             `json:"tax"`
+	Tax        int64               `json:"tax"`
 }
 
 // ResponseList -

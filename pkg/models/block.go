@@ -16,13 +16,13 @@ type BlockModel struct {
 type InvoiceItemBlockModel struct {
 	Title          string  `bson:"title" json:"title" validate:"required"`
 	Description    string  `bson:"description" json:"description"`
-	Amount         float64 `bson:"amount" json:"amount" validate:"number,min=0"`
+	Amount         int64   `bson:"amount" json:"amount" validate:"number,min=0"`
 	Quantity       float64 `bson:"quantity" json:"quantity" validate:"number,min=0"`
-	Tax            float64 `bson:"tax" json:"tax" validate:"number,min=0"`
-	TaxAmount      float64 `bson:"taxAmount" json:"taxAmount"`
+	Tax            int64   `bson:"tax" json:"tax" validate:"number,min=0"`
+	TaxAmount      int64   `bson:"taxAmount" json:"taxAmount"`
 	Discount       string  `bson:"discount" json:"discount" validate:"numberOrPercentage"`
-	DiscountAmount float64 `bson:"discountAmount" json:"discountAmount"`
-	Total          float64 `bson:"total" json:"total"`
+	DiscountAmount int64   `bson:"discountAmount" json:"discountAmount"`
+	Total          int64   `bson:"total" json:"total"`
 
 	BlockModel `bson:",inline"`
 }

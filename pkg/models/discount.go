@@ -6,5 +6,5 @@ type DiscountModel struct {
 	// Value amount or percentage, TODO: createValidation
 	Value string `bson:"value" json:"value"`
 	// Amount computed from Value
-	Amount float64 `bson:"amount" json:"amount" validate:"number,min=0"`
+	Amount int64 `bson:"amount" json:"amount" validate:"number,min=0"`
 }

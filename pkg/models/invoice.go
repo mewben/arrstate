@@ -17,14 +17,14 @@ type InvoiceModel struct {
 	No             string               `bson:"no" json:"no"` // some sequence or edited
 	Status         string               `bson:"status" json:"status"`
 	Blocks         []primitive.ObjectID `bson:"blocks" json:"blocks"`
-	Tax            float64              `bson:"tax" json:"tax" validate:"number,min=0"`
-	TaxAmount      float64              `bson:"taxAmount" json:"taxAmount"`
+	Tax            int64                `bson:"tax" json:"tax" validate:"number,min=0"`
+	TaxAmount      int64                `bson:"taxAmount" json:"taxAmount"`
 	Discount       string               `bson:"discount" json:"discount"`
-	DiscountAmount float64              `bson:"discountAmount" json:"discountAmount"`
-	SubTotal       float64              `bson:"subTotal" json:"subTotal" validate:"number,min=0"`
-	// TotalDiscount  float64              `bson:"totalDiscount" json:"totalDiscount" validate:"number,min=0"`
-	// TotalTax       float64              `bson:"totalTax" json:"totalTax" validate:"number,min=0"`
-	Total       float64    `bson:"total" json:"total" validate:"required,number,min=0"`
+	DiscountAmount int64                `bson:"discountAmount" json:"discountAmount"`
+	SubTotal       int64                `bson:"subTotal" json:"subTotal" validate:"number,min=0"`
+	// TotalDiscount  int64              `bson:"totalDiscount" json:"totalDiscount" validate:"number,min=0"`
+	// TotalTax       int64              `bson:"totalTax" json:"totalTax" validate:"number,min=0"`
+	Total       int64      `bson:"total" json:"total" validate:"required,number,min=0"`
 	IssueDate   *time.Time `bson:"issueDate" json:"issueDate"`
 	DueDate     *time.Time `bson:"dueDate" json:"dueDate"`
 	PaidAt      *time.Time `bson:"paidAt" json:"paidAt"`

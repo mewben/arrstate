@@ -82,20 +82,20 @@ func init() {
 		"name":       "testproperty",
 		"type":       enums.PropertyTypeLot,
 		"area":       1.5,
-		"price":      100000.5,
-		"priceAddon": 114,
+		"price":      10000050,
+		"priceAddon": 11400,
 		"notes":      "Sample Notes",
 	}
 	FakeProperty[1] = fiber.Map{
 		"name":  "testproperty2",
 		"type":  enums.PropertyTypeHouse,
 		"area":  2.5,
-		"price": 120000.3,
+		"price": 12000030,
 	}
 
 	// invoices
 	FakeInvoice[0] = fiber.Map{
-		"tax":       12.5,
+		"tax":       1250,
 		"discount":  "5%",
 		"issueDate": time.Now(),
 		"dueDate":   time.Now().Add(24 * time.Hour),

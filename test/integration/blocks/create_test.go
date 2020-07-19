@@ -60,9 +60,9 @@ func TestCreateBlock(t *testing.T) {
 		assert := assert.New(t)
 		fakeTitle := "Item A"
 		fakeDescription := "Description A"
-		fakeAmount := 100
+		fakeAmount := 10000
 		fakeQuantity := 2
-		fakeTax := 10
+		fakeTax := 1000
 		fakeDiscount := "5%"
 		data := fiber.Map{
 			"type":        enums.InvoiceBlockItem,
@@ -99,9 +99,9 @@ func TestCreateBlock(t *testing.T) {
 		assert.EqualValues(fakeQuantity, response.Quantity)
 		assert.EqualValues(fakeTax, response.Tax)
 		assert.Equal(fakeDiscount, response.Discount)
-		assert.EqualValues(20, response.TaxAmount)
-		assert.EqualValues(11, response.DiscountAmount)
-		assert.EqualValues(209, response.Total)
+		assert.EqualValues(2000, response.TaxAmount)
+		assert.EqualValues(1100, response.DiscountAmount)
+		assert.EqualValues(20900, response.Total)
 	})
 
 }

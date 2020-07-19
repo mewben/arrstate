@@ -79,7 +79,7 @@ func (block *InvoiceItemBlock) Prepare(ctx context.Context, db *database.Service
 	if block.Quantity == 0 {
 		block.Quantity = 1
 	}
-	block.TaxAmount, block.DiscountAmount, block.Total, err = utils.CalculateItem(block.Amount, block.Quantity, block.Tax, block.Discount)
+	block.TaxAmount, block.DiscountAmount, block.Total, err = utils.CalculateItem(block.Amount, block.Tax, block.Quantity, block.Discount)
 	if err != nil {
 		return err
 	}
@@ -160,13 +160,13 @@ func (block *InvoiceItemBlock) AfterCreate(ctx context.Context, db *database.Ser
 	subTotal := block.Total
 	for _, block := range blocks {
 		if block["type"].(string) == enums.InvoiceBlockItem {
-			subTotal += block["total"].(float64)
+			subTotal += block["total"].(int64)
 		}
 	}
 
 	log.Println("subTotal", subTotal)
 
-	taxAmount, discountAmount, total, err := utils.CalculateItem(subTotal, 1, invoice.Tax, invoice.Discount)
+	taxAmount, discountAmount, total, err := utils.CalculateItem(subTotal, invoice.Tax, 1, invoice.Discount)
 	if err != nil {
 		return err
 	}

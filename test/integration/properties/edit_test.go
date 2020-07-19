@@ -39,8 +39,8 @@ func TestEditProperty(t *testing.T) {
 		updName := "edit"
 		updType := enums.PropertyTypeHouse
 		updArea := 12.5
-		updPrice := 100.5
-		updPriceAddon := 15.3
+		updPrice := 10050
+		updPriceAddon := 1530
 		updNotes := "edit notes"
 		data := fiber.Map{
 			"_id":        property1.ID,

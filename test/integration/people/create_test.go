@@ -36,7 +36,7 @@ func TestCreatePerson(t *testing.T) {
 		fakeAddress.Country = "PH"
 		fakeAddress.State = "Bohol"
 		fakeNotes := "Sample Notes"
-		fakeCommissionPerc := 43.2
+		fakeCommissionPerc := 4320
 		fakeCustom := fiber.Map{
 			"tin":     "tinno",
 			"contact": "contact",

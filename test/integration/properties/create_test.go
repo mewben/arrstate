@@ -37,8 +37,8 @@ func TestCreateProperty(t *testing.T) {
 		fakeName := "Fake property"
 		fakeType := enums.PropertyTypeLot
 		fakeArea := 53.5
-		fakePrice := 100.5
-		fakePriceAddon := 10.1
+		fakePrice := 10050
+		fakePriceAddon := 10100
 		fakeNotes := "Sample Notes"
 		fakeImages := []*models.ImageModel{
 			{
@@ -88,9 +88,9 @@ func TestCreateProperty(t *testing.T) {
 	t.Run("It should create property without projectID", func(t *testing.T) {
 		assert := assert.New(t)
 		fakeName := "Fake property2"
-		fakeArea := 53.5
-		fakePrice := 100.5
-		fakePriceAddon := 10.1
+		fakeArea := 5350
+		fakePrice := 10050
+		fakePriceAddon := 1010
 		fakeNotes := "Sample Notes"
 		fakeImages := []*models.ImageModel{
 			{
@@ -212,7 +212,7 @@ func TestCreateProperty(t *testing.T) {
 					"projectID":  projectID,
 					"name":       "testproperty",
 					"area":       100.5,
-					"price":      100.9,
+					"price":      10090,
 					"priceAddon": -40.5,
 					"i":          9,
 				},
@@ -224,8 +224,8 @@ func TestCreateProperty(t *testing.T) {
 					"name":       "testproperty",
 					"type":       enums.PropertyTypeHouse,
 					"area":       100.5,
-					"price":      100.9,
-					"priceAddon": 40.5,
+					"price":      10090,
+					"priceAddon": 4050,
 					"i":          10,
 				},
 			},
@@ -236,8 +236,8 @@ func TestCreateProperty(t *testing.T) {
 					"name":       "testproperty",
 					"type":       "",
 					"area":       100.5,
-					"price":      100.9,
-					"priceAddon": 40.5,
+					"price":      10090,
+					"priceAddon": 4050,
 					"i":          11,
 				},
 			},
@@ -248,8 +248,8 @@ func TestCreateProperty(t *testing.T) {
 					"name":       "testproperty",
 					"type":       "someunknowntype",
 					"area":       100.5,
-					"price":      100.9,
-					"priceAddon": 40.5,
+					"price":      10090,
+					"priceAddon": 4050,
 					"i":          12,
 				},
 			},

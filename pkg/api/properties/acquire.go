@@ -15,7 +15,7 @@ import (
 type AcquisitionPayload struct {
 	PropertyID *primitive.ObjectID `json:"propertyID"`
 	models.AcquisitionModel
-	DownPayment float64 `json:"downPayment"`
+	DownPayment int64 `json:"downPayment"`
 }
 
 // Acquire property

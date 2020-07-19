@@ -8,7 +8,7 @@ import (
 
 // AcquireHook -
 // generate invoices
-func (h *Handler) AcquireHook(property *models.PropertyModel, downPayment float64) error {
+func (h *Handler) AcquireHook(property *models.PropertyModel, downPayment int64) error {
 	log.Println("acquire hoook")
 	// acquisition := property.Acquisition
 	// invoices := make([]interface{}, 0)

@@ -1,8 +1,6 @@
 package blocks
 
 import (
-	"log"
-
 	"github.com/gofiber/fiber"
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
@@ -36,15 +34,12 @@ func (h *Handler) Prepare(data fiber.Map) (BlockI, error) {
 		return nil, errors.NewHTTPError(errors.ErrBlockTypeNotAllowed)
 	}
 
-	log.Println("before decode")
 	// decode and validate blockType
 	block, err := h.Decode(data)
 	if err != nil {
 		return nil, err
 	}
-	log.Println("after decode", err)
 	err = block.Prepare(h.Ctx, h.DB)
-	log.Println("after block.prepare", err)
 	return block, err
 
 }

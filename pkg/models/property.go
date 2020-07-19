@@ -24,8 +24,8 @@ type PropertyModel struct {
 	Name       string              `bson:"name" json:"name" validate:"required"`
 	Type       string              `bson:"type" json:"type" validate:"required"`
 	Area       float64             `bson:"area" json:"area" validate:"number,min=0"`
-	Price      float64             `bson:"price" json:"price" validate:"number,min=0"`
-	PriceAddon float64             `bson:"priceAddon" json:"priceAddon" validate:"number,min=0"`
+	Price      int64               `bson:"price" json:"price" validate:"number,min=0"`
+	PriceAddon int64               `bson:"priceAddon" json:"priceAddon" validate:"number,min=0"`
 	Status     string              `bson:"status" json:"status"`
 	// Extended
 	BaseModel `bson:",inline"`

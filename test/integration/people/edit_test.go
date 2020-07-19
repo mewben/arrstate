@@ -42,7 +42,7 @@ func TestEditPerson(t *testing.T) {
 		updAddress.Country = "US"
 		updAddress.State = "Ohio"
 		updNotes := "Edit notes"
-		updCommissionPerc := 14.5
+		updCommissionPerc := 1450 // 14.5%
 		updCustom := fiber.Map{
 			"tin":     "editin",
 			"contact": "editcontact",

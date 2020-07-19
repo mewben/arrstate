@@ -13,7 +13,7 @@ type PersonModel struct {
 	Email          string              `bson:"email" json:"email" validate:"email,required"`
 	GivenName      string              `bson:"givenName" json:"givenName" validate:"required"`
 	FamilyName     string              `bson:"familyName" json:"familyName"`
-	CommissionPerc float64             `bson:"commissionPerc" json:"commissionPerc" validate:"number,min=0"`
+	CommissionPerc int64               `bson:"commissionPerc" json:"commissionPerc" validate:"number,min=0"`
 	CustomFields   fiber.Map           `bson:"customFields" json:"customFields"`
 	Address        AddressModel        `bson:"address" json:"address"`
 	// Extended

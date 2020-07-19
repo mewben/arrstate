@@ -1,7 +1,6 @@
 package invoices
 
 import (
-	"context"
 	"log"
 	"os"
 	"testing"
@@ -9,12 +8,10 @@ import (
 
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
-	"github.com/mewben/realty278/pkg/api/blocks"
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/test/helpers"
 )
@@ -48,16 +45,16 @@ func TestCreateInvoice(t *testing.T) {
 				"type":        enums.InvoiceBlockItem,
 				"title":       "Item A",
 				"description": "Description A",
-				"amount":      100,
+				"amount":      10000,
 				"quantity":    2,
-				"tax":         10, // 10%,
+				"tax":         1000, // 10%,
 				"discount":    "5%",
 			},
 			{
 				"type":        enums.InvoiceBlockItem,
 				"title":       "Item B",
 				"description": "Description B",
-				"amount":      200,
+				"amount":      20000,
 				"quantity":    1,
 			},
 			{
@@ -80,7 +77,7 @@ func TestCreateInvoice(t *testing.T) {
 			"dueDate":    dueDate,
 			"blocks":     blocksData,
 			"discount":   "10%",
-			"tax":        20, // 20%
+			"tax":        2000, // 20%
 		}
 
 		// computations block
@@ -92,6 +89,13 @@ func TestCreateInvoice(t *testing.T) {
 		// 200+20 = 220
 		// 220 * 0.05 = 11 // discount
 		// total = 220 - 11 = 209
+
+		// Using int
+		// 10000*2 = 20,000
+		// 20,000*1000/10000 = 2,000 // tax
+		// 20,000+2,000 = 22,000
+		// 22,000 * 500/10000 = 1,100 // discount
+		// total = 22,000 - 1,100 = 20,900
 
 		// computations summary
 		// subTotal = 409
@@ -127,31 +131,12 @@ func TestCreateInvoice(t *testing.T) {
 		assert.Len(response.Blocks, 4)
 		assert.Equal(enums.StatusPending, response.Status)
 		assert.Equal("1", response.No)
-		assert.EqualValues(20, response.Tax)
-		assert.EqualValues(81.8, response.TaxAmount)
+		assert.EqualValues(2000, response.Tax)
+		assert.EqualValues(8180, response.TaxAmount)
 		assert.Equal("10%", response.Discount)
-		assert.EqualValues(49.08, response.DiscountAmount)
-		assert.EqualValues(409, response.SubTotal)
-		assert.EqualValues(441.72, response.Total)
-
-		// assert blocks
-		filter := bson.D{
-			{
-				Key: "_id",
-				Value: bson.D{
-					{
-						Key:   "$in",
-						Value: response.Blocks,
-					},
-				},
-			},
-		}
-		blocksCursor, err := db.Collection(enums.CollBlocks).Find(context.TODO(), filter)
-		assert.Nil(err)
-		blocksList := make([]*blocks.BlockI, 0)
-		err = blocksCursor.All(context.TODO(), &blocksList)
-		assert.Nil(err)
-		log.Println("blocksList", blocksList)
+		assert.EqualValues(4908, response.DiscountAmount)
+		assert.EqualValues(40900, response.SubTotal)
+		assert.EqualValues(44172, response.Total)
 	})
 
 	t.Run("It should create invoice with provided blocks", func(t *testing.T) {

@@ -1,3 +1,5 @@
 export { PrivateWrapper } from "./private"
 export { LayoutWrapper } from "./layout"
 export { PersonWrapper } from "./person"
+export { ProjectWrapper } from "./project"
+export { PropertyWrapper } from "./property"

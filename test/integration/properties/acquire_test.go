@@ -79,6 +79,7 @@ func TestAcquireProperty(t *testing.T) {
 		assert.Equal(businessID, *invoice.From.ID)
 		assert.Equal(userID, invoice.CreatedBy)
 		assert.EqualValues(10000050, invoice.Total)
+		assert.EqualValues("1", invoice.No)
 
 		// TODO: assert created agent commissions
 
@@ -123,10 +124,16 @@ func TestAcquireProperty(t *testing.T) {
 		assert.Equal(businessID, *invoice.From.ID)
 		assert.Equal(userID, invoice.CreatedBy)
 		assert.EqualValues(10000, invoice.Total)
+		assert.EqualValues("2", invoice.No)
 
 		// first recurring payment
 		invoice = invoices[1]
 		assert.EqualValues(832504, invoice.Total)
+		assert.EqualValues("3", invoice.No)
+
+		invoice = invoices[12]
+		assert.EqualValues(832504, invoice.Total)
+		assert.EqualValues("13", invoice.No)
 		// TODO: assert agent commissions
 	})
 

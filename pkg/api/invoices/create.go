@@ -107,7 +107,6 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 	}
 	invoice = doc.(*models.InvoiceModel)
 
-	// TODO: create blocks
 	blocksHandler := blocks.Handler{
 		DB:       h.DB,
 		Ctx:      h.Ctx,
@@ -116,6 +115,11 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 	}
 	if err := blocksHandler.CreateDefaultEntityBlocks(enums.EntityInvoice, invoice.ID, data.Blocks); err != nil {
 		log.Println("err createdefaultentityblocks", err)
+		return nil, err
+	}
+
+	// AfterCreate hook
+	if err := h.CreateHook(invoice); err != nil {
 		return nil, err
 	}
 

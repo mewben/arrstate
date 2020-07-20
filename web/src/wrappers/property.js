@@ -1,16 +1,16 @@
 import React from "react"
 
-import { usePerson } from "@Hooks"
+import { useProperty } from "@Hooks"
 import { Loading, Error } from "@Components/generic"
 
-export const PersonWrapper = ({ personID, children }) => {
-  const { status, data, error } = usePerson(personID)
+export const PropertyWrapper = ({ propertyID, children }) => {
+  const { status, data, error } = useProperty(propertyID)
 
   return status === "loading" ? (
     <Loading />
   ) : status === "error" || !data ? (
     <Error error={error} />
   ) : (
-    children({ person: data })
+    children({ property: data })
   )
 }

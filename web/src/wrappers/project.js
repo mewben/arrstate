@@ -1,16 +1,16 @@
 import React from "react"
 
-import { usePerson } from "@Hooks"
+import { useProject } from "@Hooks"
 import { Loading, Error } from "@Components/generic"
 
-export const PersonWrapper = ({ personID, children }) => {
-  const { status, data, error } = usePerson(personID)
+export const ProjectWrapper = ({ projectID, children }) => {
+  const { status, data, error } = useProject(projectID)
 
   return status === "loading" ? (
     <Loading />
   ) : status === "error" || !data ? (
     <Error error={error} />
   ) : (
-    children({ person: data })
+    children({ project: data })
   )
 }

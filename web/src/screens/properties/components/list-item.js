@@ -2,10 +2,10 @@ import React from "react"
 import { Link } from "gatsby"
 import acc from "accounting"
 
-import { useProject } from "@Hooks"
 import { Td } from "@Components/generic"
 import { t } from "@Utils/t"
 import { fromMoney } from "@Utils/money"
+import { ProjectWrapper } from "@Wrappers"
 import Status from "./status"
 
 // Properties listitem
@@ -24,7 +24,22 @@ const ListItem = ({ item, projectID }) => {
         <span>{t(`${item.type}`)}</span>
       </Td>
       {!projectID && (
-        <Td>{!!item.projectID && <Project id={item.projectID} />}</Td>
+        <Td>
+          {!!item.projectID && (
+            <ProjectWrapper projectID={item.projectID}>
+              {({ project }) => {
+                return (
+                  <Link
+                    to={`/projects/${project._id}`}
+                    className="text-gray-700 hover:text-blue-500"
+                  >
+                    {project.name}
+                  </Link>
+                )
+              }}
+            </ProjectWrapper>
+          )}
+        </Td>
       )}
       <Td align="right">{acc.formatNumber(item.area, 2)}</Td>
       <Td align="right">{acc.formatNumber(fromMoney(item.price), 2)}</Td>
@@ -33,16 +48,6 @@ const ListItem = ({ item, projectID }) => {
         <Status status={item.status} />
       </Td>
     </tr>
-  )
-}
-
-const Project = ({ id }) => {
-  const { status, data } = useProject(id)
-  if (status !== "success") return null
-  return (
-    <Link to={`/projects/${id}`} className="text-gray-700 hover:text-blue-500">
-      {data.name}
-    </Link>
   )
 }
 

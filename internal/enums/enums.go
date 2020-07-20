@@ -27,6 +27,8 @@ const (
 	StatusAvailable  = "available"
 	StatusOnGoing    = "ongoing"
 	StatusAcquired   = "acquired"
+	StatusDraft      = "draft"
+	StatusOverdue    = "overdue"
 
 	PropertyTypeLot   = "lot"
 	PropertyTypeHouse = "house"

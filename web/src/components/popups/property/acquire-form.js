@@ -182,7 +182,7 @@ const InstallmentForm = ({ paymentPeriodOptions }) => {
         name="terms"
         label={t("terms")}
         endAddonInline={t(
-          paymentPeriod === PAYMENT_PERIODS.MONTHLY ? "months" : "years"
+          paymentPeriod === PAYMENT_PERIODS.YEARLY ? "years" : "months"
         )}
         inputClassName="pr-16"
       />
@@ -192,6 +192,7 @@ const InstallmentForm = ({ paymentPeriodOptions }) => {
         startAddonInline="Php"
         placeholder="0.00"
         inputClassName="pl-12"
+        isMoney
       />
     </>
   )

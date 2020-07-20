@@ -57,6 +57,7 @@ func TestCreateInvoice(t *testing.T) {
 		}
 
 		data := fiber.Map{
+			"name": "Invoice 1",
 			"from": fiber.Map{
 				"_id":        person1.ID,
 				"entityType": enums.EntityPerson,
@@ -110,6 +111,7 @@ func TestCreateInvoice(t *testing.T) {
 		assert.Equal(userID, response.CreatedBy)
 		assert.Equal(userID, response.UpdatedBy)
 		assert.False(response.ID.IsZero())
+		assert.Equal(enums.StatusDraft, response.Status)
 		assert.Equal(person1.ID, *response.From.ID)
 		assert.Equal(enums.EntityPerson, response.From.EntityType)
 		assert.Equal(person2.ID, *response.To.ID)
@@ -123,8 +125,9 @@ func TestCreateInvoice(t *testing.T) {
 		isd2, _ = time.Parse("02 Jan 06 15:04", response.DueDate.String())
 		assert.Equal(isd1, isd2)
 		assert.Len(response.Blocks, 4)
-		assert.Equal(enums.StatusPending, response.Status)
-		assert.Equal("1", response.No)
+		assert.Equal(enums.StatusDraft, response.Status)
+		assert.Equal("Invoice 1", response.Name)
+		assert.EqualValues(1, response.No)
 		assert.EqualValues(2000, response.Tax)
 		assert.EqualValues(8180, response.TaxAmount)
 		assert.Equal("10%", response.Discount)

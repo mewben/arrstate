@@ -10,11 +10,12 @@ import (
 // For the payment schedules of the client
 // This should be auto generated when attaching a client to a property
 type InvoiceModel struct {
+	Name           string               `bson:"name" json:"name"`
 	From           *FromToModel         `bson:"from" json:"from"`
 	To             *FromToModel         `bson:"to" json:"to"`
 	ProjectID      *primitive.ObjectID  `bson:"projectID" json:"projectID"`
 	PropertyID     *primitive.ObjectID  `bson:"propertyID" json:"propertyID"`
-	No             string               `bson:"no" json:"no"` // some sequence or edited
+	No             int                  `bson:"no" json:"no"` // some sequence or edited
 	Status         string               `bson:"status" json:"status"`
 	Blocks         []primitive.ObjectID `bson:"blocks" json:"blocks"`
 	Tax            int64                `bson:"tax" json:"tax" validate:"number,min=0"`

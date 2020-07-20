@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
+	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/pkg/services/database"
@@ -26,6 +27,8 @@ type Handler struct {
 
 // Payload -
 type Payload struct {
+	Name       string              `json:"name"`
+	Status     string              `json:"status"`
 	From       *models.FromToModel `json:"from"`
 	To         *models.FromToModel `json:"to"`
 	ProjectID  *primitive.ObjectID `json:"projectID"`
@@ -45,6 +48,11 @@ type ResponseList struct {
 
 // use a single instance of Validate, it caches struct info
 var validate = validator.New()
+var allowedStatuses []string
+
+func init() {
+	allowedStatuses = []string{enums.StatusDraft, enums.StatusPending, enums.StatusOverdue, enums.StatusPaid}
+}
 
 // Routes -
 func Routes(g *fiber.Group, db *mongo.Database) {
@@ -107,7 +115,6 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		}
 
 		response, err := h.Create(payload)
-		log.Println("aferecreate")
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)

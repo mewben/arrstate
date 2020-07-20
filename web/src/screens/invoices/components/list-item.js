@@ -20,10 +20,10 @@ const ListItem = ({ item, propertyID }) => {
           to={`/invoices/${item._id}`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"
         >
-          {item.no}
+          {item.name}
         </Link>
       </Td>
-      {!propertyID && (
+      {!!propertyID && (
         <Td>
           {!!item.propertyID && (
             <PropertyWrapper propertyID={item.propertyID}>

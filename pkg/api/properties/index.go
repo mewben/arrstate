@@ -109,7 +109,6 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		}
 
 		response, err := h.Create(payload)
-		log.Println("aferecreate")
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)

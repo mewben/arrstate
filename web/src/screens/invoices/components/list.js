@@ -13,8 +13,8 @@ const List = ({ propertyID }) => {
         <Table>
           <thead>
             <tr>
-              <Th fullWidth>Invoice No.</Th>
-              {!propertyID && <Th>Property</Th>}
+              <Th fullWidth>Invoice</Th>
+              {!!propertyID && <Th>Property</Th>}
               <Th>Issued To</Th>
               <Th>Issue Date</Th>
               <Th>Due Date</Th>

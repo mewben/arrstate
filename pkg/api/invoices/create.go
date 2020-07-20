@@ -11,6 +11,7 @@ import (
 	"github.com/mewben/realty278/pkg/api/blocks"
 	"github.com/mewben/realty278/pkg/errors"
 	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/realty278/pkg/utils"
 )
 
 // Create invoice
@@ -68,9 +69,21 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 	}
 
+	// Validate status
+	invoice.Status = data.Status
+	if data.Status == "" {
+		invoice.Status = enums.StatusDraft
+	}
+	if !utils.Contains(allowedStatuses, invoice.Status) {
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	}
+
 	// assign to invoice model
-	invoice.No = strconv.Itoa(h.Business.Invoices.NextSeq)
-	invoice.Status = enums.StatusPending
+	invoice.No = h.Business.Invoices.NextSeq
+	invoice.Name = data.Name
+	if invoice.Name == "" {
+		invoice.Name = strconv.Itoa(h.Business.Invoices.NextSeq)
+	}
 	invoice.IssueDate = data.IssueDate
 	invoice.DueDate = data.DueDate
 	invoice.Tax = data.Tax

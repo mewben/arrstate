@@ -2,7 +2,6 @@ package blocks
 
 import (
 	"context"
-	"log"
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber"
@@ -59,20 +58,16 @@ func (block *BaseBlock) Prepare(ctx context.Context, db *database.Service) error
 
 // Prepare -
 func (block *InvoiceItemBlock) Prepare(ctx context.Context, db *database.Service) error {
-	log.Println("preaprea invoice itemblock")
 	var err error
 	if err = CheckEntity(ctx, db, block.EntityType, block.EntityID, block.BusinessID); err != nil {
 		return err
 	}
-	log.Println("after checkentity")
 
 	// validate
 	validate.RegisterValidation("numberOrPercentage", utils.ValidateNumberOrPercentage)
 	if err = validate.Struct(block); err != nil {
-		log.Println("errr---", err)
 		return errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
-	log.Println("after validatestruct")
 
 	// defaults
 	if block.Quantity == 0 {
@@ -88,7 +83,6 @@ func (block *InvoiceItemBlock) Prepare(ctx context.Context, db *database.Service
 
 // AfterCreate -
 func (block *BaseBlock) AfterCreate(ctx context.Context, db *database.Service) error {
-	log.Println("after create baseblock")
 	collectionName := utils.GetCollectionName(block.EntityType)
 	if collectionName == "" {
 		return errors.NewHTTPError(errors.ErrNotFound)
@@ -114,7 +108,6 @@ func (block *BaseBlock) AfterCreate(ctx context.Context, db *database.Service) e
 
 // AfterCreate -
 func (block *InvoiceItemBlock) AfterCreate(ctx context.Context, db *database.Service) error {
-	log.Println("after create invoiceitemblock")
 	collectionName := utils.GetCollectionName(block.EntityType)
 	if collectionName == "" {
 		return errors.NewHTTPError(errors.ErrNotFound)
@@ -155,8 +148,6 @@ func (block *InvoiceItemBlock) AfterCreate(ctx context.Context, db *database.Ser
 			subTotal += block["total"].(int64)
 		}
 	}
-
-	log.Println("subTotal", subTotal)
 
 	taxAmount, discountAmount, total, err := utils.CalculateItem(subTotal, invoice.Tax, 1, invoice.Discount)
 	if err != nil {

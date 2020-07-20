@@ -127,7 +127,6 @@ func TestAcquireProperty(t *testing.T) {
 		// first recurring payment
 		invoice = invoices[1]
 		assert.EqualValues(832504, invoice.Total)
-		assert.EqualValues(1, 2)
 		// TODO: assert agent commissions
 	})
 

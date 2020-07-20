@@ -14,7 +14,7 @@ type BlockModel struct {
 
 // InvoiceItemBlockModel -
 type InvoiceItemBlockModel struct {
-	Title          string  `bson:"title" json:"title" validate:"required"`
+	Title          string  `bson:"title" json:"title"`
 	Description    string  `bson:"description" json:"description"`
 	Amount         int64   `bson:"amount" json:"amount" validate:"number,min=0"`
 	Quantity       float64 `bson:"quantity" json:"quantity" validate:"number,min=0"`

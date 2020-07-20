@@ -64,6 +64,9 @@ func (h *Handler) Acquire(data *AcquisitionPayload) (*models.PropertyModel, erro
 	if data.PaymentScheme == enums.PaymentSchemeInstallment {
 		// validate further
 		// 5. validate paymentPeriod
+		if data.PaymentPeriod == "" {
+			data.PaymentPeriod = enums.PaymentPeriodMonthly
+		}
 		if !utils.Contains(allowedPaymentPeriods, data.PaymentPeriod) {
 			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
 		}

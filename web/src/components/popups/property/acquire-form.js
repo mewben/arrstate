@@ -152,12 +152,6 @@ const InstallmentForm = ({ paymentPeriodOptions }) => {
 
   return (
     <>
-      <SelectField
-        name="paymentPeriod"
-        label={t("payment period")}
-        options={paymentPeriodOptions}
-        disableClearable
-      />
       <NumberField
         name="terms"
         label={t("terms")}

@@ -10,6 +10,8 @@ const Form = ({ model, validationSchema, onSubmit, children, ...props }) => {
     ...props,
   })
 
+  console.log("methods", methods)
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>

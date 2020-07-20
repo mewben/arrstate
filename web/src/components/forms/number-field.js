@@ -4,6 +4,7 @@ import NumberFormat from "react-number-format"
 import cx from "clsx"
 
 import { random } from "@Utils/lodash"
+import { fromMoney, toMoney } from "@Utils/money"
 import InputWrapper from "./input-wrapper"
 
 const MaskedNumberInput = ({
@@ -15,13 +16,23 @@ const MaskedNumberInput = ({
   startAddonInline,
   inputClassName,
   max = 9999999,
+  isMoney,
   ...props
 }) => {
+  let v = value
+  const handleChange = ({ floatValue }) => {
+    onChange(isMoney ? toMoney(floatValue) : floatValue)
+  }
+
+  if (isMoney) {
+    v = fromMoney(value)
+  }
+
   return (
     <NumberFormat
       type="tel"
-      onValueChange={({ floatValue }) => onChange(floatValue)}
-      value={value}
+      onValueChange={handleChange}
+      value={v}
       thousandSeparator=","
       className={cx(
         "form-input relative block w-full bg-transparent focus:z-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5",
@@ -29,6 +40,8 @@ const MaskedNumberInput = ({
         inputClassName
       )}
       max={max}
+      // decimalScale={isMoney ? 2 : undefined}
+      // fixedDecimalScale={isMoney ? true : false}
       {...props}
     />
   )

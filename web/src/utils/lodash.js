@@ -9,9 +9,12 @@ export { default as filter } from "lodash/filter"
 export { default as find } from "lodash/find"
 
 export { default as random } from "lodash/random"
+export { default as compact } from "lodash/compact"
 export { default as sortBy } from "lodash/sortBy"
 
 export { default as includes } from "lodash/includes"
 export { default as isEmpty } from "lodash/isEmpty"
 export { default as isObject } from "lodash/isObject"
 export { default as isArray } from "lodash/isArray"
+export { default as isUndefined } from "lodash/isUndefined"
+export { default as isNull } from "lodash/isNull"

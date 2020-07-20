@@ -18,14 +18,24 @@ import { requestApi } from "@Utils"
 import { t, req } from "@Utils/t"
 import { useProject } from "@Hooks"
 import { map, values, sortBy } from "@Utils/lodash"
+import { fromMoney } from "@Utils/money"
 
 const validationSchema = Yup.object().shape({
-  propertyID: Yup.string().required(req),
+  // propertyID: Yup.string().required(req),
   clientID: Yup.string().required(req).nullable(),
-  paymentScheme: Yup.string().required("req"), // cash, installmment
-  paymentPeriod: Yup.string().required(req), // monthly, yearly
+  paymentScheme: Yup.string().required(req), // cash, installmment
+  // paymentPeriod: Yup.string().required(req), // monthly, yearly
+  // paymentPeriod: Yup.string().when("paymentScheme", {
+  //   is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
+  //   then: Yup.string().required(req),
+  // }),
   terms: Yup.number().required(req).min(1, req).nullable(), // 60 months
-  downPayment: Yup.number().nullable(),
+  downPayment: Yup.number()
+    .nullable()
+    .when("paymentScheme", {
+      is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
+      then: Yup.number().required(req).min(1, req),
+    }),
   agentID: Yup.string().nullable(),
 })
 
@@ -68,25 +78,41 @@ const AcquireForm = ({
   paymentPeriodOptions,
   onClose,
 }) => {
-  const [save, { reset, error }] = useMutation(formData => {
-    return requestApi("/api/properties/acquire", "POST", {
-      data: formData,
-    })
-  })
+  const [acquire, { reset, error }] = useMutation(
+    formData => {
+      return requestApi("/api/properties/acquire", "POST", {
+        data: formData,
+      })
+    },
+    {
+      onSuccess: ({ data }) =>
+        queryCache.setQueryData(["property", data._id], data),
+    }
+  )
 
   const onSubmit = async formData => {
     console.log("formData", formData)
+    reset()
+    const payload = {
+      ...formData,
+      propertyID: property._id,
+      paymentPeriod: PAYMENT_PERIODS.MONTHLY,
+    }
+    const res = await acquire(payload)
+    if (res) {
+      onClose()
+    }
   }
 
   const initialModel = {
-    propertyID: property._id,
     clientID: null,
     paymentScheme: PAYMENT_SCHEMES.INSTALLMENT,
-    paymentPeriod: PAYMENT_PERIODS.MONTHLY,
     downPayment: null,
     terms: 1,
     agentID: null,
   }
+
+  console.log("initialModel", initialModel)
 
   return (
     <div className="flex flex-col w-screen sm:w-96">
@@ -104,7 +130,7 @@ const AcquireForm = ({
           <div className="mt-2 flex justify-between">
             <div>{acc.formatNumber(property.area, 2)} sq.m</div>
             <div className="text-green-300 font-medium">
-              Php {acc.formatNumber(property.price, 2)}
+              Php {acc.formatNumber(fromMoney(property.price), 2)}
             </div>
           </div>
         </div>

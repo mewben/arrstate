@@ -25,12 +25,13 @@ const List = ({ projectID }) => {
         <Table>
           <thead>
             <tr>
-              <Th>Property Code.</Th>
+              <Th fullWidth>Property Code.</Th>
               <Th>Type</Th>
               {!projectID && <Th>Project</Th>}
-              <Th align="right">Area</Th>
-              <Th align="right">Price</Th>
-              <Th align="right">Price Addon</Th>
+              <Th align="right">Area (sq.m)</Th>
+              <Th align="right">Price (Php)</Th>
+              <Th align="right">Price Addon (Php)</Th>
+              <Th>Status</Th>
             </tr>
           </thead>
           <tbody className="bg-white">

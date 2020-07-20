@@ -70,6 +70,25 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		c.Status(200).JSON(response)
 	})
 
+	g.Get("/people/:personID", func(c *fiber.Ctx) {
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		response, err := h.GetOne(c.Params("personID"))
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
 	g.Post("/people", func(c *fiber.Ctx) {
 		log.Println("people.post")
 		var err error

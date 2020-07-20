@@ -22,7 +22,7 @@ const List = () => {
         <Table>
           <thead>
             <tr>
-              <Th>Name</Th>
+              <Th fullWidth>Name</Th>
               <Th>Role</Th>
             </tr>
           </thead>

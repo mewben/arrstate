@@ -10,6 +10,11 @@ const fetchPeople = async (_, params) => {
   return data
 }
 
+const fetchPerson = async (_, personID) => {
+  const { data } = await requestApi(`/api/people/${personID}`)
+  return data
+}
+
 export const usePeople = ({ role = [] } = {}) => {
   return useQuery(["people", { role }], fetchPeople)
 }
@@ -20,4 +25,8 @@ export const useClients = () => {
 
 export const useAgents = () => {
   return useQuery(["people", { role: [ROLES.AGENT] }], fetchPeople)
+}
+
+export const usePerson = personID => {
+  return useQuery(["people", personID], fetchPerson)
 }

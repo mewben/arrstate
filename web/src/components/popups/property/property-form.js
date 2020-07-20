@@ -124,12 +124,31 @@ const PropertyForm = ({ model, projectID, onClose }) => {
             label={t("property.project")}
             options={projectOptions}
           />
-          <NumberField name="area" label={t("property.area")} min={0} />
-          <NumberField name="price" label={t("property.price")} min={0} />
+          <NumberField
+            name="area"
+            label={t("property.area")}
+            min={0}
+            endAddonInline="sq.m"
+            inputClassName="pr-16"
+            placeholder="0.00"
+          />
+          <NumberField
+            name="price"
+            label={t("property.price")}
+            min={0}
+            isMoney
+            startAddonInline="Php"
+            placeholder="0.00"
+            inputClassName="pl-12"
+          />
           <NumberField
             name="priceAddon"
             label={t("property.priceAddon")}
             min={0}
+            isMoney
+            startAddonInline="Php"
+            placeholder="0.00"
+            inputClassName="pl-12"
           />
           <div className="col-span-12">
             <div className="flex items-center justify-between">

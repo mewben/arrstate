@@ -5,6 +5,8 @@ import acc from "accounting"
 import { useProject } from "@Hooks"
 import { Td } from "@Components/generic"
 import { t } from "@Utils/t"
+import { fromMoney } from "@Utils/money"
+import Status from "./status"
 
 // Properties listitem
 const ListItem = ({ item, projectID }) => {
@@ -25,8 +27,11 @@ const ListItem = ({ item, projectID }) => {
         <Td>{!!item.projectID && <Project id={item.projectID} />}</Td>
       )}
       <Td align="right">{acc.formatNumber(item.area, 2)}</Td>
-      <Td align="right">{acc.formatNumber(item.price, 2)}</Td>
-      <Td align="right">{acc.formatNumber(item.priceAddon, 2)}</Td>
+      <Td align="right">{acc.formatNumber(fromMoney(item.price), 2)}</Td>
+      <Td align="right">{acc.formatNumber(fromMoney(item.priceAddon), 2)}</Td>
+      <Td>
+        <Status status={item.status} />
+      </Td>
     </tr>
   )
 }

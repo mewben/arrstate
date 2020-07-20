@@ -11,6 +11,7 @@ import (
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/api/people"
+	"github.com/mewben/realty278/pkg/models"
 	"github.com/mewben/realty278/test/helpers"
 )
 
@@ -24,7 +25,7 @@ func TestGetPeople(t *testing.T) {
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
 	token2 := helpers.SignupFixture(app, 1)
-	helpers.PersonFixture(app, token1, 0)
+	person1 := helpers.PersonFixture(app, token1, 0)
 	helpers.PersonFixture(app, token1, 1)
 	helpers.PersonFixture(app, token1, 2)
 	helpers.PersonFixture(app, token2, 1)
@@ -72,6 +73,20 @@ func TestGetPeople(t *testing.T) {
 		response = ress.(*people.ResponseList)
 		assert.Len(response.Data, 3)
 		assert.Equal(response.Total, 3)
+
+	})
+
+	t.Run("It should get the a person by ID", func(t *testing.T) {
+		assert := assert.New(t)
+		req := helpers.DoRequest("GET", path+"/"+person1.ID.Hex(), nil, token1)
+
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(200, res.StatusCode, res)
+		ress, err := helpers.GetResponse(res, "person")
+		assert.Nil(err)
+		response := ress.(*models.PersonModel)
+		assert.Equal(person1.ID, response.ID)
 
 	})
 

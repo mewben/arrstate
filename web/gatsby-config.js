@@ -41,6 +41,7 @@ module.exports = {
         prefixes: [
           `/projects/*`,
           `/properties/*`,
+          `/invoices/*`,
           `/clients/*`,
           `/agents/*`,
           `/people/*`,

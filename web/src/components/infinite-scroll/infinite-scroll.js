@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 
 import { Loading, Error } from "@Components/generic"
+import { ListProvider } from "@Providers"
 
 // TODO: make this into an infinity scroll
 const InfiniteScroll = ({
@@ -10,18 +11,18 @@ const InfiniteScroll = ({
   contentRenderer,
   emptyRenderer,
 }) => {
-  const { status, data, error } = getMethod(getMethodParams)
-  console.log("status:", status)
-  console.log("data:", data)
-  console.log("error:", error)
-  return status === "loading" ? (
-    <Loading />
-  ) : status === "error" ? (
-    <Error error={error} />
-  ) : !data?.total ? (
-    emptyRenderer()
-  ) : (
-    <div className="overflow-y-scroll pb-28">{contentRenderer(data)}</div>
+  const renderContent = data => {
+    return (
+      <div className="overflow-y-scroll pb-28">{contentRenderer(data)}</div>
+    )
+  }
+  return (
+    <ListProvider
+      getMethod={getMethod}
+      getMethodParams={getMethodParams}
+      contentRenderer={renderContent}
+      emptyRenderer={emptyRenderer}
+    />
   )
 }
 

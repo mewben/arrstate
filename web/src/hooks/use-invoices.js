@@ -16,5 +16,6 @@ export const useInvoices = (params = {}) => {
 }
 
 export const useInvoice = invoiceID => {
+  console.log("useInvoice", invoiceID)
   return useQuery(["invoice", invoiceID], fetchInvoice)
 }

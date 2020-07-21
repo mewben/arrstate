@@ -22,6 +22,17 @@ type Handler struct {
 	Business *models.BusinessModel
 }
 
+// ResponseList -
+type ResponseList struct {
+	Total int         `json:"total"`
+	Data  []fiber.Map `json:"list"`
+}
+
+// GetPayload -
+type GetPayload struct {
+	IDs []primitive.ObjectID `json:"ids"`
+}
+
 var allowedInvoiceBlocks []string
 
 func init() {
@@ -52,8 +63,36 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
+	// We use Post here because we supply a pretty large payload of blockIDs
+	g.Post("/blocks/get", func(c *fiber.Ctx) {
+		log.Println("blocks.get")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		payload := &GetPayload{}
+		if err := c.BodyParser(&payload); err != nil {
+			log.Println("errrbodyparser", err)
+			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
+			return
+		}
+
+		response, err := h.Get(payload)
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
 	g.Post("/blocks", func(c *fiber.Ctx) {
-		log.Println("invoices.post")
+		log.Println("blocks.post")
 		var err error
 		h.Ctx = c.Fasthttp
 		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)

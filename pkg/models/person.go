@@ -16,9 +16,19 @@ type PersonModel struct {
 	CommissionPerc int64               `bson:"commissionPerc" json:"commissionPerc" validate:"number,min=0"`
 	CustomFields   fiber.Map           `bson:"customFields" json:"customFields"`
 	Address        AddressModel        `bson:"address" json:"address"`
+	Locale         Locale              `bson:"locale" json:"locale"`
 	// Extended
 	BaseModel `bson:",inline"`
 	MetaModel `bson:",inline"`
+}
+
+// Locale -
+type Locale struct {
+	TimeZone        string `bson:"timeZone" json:"timeZone"`
+	WeekStartDay    string `bson:"weekStartDay" json:"weekStartDay"`
+	DateFormat      string `bson:"dateFormat" json:"dateFormat"`
+	TimeFormat      string `bson:"timeFormat" json:"timeFormat"`
+	TimestampFormat string `bson:"timestampFormat" json:"timestampFormat"`
 }
 
 // NewPersonModel -

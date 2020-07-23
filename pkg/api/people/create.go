@@ -44,6 +44,18 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 	person.MetaModel = data.MetaModel
 	person.CommissionPerc = data.CommissionPerc
 	person.CustomFields = data.CustomFields
+	if person.Locale.DateFormat == "" {
+		person.Locale.DateFormat = enums.DefaultDateFormat
+	}
+	if person.Locale.TimeFormat == "" {
+		person.Locale.TimeFormat = enums.DefaultTimeFormat
+	}
+	if person.Locale.TimestampFormat == "" {
+		person.Locale.TimestampFormat = enums.DefaultTimestampFormat
+	}
+	if person.Locale.WeekStartDay == "" {
+		person.Locale.WeekStartDay = "sunday"
+	}
 
 	doc, err := h.DB.InsertOne(h.Ctx, enums.CollPeople, person)
 	if err != nil || doc == nil {

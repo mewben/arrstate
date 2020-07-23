@@ -30,7 +30,9 @@ type ResponseList struct {
 
 // GetPayload -
 type GetPayload struct {
-	IDs []primitive.ObjectID `json:"ids"`
+	IDs        []primitive.ObjectID `json:"ids"`
+	EntityType string               `json:"entityType"`
+	EntityID   primitive.ObjectID   `json:"entityID"`
 }
 
 var allowedInvoiceBlocks []string

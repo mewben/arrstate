@@ -6,6 +6,9 @@ import { useAuth } from "@Providers"
 import { useMe } from "@Hooks"
 import { LayoutWrapper } from "@Wrappers"
 
+const MeContext = React.createContext()
+export const useMeContext = () => React.useContext(MeContext)
+
 export const PrivateWrapper = ({ children }) => {
   const { isLoading, isAuthenticated } = useAuth()
   if (isLoading) {
@@ -24,7 +27,7 @@ export const PrivateWrapper = ({ children }) => {
 }
 
 const MeWrapper = ({ children }) => {
-  const { status, error } = useMe()
+  const { status, data, error } = useMe()
   // TODO: redirect to /welcome if not yet onboarded
 
   return status === "loading" ? (
@@ -32,6 +35,6 @@ const MeWrapper = ({ children }) => {
   ) : status === "error" ? (
     <Error error={error} />
   ) : (
-    children
+    <MeContext.Provider value={data}>{children}</MeContext.Provider>
   )
 }

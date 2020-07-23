@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
 
+	"github.com/mewben/realty278/internal/enums"
 	"github.com/mewben/realty278/internal/startup"
 	"github.com/mewben/realty278/pkg"
 	"github.com/mewben/realty278/pkg/api/blocks"
@@ -29,7 +30,9 @@ func TestGetBlocks(t *testing.T) {
 	t.Run("It should get blocks by ids", func(t *testing.T) {
 		assert := assert.New(t)
 		data := fiber.Map{
-			"ids": invoice1.Blocks,
+			"ids":        invoice1.Blocks,
+			"entityType": enums.EntityInvoice,
+			"entityID":   invoice1.ID,
 		}
 		req := helpers.DoRequest("POST", path, data, token1)
 		res, err := app.Test(req, -1)

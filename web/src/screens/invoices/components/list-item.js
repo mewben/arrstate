@@ -15,7 +15,7 @@ import Status from "./status"
 const ListItem = ({ item, propertyID }) => {
   return (
     <tr>
-      <Td>
+      <Td wrap>
         <Link
           to={`/invoices/${item._id}`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"

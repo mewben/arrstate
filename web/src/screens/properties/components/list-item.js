@@ -12,7 +12,7 @@ import Status from "./status"
 const ListItem = ({ item, projectID }) => {
   return (
     <tr>
-      <Td>
+      <Td wrap>
         <Link
           to={`/properties/${item._id}`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"

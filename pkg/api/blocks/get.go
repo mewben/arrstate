@@ -23,6 +23,14 @@ func (h *Handler) Get(data *GetPayload) (*ResponseList, error) {
 			Value: bson.M{"$in": data.IDs},
 		},
 		{
+			Key:   "entityType",
+			Value: data.EntityType,
+		},
+		{
+			Key:   "entityID",
+			Value: data.EntityID,
+		},
+		{
 			Key:   "businessID",
 			Value: h.Business.ID,
 		},

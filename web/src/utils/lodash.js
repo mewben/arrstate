@@ -7,6 +7,7 @@ export { default as keyBy } from "lodash/keyBy"
 export { default as values } from "lodash/values"
 export { default as filter } from "lodash/filter"
 export { default as find } from "lodash/find"
+export { default as reduce } from "lodash/reduce"
 
 export { default as random } from "lodash/random"
 export { default as compact } from "lodash/compact"

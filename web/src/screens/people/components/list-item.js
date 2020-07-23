@@ -8,7 +8,7 @@ import { t } from "@Utils/t"
 const ListItem = ({ item }) => {
   return (
     <tr>
-      <Td>
+      <Td wrap>
         <Link
           to={`/people/${item._id}`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"

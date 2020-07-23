@@ -7,7 +7,7 @@ import { Td } from "@Components/generic"
 const ListItem = ({ item }) => {
   return (
     <tr>
-      <Td>
+      <Td wrap>
         <Link
           to={`/projects/${item._id}/properties`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"

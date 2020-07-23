@@ -84,6 +84,10 @@ func TestSignup(t *testing.T) {
 		assert.Nil(err)
 		assert.Equal(fakeGivenName, person.GivenName)
 		assert.Equal(fakeFamilyName, person.FamilyName)
+		assert.Equal(enums.DefaultDateFormat, person.Locale.DateFormat)
+		assert.Equal(enums.DefaultTimeFormat, person.Locale.TimeFormat)
+		assert.Equal(enums.DefaultTimestampFormat, person.Locale.TimestampFormat)
+		assert.Equal("sunday", person.Locale.WeekStartDay)
 
 		// get user
 		filter = bson.D{

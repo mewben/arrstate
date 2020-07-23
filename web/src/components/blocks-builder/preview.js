@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import { useBlocks } from "@Hooks"
 import { ListProvider } from "@Providers"
 import { GENERIC_BLOCKS } from "@Enums"
-import { map, get, isEmpty, includes } from "@Utils/lodash"
+import { map, get } from "@Utils/lodash"
 import { Content } from "./blocks/preview"
 import { groupBlocks } from "@Components/blocks-builder/blocks/preview/helpers"
 
@@ -40,8 +40,6 @@ const BlocksPreview = ({
   }
 
   const renderBlocks = blocks => {
-    console.log("bloccccks", blocks)
-
     return map(blocks, block => {
       const data =
         (renderBlock && renderBlock(block)) || renderSingleBlock(block)
@@ -49,22 +47,19 @@ const BlocksPreview = ({
         return null
       }
       const { content } = data
-      return content
+      return <React.Fragment key={block._id}>{content}</React.Fragment>
     })
   }
 
   const prepareBlocks = ({ list: blocks }) => {
-    // groupblocks
     const groupedBlocks = groupBlocks(blocks)
-    console.log("groupedBlocks", groupedBlocks)
-
-    return map(groupedBlocks, groupedBlock => {
+    return map(groupedBlocks, (groupedBlock, i) => {
       const Wrapper = groupWrapper[get(groupedBlock, [0, "type"])]
       if (Wrapper) {
-        return <Wrapper>{renderBlocks(groupedBlock)}</Wrapper>
+        return <Wrapper key={i}>{renderBlocks(groupedBlock)}</Wrapper>
       } else {
         return (
-          <div className="py-4 first:pt-0 last:pb-0">
+          <div key={i} className="py-4 first:pt-0 last:pb-0">
             {renderBlocks(groupedBlock)}
           </div>
         )

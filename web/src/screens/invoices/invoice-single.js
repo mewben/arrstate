@@ -8,6 +8,7 @@ import { BlocksPreview } from "@Components/blocks-builder"
 import { useInvoice } from "@Hooks"
 import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
 import { SingleProvider } from "@Providers"
+import { PayForm } from "@Components/popups/invoice"
 import Preview from "./components/preview"
 
 const InvoiceSingle = ({ invoiceID }) => {
@@ -23,7 +24,9 @@ const InvoiceSingle = ({ invoiceID }) => {
               : "/invoices"
           }
         >
-          <Button>Pay</Button>
+          <Portal openByClickOn={<Button>Pay</Button>}>
+            <PayForm invoice={invoice} />
+          </Portal>
         </AppBar>
         <div className="flex-1 overflow-y-scroll pb-28">
           <Preview invoice={invoice} />

@@ -27,6 +27,8 @@ const (
 
 	// property errors
 	ErrPropertyAlreadyTaken = "errors.property.alreadyTaken"
+	ErrInvoiceAlreadyPaid   = "errors.invoice.alreadyPaid"
+	ErrDuplicateReceipt     = "errors.duplicate.receipt"
 
 	// block errors
 	ErrBlockTypeNotAllowed = "errors.blocks.notAllowed"

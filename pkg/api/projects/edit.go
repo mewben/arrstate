@@ -51,7 +51,7 @@ func (h *Handler) Edit(data *Payload) (*models.ProjectModel, error) {
 
 	doc, err := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollProjects, oldDoc.ID, op)
 	if err != nil {
-		return nil, errors.NewHTTPError(errors.ErrUpdate)
+		return nil, errors.NewHTTPError(errors.ErrUpdate, err)
 	}
 
 	project := doc.(*models.ProjectModel)

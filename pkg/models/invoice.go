@@ -16,6 +16,7 @@ type InvoiceModel struct {
 	ProjectID      *primitive.ObjectID  `bson:"projectID" json:"projectID"`
 	PropertyID     *primitive.ObjectID  `bson:"propertyID" json:"propertyID"`
 	No             int                  `bson:"no" json:"no"` // some sequence or edited
+	ReceiptNo      string               `bson:"receiptNo" json:"receiptNo"`
 	Status         string               `bson:"status" json:"status"`
 	Blocks         []primitive.ObjectID `bson:"blocks" json:"blocks"`
 	Tax            int64                `bson:"tax" json:"tax" validate:"number,min=0"`
@@ -29,7 +30,6 @@ type InvoiceModel struct {
 	IssueDate   *time.Time `bson:"issueDate" json:"issueDate"`
 	DueDate     *time.Time `bson:"dueDate" json:"dueDate"`
 	PaidAt      *time.Time `bson:"paidAt" json:"paidAt"`
-	PaidBy      string     `bson:"paidBy" json:"paidBy"`
 	CancelledAt *time.Time `bson:"cancelledAt" json:"cancelledAt"`
 	// Extended
 	BaseModel     `bson:",inline"`

@@ -145,4 +145,48 @@ func Indexes(db *mongo.Database) {
 	if err != nil {
 		log.Fatalln("error project index", err)
 	}
+
+	// Invoices
+	_, err = db.Collection(enums.CollInvoices).Indexes().CreateMany(context.Background(), []mongo.IndexModel{
+		{
+			Keys: bson.D{
+				{
+					Key:   "propertyID",
+					Value: 1,
+				},
+			},
+		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "businessID",
+					Value: 1,
+				},
+			},
+		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "status",
+					Value: 1,
+				},
+			},
+		},
+		{
+			Keys: bson.D{
+				{
+					Key:   "receiptNo",
+					Value: 1,
+				},
+				{
+					Key:   "businessID",
+					Value: 1,
+				},
+			},
+			Options: options.Index().SetSparse(true),
+		},
+	})
+	if err != nil {
+		log.Fatalln("error project index", err)
+	}
 }

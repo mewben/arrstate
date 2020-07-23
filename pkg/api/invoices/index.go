@@ -40,6 +40,12 @@ type Payload struct {
 	Tax        int64               `json:"tax"`
 }
 
+// PaymentPayload -
+type PaymentPayload struct {
+	ReceiptNo string             `json:"receiptNo" validate:"required"`
+	InvoiceID primitive.ObjectID `json:"invoiceID" validate:"required"`
+}
+
 // ResponseList -
 type ResponseList struct {
 	Total int                    `json:"total"`
@@ -123,4 +129,33 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		c.Status(201).JSON(response)
 
 	})
+
+	g.Post("/invoices/pay", func(c *fiber.Ctx) {
+		log.Println("invoices.pay")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		payload := &PaymentPayload{}
+		if err := c.BodyParser(&payload); err != nil {
+			log.Println("errrbodyparser", err)
+			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
+			return
+		}
+		utils.PrettyJSON(payload)
+
+		response, err := h.Pay(payload)
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
 }

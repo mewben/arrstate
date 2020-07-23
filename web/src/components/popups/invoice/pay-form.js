@@ -35,7 +35,7 @@ const PayForm = ({ invoice, onClose }) => {
   const onSubmit = async formData => {
     console.log("formData", formData)
     reset()
-    const res = await pay(formData)
+    const res = await pay({ ...formData, invoiceID: invoice._id })
     if (res) {
       onClose()
     }

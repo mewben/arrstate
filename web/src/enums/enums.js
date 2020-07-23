@@ -37,3 +37,10 @@ export const INVOICE_BLOCKS = {
   ITEM: "item",
   SUMMARY: "summary",
 }
+
+export const INVOICE_STATUS = {
+  DRAFT: "draft",
+  PENDING: "pending",
+  PAID: "paid",
+  OVERDUE: "overdue",
+}

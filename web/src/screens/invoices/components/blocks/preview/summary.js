@@ -4,9 +4,7 @@ import acc from "accounting"
 import { Table, Th, Td } from "@Components/generic"
 import { fromMoney } from "@Utils"
 
-const Summary = ({ block, invoice }) => {
-  console.log("block surmmary", block)
-  console.log("block invoice", invoice)
+const Summary = ({ block, invoice, isReceipt }) => {
   return (
     <div className="flex w-full justify-end pb-8">
       <div className="w-1/2">
@@ -35,7 +33,7 @@ const Summary = ({ block, invoice }) => {
             <tr>
               <Th fullWidth>
                 <div className="text-sm font-medium text-green-500">
-                  Amount Due:
+                  {isReceipt ? "Amount Paid:" : "Amount Due:"}
                 </div>
               </Th>
               <Th align="right">

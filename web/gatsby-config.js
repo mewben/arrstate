@@ -42,6 +42,7 @@ module.exports = {
           `/projects/*`,
           `/properties/*`,
           `/invoices/*`,
+          `/receipts/*`,
           `/clients/*`,
           `/agents/*`,
           `/people/*`,

@@ -17,6 +17,8 @@ export const extractError = error => {
     message = "Request error"
   } else if (error.payload) {
     message = get(error, "payload.message")
+  } else if (error.message) {
+    message = get(error, "message")
   }
   return message
 }

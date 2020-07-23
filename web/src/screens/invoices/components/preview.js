@@ -4,18 +4,22 @@ import { BlocksPreview } from "@Components/blocks-builder"
 import { ENTITIES, INVOICE_BLOCKS } from "@Enums"
 import { Intro, Item, ItemWrapper, Summary } from "./blocks/preview"
 
-const Preview = ({ invoice }) => {
+const Preview = ({ invoice, isReceipt }) => {
   const renderBlock = block => {
     let content = null
     switch (block.type) {
       case INVOICE_BLOCKS.INTRO:
-        content = <Intro block={block} invoice={invoice} />
+        content = (
+          <Intro block={block} invoice={invoice} isReceipt={isReceipt} />
+        )
         break
       case INVOICE_BLOCKS.ITEM:
         content = <Item block={block} />
         break
       case INVOICE_BLOCKS.SUMMARY:
-        content = <Summary block={block} invoice={invoice} />
+        content = (
+          <Summary block={block} invoice={invoice} isReceipt={isReceipt} />
+        )
         break
       default:
         break

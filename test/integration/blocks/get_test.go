@@ -25,7 +25,7 @@ func TestGetBlocks(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
-	invoice1 := helpers.InvoiceFixture(app, token1, 1)
+	invoice1 := helpers.InvoiceFixture(app, token1, nil, 1)
 
 	t.Run("It should get blocks by ids", func(t *testing.T) {
 		assert := assert.New(t)

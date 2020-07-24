@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "@reach/router"
+import { navigate } from "@reach/router"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 
 const BackButton = ({ to }) => {
@@ -7,12 +7,13 @@ const BackButton = ({ to }) => {
 
   return (
     <div className="border-r border-gray-200 h-full flex items-center pr-4 mr-4">
-      <Link
-        to={to}
+      <button
+        // to={to}
+        onClick={() => navigate(-1)}
         className="text-xs font-medium text-gray-400 hover:text-gray-800"
       >
         <ChevronLeftIcon fontSize="default" />
-      </Link>
+      </button>
     </div>
   )
 }

@@ -28,8 +28,8 @@ func TestPayInvoice(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
-	invoice1 := helpers.InvoiceFixture(app, token1, 0)
-	invoice2 := helpers.InvoiceFixture(app, token1, 0)
+	invoice1 := helpers.InvoiceFixture(app, token1, nil, 0)
+	invoice2 := helpers.InvoiceFixture(app, token1, nil, 0)
 	// userID, businessID := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should pay an invoice", func(t *testing.T) {

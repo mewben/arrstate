@@ -203,7 +203,11 @@ func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 // PropertyFixture -
 func PropertyFixture(app *fiber.App, token string, projectID *primitive.ObjectID, n int) *models.PropertyModel {
 	payload := FakeProperty[n]
-	payload["projectID"] = projectID
+	if projectID != nil {
+		payload["projectID"] = projectID
+	} else {
+		delete(payload, "projectID")
+	}
 
 	req := DoRequest("POST", "/api/properties", payload, token)
 	res, err := app.Test(req, -1)
@@ -262,8 +266,14 @@ func PersonFixture(app *fiber.App, token string, n int) *models.PersonModel {
 }
 
 // InvoiceFixture -
-func InvoiceFixture(app *fiber.App, token string, n int) *models.InvoiceModel {
-	req := DoRequest("POST", "/api/invoices", FakeInvoice[n], token)
+func InvoiceFixture(app *fiber.App, token string, propertyID *primitive.ObjectID, n int) *models.InvoiceModel {
+	payload := FakeInvoice[n]
+	if propertyID != nil {
+		payload["propertyID"] = propertyID
+	} else {
+		delete(payload, "propertyID")
+	}
+	req := DoRequest("POST", "/api/invoices", payload, token)
 	res, err := app.Test(req, -1)
 	if err != nil {
 		log.Fatalln("err invoice fixture", err)
@@ -272,6 +282,22 @@ func InvoiceFixture(app *fiber.App, token string, n int) *models.InvoiceModel {
 	response, err := GetResponse(res, "invoice")
 	if err != nil {
 		log.Fatalln("err get response invoice", err)
+	}
+
+	return response.(*models.InvoiceModel)
+}
+
+// ReceiptFixture -
+func ReceiptFixture(app *fiber.App, token string, payload fiber.Map) *models.InvoiceModel {
+	req := DoRequest("POST", "/api/invoices/pay", payload, token)
+	res, err := app.Test(req, -1)
+	if err != nil {
+		log.Fatalln("err receipt fixture", err)
+	}
+
+	response, err := GetResponse(res, "invoice")
+	if err != nil {
+		log.Fatalln("err get response receipt", err)
 	}
 
 	return response.(*models.InvoiceModel)

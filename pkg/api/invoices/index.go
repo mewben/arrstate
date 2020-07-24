@@ -75,7 +75,10 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 			return
 		}
 
-		response, err := h.Get(c.Query("propertyID"))
+		propertyID := c.Query("propertyID")
+		status := c.Query("status")
+
+		response, err := h.Get(propertyID, status)
 		if err != nil {
 			log.Println("errrrrr", err)
 			c.Status(400).JSON(err)

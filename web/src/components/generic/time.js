@@ -7,6 +7,10 @@ export const Time = ({ d, format, dateOnly, timeOnly }) => {
   const {
     currentUser: { person },
   } = useMeContext()
+  if (!d) {
+    return null
+  }
+
   let f = format
   if (!f) {
     // get from the person locale

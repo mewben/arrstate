@@ -9,6 +9,7 @@ import { PropertyForm } from "@Components/popups/property"
 import { map } from "@Utils/lodash"
 import PropertyOverview from "./property-overview"
 import PropertyInvoices from "./property-invoices"
+import PropertyReceipts from "./property-receipts"
 
 const PropertySingle = ({ propertyID }) => {
   const { status, data, error } = useProperty(propertyID)
@@ -63,6 +64,7 @@ const PropertySingle = ({ propertyID }) => {
       <Router className="flex-1 overflow-y-scroll pb-28">
         <PropertyOverview path="/" property={data} />
         <PropertyInvoices path="/invoices" property={data} />
+        <PropertyReceipts path="/receipts" property={data} />
       </Router>
     </>
   )

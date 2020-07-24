@@ -12,18 +12,36 @@ import (
 )
 
 // Get invoices
-func (h *Handler) Get(propertyID string) (*ResponseList, error) {
-	propertyOID, err := primitive.ObjectIDFromHex(propertyID)
-	if err != nil {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
-	}
+func (h *Handler) Get(propertyID, status string) (*ResponseList, error) {
 
 	filter := bson.D{
 		{
-			Key:   "propertyID",
-			Value: propertyOID,
+			Key:   "businessID",
+			Value: h.Business.ID,
 		},
 	}
+
+	if propertyID != "" {
+		propertyOID, err := primitive.ObjectIDFromHex(propertyID)
+		if err != nil {
+			log.Println("err: propertyID")
+			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+		}
+
+		filter = append(filter, bson.E{
+			Key:   "propertyID",
+			Value: propertyOID,
+		})
+	}
+	if status != "" {
+		filter = append(filter, bson.E{
+			Key:   "status",
+			Value: status,
+		})
+	}
+
+	log.Println("--filter:", filter)
+
 	cursor, err := h.DB.Find(h.Ctx, enums.CollInvoices, filter)
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFound)

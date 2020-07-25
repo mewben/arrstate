@@ -12,6 +12,7 @@ require (
 	github.com/gofiber/recover v0.1.2
 	github.com/gosimple/slug v1.9.0
 	github.com/labstack/gommon v0.3.0
+	github.com/markbates/pkger v0.17.0
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.6.1
 	go.mongodb.org/mongo-driver v1.3.5

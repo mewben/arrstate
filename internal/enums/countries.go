@@ -4,20 +4,21 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"path"
-	"runtime"
+
+	"github.com/markbates/pkger"
 )
 
 // Countries slice
 var Countries = make([]string, 0)
 
 func init() {
-	_, currentFile, _, ok := runtime.Caller(0)
-	if !ok {
-		log.Fatalln("No caller information")
+	f, err := pkger.Open("/internal/enums/countries.json")
+	if err != nil {
+		log.Fatalln(err)
 	}
+	defer f.Close()
 
-	raw, err := ioutil.ReadFile(path.Join(path.Dir(currentFile), "./countries.json"))
+	raw, err := ioutil.ReadAll(f)
 	if err != nil {
 		log.Fatalln("Error in countries", err)
 	}

@@ -12,7 +12,7 @@ import (
 var Countries = make([]string, 0)
 
 func init() {
-	f, err := pkger.Open("/internal/enums/countries.json")
+	f, err := pkger.Open("/web/src/assets/countries.json")
 	if err != nil {
 		log.Fatalln(err)
 	}

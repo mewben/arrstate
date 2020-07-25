@@ -4,9 +4,9 @@ import (
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/models"
 )
 
 // Remove Person

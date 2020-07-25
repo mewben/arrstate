@@ -1,6 +1,6 @@
 package models
 
-import "github.com/mewben/realty278/internal/enums"
+import "github.com/mewben/arrstate/internal/enums"
 
 // CurrencyModel -
 type CurrencyModel struct {

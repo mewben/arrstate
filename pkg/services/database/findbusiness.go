@@ -6,8 +6,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/pkg/models"
 )
 
 // FindBusiness -

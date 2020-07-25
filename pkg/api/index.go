@@ -7,13 +7,13 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/mewben/realty278/pkg/api/blocks"
-	"github.com/mewben/realty278/pkg/api/businesses"
-	"github.com/mewben/realty278/pkg/api/invoices"
-	"github.com/mewben/realty278/pkg/api/people"
-	"github.com/mewben/realty278/pkg/api/projects"
-	"github.com/mewben/realty278/pkg/api/properties"
-	"github.com/mewben/realty278/pkg/api/users"
+	"github.com/mewben/arrstate/pkg/api/blocks"
+	"github.com/mewben/arrstate/pkg/api/businesses"
+	"github.com/mewben/arrstate/pkg/api/invoices"
+	"github.com/mewben/arrstate/pkg/api/people"
+	"github.com/mewben/arrstate/pkg/api/projects"
+	"github.com/mewben/arrstate/pkg/api/properties"
+	"github.com/mewben/arrstate/pkg/api/users"
 )
 
 // Routes -

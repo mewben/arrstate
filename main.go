@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/mewben/realty278/internal/startup"
-	"github.com/mewben/realty278/pkg"
+	"github.com/mewben/arrstate/internal/startup"
+	"github.com/mewben/arrstate/pkg"
 )
 
 func main() {

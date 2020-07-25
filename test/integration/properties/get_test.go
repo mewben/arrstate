@@ -8,13 +8,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/mewben/realty278/internal/startup"
-	"github.com/mewben/realty278/pkg"
-	"github.com/mewben/realty278/pkg/api/properties"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
-	"github.com/mewben/realty278/pkg/services"
-	"github.com/mewben/realty278/test/helpers"
+	"github.com/mewben/arrstate/internal/startup"
+	"github.com/mewben/arrstate/pkg"
+	"github.com/mewben/arrstate/pkg/api/properties"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/models"
+	"github.com/mewben/arrstate/pkg/services"
+	"github.com/mewben/arrstate/test/helpers"
 )
 
 func TestGetProperties(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/errors"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/pkg/errors"
 )
 
 // Decode map interface into specific block type

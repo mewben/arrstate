@@ -5,12 +5,12 @@ import (
 
 	"github.com/gofiber/fiber"
 	"github.com/labstack/gommon/random"
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/api/businesses"
-	"github.com/mewben/realty278/pkg/api/people"
-	"github.com/mewben/realty278/pkg/api/users"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/pkg/api/businesses"
+	"github.com/mewben/arrstate/pkg/api/people"
+	"github.com/mewben/arrstate/pkg/api/users"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/models"
 )
 
 // SignupPayload -

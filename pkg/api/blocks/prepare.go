@@ -2,9 +2,9 @@ package blocks
 
 import (
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/utils"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/utils"
 )
 
 // Prepare block -

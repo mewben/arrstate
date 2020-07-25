@@ -8,9 +8,9 @@ import (
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/services/database"
-	"github.com/mewben/realty278/pkg/utils"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/services/database"
+	"github.com/mewben/arrstate/pkg/utils"
 )
 
 // Handler -

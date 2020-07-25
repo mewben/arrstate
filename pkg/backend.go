@@ -7,9 +7,9 @@ import (
 	"github.com/gofiber/recover"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/mewben/realty278/pkg/api"
-	"github.com/mewben/realty278/pkg/auth"
-	"github.com/mewben/realty278/pkg/errors"
+	"github.com/mewben/arrstate/pkg/api"
+	"github.com/mewben/arrstate/pkg/auth"
+	"github.com/mewben/arrstate/pkg/errors"
 )
 
 // SetupBackend -

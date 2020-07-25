@@ -7,13 +7,13 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/pkg/api/blocks"
-	"github.com/mewben/realty278/pkg/api/invoices"
-	"github.com/mewben/realty278/pkg/api/people"
-	"github.com/mewben/realty278/pkg/api/projects"
-	"github.com/mewben/realty278/pkg/api/properties"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/arrstate/pkg/api/blocks"
+	"github.com/mewben/arrstate/pkg/api/invoices"
+	"github.com/mewben/arrstate/pkg/api/people"
+	"github.com/mewben/arrstate/pkg/api/projects"
+	"github.com/mewben/arrstate/pkg/api/properties"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/models"
 )
 
 // GetResponseError http

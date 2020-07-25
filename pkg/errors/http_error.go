@@ -3,7 +3,7 @@ package errors
 import (
 	"fmt"
 
-	"github.com/mewben/realty278/pkg/services"
+	"github.com/mewben/arrstate/pkg/services"
 )
 
 // HTTPError custom

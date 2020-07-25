@@ -11,14 +11,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/internal/startup"
-	"github.com/mewben/realty278/pkg"
-	"github.com/mewben/realty278/pkg/auth"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/models"
-	"github.com/mewben/realty278/pkg/services"
-	"github.com/mewben/realty278/test/helpers"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/internal/startup"
+	"github.com/mewben/arrstate/pkg"
+	"github.com/mewben/arrstate/pkg/auth"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/models"
+	"github.com/mewben/arrstate/pkg/services"
+	"github.com/mewben/arrstate/test/helpers"
 )
 
 func TestSignin(t *testing.T) {

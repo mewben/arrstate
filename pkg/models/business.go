@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/mewben/realty278/internal/enums"
+	"github.com/mewben/arrstate/internal/enums"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

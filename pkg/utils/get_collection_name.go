@@ -1,6 +1,6 @@
 package utils
 
-import "github.com/mewben/realty278/internal/enums"
+import "github.com/mewben/arrstate/internal/enums"
 
 // GetCollectionName by entityType
 func GetCollectionName(entityType string) string {

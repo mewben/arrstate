@@ -3,7 +3,7 @@ package utils
 import "strings"
 
 // GetSubdomain -
-// example url: http://melvin.realty278.lh:8000
+// example url: http://melvin.arrstate.lh:8000
 func GetSubdomain(url string) string {
 	sp := strings.Split(url, ".")
 	if len(sp) < 0 {

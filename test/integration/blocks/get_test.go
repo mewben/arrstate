@@ -8,11 +8,11 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/internal/startup"
-	"github.com/mewben/realty278/pkg"
-	"github.com/mewben/realty278/pkg/api/blocks"
-	"github.com/mewben/realty278/test/helpers"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/internal/startup"
+	"github.com/mewben/arrstate/pkg"
+	"github.com/mewben/arrstate/pkg/api/blocks"
+	"github.com/mewben/arrstate/test/helpers"
 )
 
 func TestGetBlocks(t *testing.T) {

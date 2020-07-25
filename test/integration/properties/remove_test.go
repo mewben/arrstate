@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/mewben/realty278/internal/startup"
-	"github.com/mewben/realty278/pkg"
-	"github.com/mewben/realty278/pkg/errors"
-	"github.com/mewben/realty278/pkg/services"
-	"github.com/mewben/realty278/test/helpers"
+	"github.com/mewben/arrstate/internal/startup"
+	"github.com/mewben/arrstate/pkg"
+	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/services"
+	"github.com/mewben/arrstate/test/helpers"
 )
 
 func TestRemoveProperty(t *testing.T) {

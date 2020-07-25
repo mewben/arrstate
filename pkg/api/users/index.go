@@ -8,9 +8,9 @@ import (
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/mewben/realty278/pkg/models"
-	"github.com/mewben/realty278/pkg/services/database"
-	"github.com/mewben/realty278/pkg/utils"
+	"github.com/mewben/arrstate/pkg/models"
+	"github.com/mewben/arrstate/pkg/services/database"
+	"github.com/mewben/arrstate/pkg/utils"
 )
 
 // Handler -
@@ -32,7 +32,7 @@ type Payload struct {
 var validate = validator.New()
 
 // Routes -
-func Routes(g *fiber.Group, db *mongo.Database) {
+func Routes(g fiber.Router, db *mongo.Database) {
 	h := &Handler{
 		DB: database.NewService(db),
 	}

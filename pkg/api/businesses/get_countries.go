@@ -2,7 +2,7 @@ package businesses
 
 import (
 	"github.com/gofiber/fiber"
-	"github.com/mewben/realty278/internal/enums"
+	"github.com/mewben/arrstate/internal/enums"
 )
 
 // GetCountries -

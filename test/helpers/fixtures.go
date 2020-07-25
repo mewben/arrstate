@@ -11,9 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/mewben/realty278/internal/enums"
-	"github.com/mewben/realty278/pkg/auth"
-	"github.com/mewben/realty278/pkg/models"
+	"github.com/mewben/arrstate/internal/enums"
+	"github.com/mewben/arrstate/pkg/auth"
+	"github.com/mewben/arrstate/pkg/models"
 )
 
 // fixture variables - array not slice so we can directly set index

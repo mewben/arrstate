@@ -2,8 +2,8 @@ const path = require("path")
 
 module.exports = {
   siteMetadata: {
-    title: `App Realty`,
-    description: `Realty Management made easy`,
+    title: `ArrState`,
+    description: `A simple Real Estate Management app`,
     author: `@mewben`,
   },
   proxy: [

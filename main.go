@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"github.com/spf13/viper"
+
 	"github.com/mewben/arrstate/internal/startup"
 	"github.com/mewben/arrstate/pkg"
 )
@@ -12,5 +14,5 @@ func main() {
 	db := startup.Init()
 	app := pkg.SetupBackend(db)
 
-	app.Listen("localhost:5000")
+	app.Listen(viper.GetString("HOST") + ":" + viper.GetString("PORT"))
 }

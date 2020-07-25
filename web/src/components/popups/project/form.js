@@ -7,8 +7,8 @@ import {
   Form,
   TextField,
   NumberField,
+  AddressField,
   SubmitButton,
-  DisconnectedInputMask,
 } from "@Components/forms"
 import { Error } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
@@ -80,15 +80,12 @@ const ProjectForm = ({ model, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <Error error={error} />
-        <div className="grid grid-cols-6 gap-6 p-6">
-          <div className="col-span-6">
-            <TextField name="name" label={t("project.name")} autoFocus />
-          </div>
-          <div className="col-span-6">
-            <NumberField name="area" label={t("project.area")} min={0} />
-          </div>
-          <div className="col-span-6">
+        <div className="grid grid-cols-12 gap-6 p-6">
+          <Error error={error} className="col-span-12" />
+          <TextField name="name" label={t("project.name")} autoFocus />
+          <NumberField name="area" label={t("project.area")} min={0} />
+          <AddressField name="address" />
+          <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>Submit</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}

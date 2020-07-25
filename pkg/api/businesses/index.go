@@ -36,6 +36,26 @@ func Routes(g *fiber.Group, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
+	g.Get("/businesses/countries", func(c *fiber.Ctx) {
+		log.Println("businesses.get.countries")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		response, err := h.GetCountries()
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
 	g.Post("/businesses", func(c *fiber.Ctx) {
 		log.Println("businesses.post")
 		var err error

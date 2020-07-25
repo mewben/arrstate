@@ -1,2 +1,2 @@
 export { default as SelectField } from "./select-field"
-export { PeopleSelectField } from "./wrappers"
+export { PeopleSelectField, CountriesSelectField } from "./wrappers"

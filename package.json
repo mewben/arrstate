@@ -6,6 +6,6 @@
   "author": "Melvin Soldia <melvinsoldia@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "cd web && npm install && npm run build"
+    "build": "cd web && yarn install && yarn build"
   }
 }

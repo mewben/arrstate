@@ -34,9 +34,7 @@
     "redux": "4.0.5",
     "redux-promise-middleware": "6.1.2",
     "redux-thunk": "2.3.0",
-    "yup": "0.29.1"
-  },
-  "devDependencies": {
+    "yup": "0.29.1",
     "@tailwindcss/ui": "0.3.0",
     "cypress": "4.8.0",
     "gatsby-plugin-create-client-paths": "2.3.4",

@@ -1,6 +1,7 @@
 import React from "react"
 import { navigate } from "gatsby"
 import * as Yup from "yup"
+import { useWatch } from "react-hook-form"
 import { useMutation, queryCache } from "react-query"
 
 import { ROLES } from "@Enums"
@@ -11,14 +12,15 @@ import {
   BaseTextField,
   SubmitButton,
   InputGroup,
-  FieldError,
+  AddressField,
+  NumberField,
 } from "@Components/forms"
 import { Error } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
 import { t } from "@Utils/t"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
-import { isEmpty, map, values } from "@Utils/lodash"
+import { includes, map, values } from "@Utils/lodash"
 
 const req = t("errors.required")
 const validationSchema = Yup.object().shape({
@@ -118,7 +120,9 @@ const PersonForm = ({ model, onClose }) => {
             options={roleOptions}
             multiple
           />
+          <CommissionForm />
           <TextField name="email" label={t("email")} />
+          <AddressField name="address" />
           <div className="col-span-6">
             <div className="flex items-center justify-between">
               <SubmitButton>Submit</SubmitButton>
@@ -128,6 +132,27 @@ const PersonForm = ({ model, onClose }) => {
         </div>
       </Form>
     </div>
+  )
+}
+
+const CommissionForm = () => {
+  const roles = useWatch({
+    name: "role",
+  })
+
+  if (!includes(roles, ROLES.AGENT)) {
+    return null
+  }
+  return (
+    <>
+      <NumberField
+        name="commissionPerc"
+        label={t("Commission")}
+        endAddonInline="%"
+        inputClassName="pr-16"
+        isMoney
+      />
+    </>
   )
 }
 

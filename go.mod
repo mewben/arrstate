@@ -5,7 +5,6 @@ go 1.14
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.3.0
-	github.com/gofiber/cors v0.2.2
 	github.com/gofiber/fiber v1.13.3
 	github.com/gofiber/jwt v0.2.0
 	github.com/gofiber/logger v0.2.4

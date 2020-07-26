@@ -1,12 +1,13 @@
 import React from "react"
 
-import { AuthProvider } from "@Providers"
-import { LayoutWrapper } from "@Wrappers"
+import { ReactQueryProvider, StylesProvider, AuthProvider } from "@Providers"
 
 export const wrapRootElement = ({ element }) => {
   return (
-    <AuthProvider>
-      <LayoutWrapper>{element}</LayoutWrapper>
-    </AuthProvider>
+    <ReactQueryProvider>
+      <StylesProvider>
+        <AuthProvider>{element}</AuthProvider>
+      </StylesProvider>
+    </ReactQueryProvider>
   )
 }

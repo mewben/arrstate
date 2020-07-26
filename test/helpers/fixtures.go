@@ -53,14 +53,16 @@ func init() {
 		"givenName": "given",
 	}
 	FakePerson[1] = fiber.Map{
-		"email":     "email2@email.com",
-		"role":      []string{enums.RoleClient},
-		"givenName": "given2",
+		"email":          "email2@email.com",
+		"role":           []string{enums.RoleClient, enums.RoleAgent},
+		"givenName":      "given2",
+		"commissionPerc": 1000,
 	}
 	FakePerson[2] = fiber.Map{
-		"email":     "email3@email.com",
-		"role":      []string{enums.RoleClient},
-		"givenName": "given3",
+		"email":          "email3@email.com",
+		"role":           []string{enums.RoleClient, enums.RoleAgent},
+		"givenName":      "given3",
+		"commissionPerc": 500,
 	}
 
 	// projects

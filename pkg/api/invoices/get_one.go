@@ -1,8 +1,6 @@
 package invoices
 
 import (
-	"log"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/arrstate/internal/enums"
@@ -21,8 +19,6 @@ func (h *Handler) GetOne(id string) (*models.InvoiceModel, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	log.Println("getoneinvoice--", doc)
 
 	return doc.(*models.InvoiceModel), nil
 

@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"github.com/gofiber/cors"
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/logger"
 	"github.com/gofiber/recover"
@@ -12,6 +11,11 @@ import (
 	"github.com/mewben/arrstate/pkg/errors"
 )
 
+func init() {
+	// include in pkger
+
+}
+
 // SetupBackend -
 func SetupBackend(db *mongo.Database) *fiber.App {
 	// db := startup.Init()
@@ -21,11 +25,14 @@ func SetupBackend(db *mongo.Database) *fiber.App {
 	// global middleware
 	app.Use(logger.New())
 	app.Use(recover.New())
-	app.Use(cors.New())
+	// app.Use(cors.New())
 
 	// Register routes
 	auth.Routes(app, db)
 	api.Routes(app, db)
+
+	// static
+	app.Static("/", "./web/public")
 
 	app.Use(errors.ErrorHandler())
 

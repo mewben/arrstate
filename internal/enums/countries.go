@@ -12,8 +12,9 @@ import (
 var Countries = make([]string, 0)
 
 func init() {
-	f, err := pkger.Open("/web/src/assets/countries.json")
+	f, err := pkger.Open("/assets/countries.json")
 	if err != nil {
+		log.Println("Error opening countries.json")
 		log.Fatalln(err)
 	}
 	defer f.Close()

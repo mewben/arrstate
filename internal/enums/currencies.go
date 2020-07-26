@@ -19,7 +19,7 @@ type Currency struct {
 var Currencies = make([]Currency, 0)
 
 func init() {
-	f, err := pkger.Open("/web/src/assets/currencies.json")
+	f, err := pkger.Open("/assets/currencies.json")
 	if err != nil {
 		log.Fatalln(err)
 	}

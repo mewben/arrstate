@@ -77,7 +77,7 @@ const SignupForm = () => {
             name="domain"
             label={t("domain")}
             description={t("You can change the name and domain anytime.")}
-            endAddon=".realtydomain.com"
+            endAddon=".arrstate.com"
           />
           <TextField name="email" type="email" label={t("email")} />
           <TextField name="password" type="password" label={t("password")} />

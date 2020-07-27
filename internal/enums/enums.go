@@ -1,5 +1,18 @@
 package enums
 
+// Countries slice
+var Countries = make([]string, 0)
+
+// Currency -
+type Currency struct {
+	Code   string `json:"code"`
+	Name   string `json:"name"`
+	Symbol string `json:"symbol"`
+}
+
+// Currencies slice
+var Currencies = make([]Currency, 0)
+
 // Enums
 const (
 	EntityBusiness = "business"

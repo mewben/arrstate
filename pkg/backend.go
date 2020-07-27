@@ -11,11 +11,6 @@ import (
 	"github.com/mewben/arrstate/pkg/errors"
 )
 
-func init() {
-	// include in pkger
-
-}
-
 // SetupBackend -
 func SetupBackend(db *mongo.Database) *fiber.App {
 	// db := startup.Init()
@@ -32,7 +27,7 @@ func SetupBackend(db *mongo.Database) *fiber.App {
 	api.Routes(app, db)
 
 	// static
-	app.Static("/", "./web/public")
+	app.Static("/*", "./web/public")
 
 	app.Use(errors.ErrorHandler())
 

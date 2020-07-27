@@ -11,10 +11,10 @@ import (
 // Countries slice
 var Countries = make([]string, 0)
 
-func init() {
+func init2() {
 	f, err := pkger.Open("/assets/countries.json")
 	if err != nil {
-		log.Println("Error opening countries.json")
+		log.Println("Error opening countries.json", err)
 		log.Fatalln(err)
 	}
 	defer f.Close()

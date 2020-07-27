@@ -18,7 +18,7 @@ type Currency struct {
 // Currencies slice
 var Currencies = make([]Currency, 0)
 
-func init() {
+func init3() {
 	f, err := pkger.Open("/assets/currencies.json")
 	if err != nil {
 		log.Fatalln(err)

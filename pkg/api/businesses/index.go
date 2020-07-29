@@ -56,6 +56,26 @@ func Routes(g fiber.Router, db *mongo.Database) {
 
 	})
 
+	g.Get("/businesses/currencies", func(c *fiber.Ctx) {
+		log.Println("businesses.get.currencies")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		response, err := h.GetCurrencies()
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
 	g.Post("/businesses", func(c *fiber.Ctx) {
 		log.Println("businesses.post")
 		var err error

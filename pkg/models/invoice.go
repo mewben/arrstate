@@ -10,20 +10,21 @@ import (
 // For the payment schedules of the client
 // This should be auto generated when attaching a client to a property
 type InvoiceModel struct {
-	Name           string               `bson:"name" json:"name"`
-	From           *FromToModel         `bson:"from" json:"from"`
-	To             *FromToModel         `bson:"to" json:"to"`
-	ProjectID      *primitive.ObjectID  `bson:"projectID" json:"projectID"`
-	PropertyID     *primitive.ObjectID  `bson:"propertyID" json:"propertyID"`
-	No             int                  `bson:"no" json:"no"` // some sequence or edited
-	ReceiptNo      string               `bson:"receiptNo" json:"receiptNo"`
-	Status         string               `bson:"status" json:"status"`
-	Blocks         []primitive.ObjectID `bson:"blocks" json:"blocks"`
-	Tax            int64                `bson:"tax" json:"tax" validate:"number,min=0"`
-	TaxAmount      int64                `bson:"taxAmount" json:"taxAmount"`
-	Discount       string               `bson:"discount" json:"discount"`
-	DiscountAmount int64                `bson:"discountAmount" json:"discountAmount"`
-	SubTotal       int64                `bson:"subTotal" json:"subTotal" validate:"number,min=0"`
+	Name       string               `bson:"name" json:"name"`
+	From       *FromToModel         `bson:"from" json:"from"`
+	To         *FromToModel         `bson:"to" json:"to"`
+	ProjectID  *primitive.ObjectID  `bson:"projectID" json:"projectID"`
+	PropertyID *primitive.ObjectID  `bson:"propertyID" json:"propertyID"`
+	No         int                  `bson:"no" json:"no"` // some sequence or edited
+	ReceiptNo  string               `bson:"receiptNo" json:"receiptNo"`
+	Status     string               `bson:"status" json:"status"`
+	Blocks     []primitive.ObjectID `bson:"blocks" json:"blocks"`
+	AddOrLess  []AddOrLessModel     `bson:"addOrLess" json:"addOrLess"`
+	// Tax            int64                `bson:"tax" json:"tax" validate:"number,min=0"`
+	// TaxAmount      int64                `bson:"taxAmount" json:"taxAmount"`
+	// Discount       string               `bson:"discount" json:"discount"`
+	// DiscountAmount int64                `bson:"discountAmount" json:"discountAmount"`
+	SubTotal int64 `bson:"subTotal" json:"subTotal" validate:"number,min=0"`
 	// TotalDiscount  int64              `bson:"totalDiscount" json:"totalDiscount" validate:"number,min=0"`
 	// TotalTax       int64              `bson:"totalTax" json:"totalTax" validate:"number,min=0"`
 	Total       int64      `bson:"total" json:"total" validate:"required,number,min=0"`

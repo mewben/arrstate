@@ -27,17 +27,18 @@ type Handler struct {
 
 // Payload -
 type Payload struct {
-	Name       string              `json:"name"`
-	Status     string              `json:"status"`
-	From       *models.FromToModel `json:"from"`
-	To         *models.FromToModel `json:"to"`
-	ProjectID  *primitive.ObjectID `json:"projectID"`
-	PropertyID *primitive.ObjectID `json:"propertyID"`
-	IssueDate  *time.Time          `json:"issueDate"`
-	DueDate    *time.Time          `json:"dueDate"`
-	Blocks     []fiber.Map         `json:"blocks"`
-	Discount   string              `json:"discount"`
-	Tax        int64               `json:"tax"`
+	Name       string                  `json:"name"`
+	Status     string                  `json:"status"`
+	From       *models.FromToModel     `json:"from"`
+	To         *models.FromToModel     `json:"to"`
+	ProjectID  *primitive.ObjectID     `json:"projectID"`
+	PropertyID *primitive.ObjectID     `json:"propertyID"`
+	IssueDate  *time.Time              `json:"issueDate"`
+	DueDate    *time.Time              `json:"dueDate"`
+	Blocks     []fiber.Map             `json:"blocks"`
+	AddOrLess  []models.AddOrLessModel `json:"addOrLess"`
+	// Discount   string              `json:"discount"`
+	// Tax        int64               `json:"tax"`
 }
 
 // PaymentPayload -

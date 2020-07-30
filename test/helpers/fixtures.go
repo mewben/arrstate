@@ -97,14 +97,28 @@ func init() {
 
 	// invoices
 	FakeInvoice[0] = fiber.Map{
-		"tax":       1250,
-		"discount":  "5%",
+		// "tax":       1250,
+		// "discount":  "5%",
 		"issueDate": time.Now(),
 		"dueDate":   time.Now().Add(24 * time.Hour),
 		"blocks": []fiber.Map{
 			{
 				"type":   enums.InvoiceBlockItem,
 				"amount": 100000,
+			},
+		},
+		"addOrLess": []fiber.Map{
+			{
+				"name":     "tax",
+				"value":    "12.5%",
+				"less":     false,
+				"fromBase": true,
+			},
+			{
+				"name":     "discount",
+				"value":    "5%",
+				"less":     true,
+				"fromBase": true,
 			},
 		},
 	}

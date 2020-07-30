@@ -14,15 +14,16 @@ type BlockModel struct {
 
 // InvoiceItemBlockModel -
 type InvoiceItemBlockModel struct {
-	Title          string  `bson:"title" json:"title"`
-	Description    string  `bson:"description" json:"description"`
-	Amount         int64   `bson:"amount" json:"amount" validate:"number,min=0"`
-	Quantity       float64 `bson:"quantity" json:"quantity" validate:"number,min=0"`
-	Tax            int64   `bson:"tax" json:"tax" validate:"number,min=0"`
-	TaxAmount      int64   `bson:"taxAmount" json:"taxAmount"`
-	Discount       string  `bson:"discount" json:"discount" validate:"numberOrPercentage"`
-	DiscountAmount int64   `bson:"discountAmount" json:"discountAmount"`
-	Total          int64   `bson:"total" json:"total"`
+	Title       string           `bson:"title" json:"title"`
+	Description string           `bson:"description" json:"description"`
+	Amount      int64            `bson:"amount" json:"amount" validate:"number,min=0"`
+	Quantity    float64          `bson:"quantity" json:"quantity" validate:"number,min=0"`
+	AddOrLess   []AddOrLessModel `bson:"addOrLess" json:"addOrLess"`
+	// Tax            int64   `bson:"tax" json:"tax" validate:"number,min=0"`
+	// TaxAmount      int64   `bson:"taxAmount" json:"taxAmount"`
+	// Discount       string  `bson:"discount" json:"discount" validate:"numberOrPercentage"`
+	// DiscountAmount int64   `bson:"discountAmount" json:"discountAmount"`
+	Total int64 `bson:"total" json:"total"`
 
 	BlockModel `bson:",inline"`
 }

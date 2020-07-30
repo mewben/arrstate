@@ -144,6 +144,25 @@ func TestComputeAddOrLess(t *testing.T) {
 				},
 				6,
 			},
+			{
+				900,
+				20000,
+				[]AddOrLessModel{
+					{
+						Name:     "tax1",
+						Value:    "10%", // 2000
+						Less:     false,
+						FromBase: true,
+					},
+					{
+						Name:     "discount",
+						Value:    "5%", // 1000
+						Less:     true,
+						FromBase: false,
+					},
+				},
+				7,
+			},
 		}
 
 		for _, item := range cases {

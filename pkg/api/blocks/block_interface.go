@@ -2,6 +2,7 @@ package blocks
 
 import (
 	"context"
+	"math"
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber"
@@ -63,6 +64,13 @@ func (block *InvoiceItemBlock) Prepare(ctx context.Context, db *database.Service
 		return err
 	}
 
+	for i := range block.AddOrLess {
+		if block.AddOrLess[i].ID == nil {
+			id := primitive.NewObjectID()
+			block.AddOrLess[i].ID = &id
+		}
+	}
+
 	// validate
 	validate.RegisterValidation("numberOrPercentage", utils.ValidateNumberOrPercentage)
 	if err = validate.Struct(block); err != nil {
@@ -73,11 +81,15 @@ func (block *InvoiceItemBlock) Prepare(ctx context.Context, db *database.Service
 	if block.Quantity == 0 {
 		block.Quantity = 1
 	}
-	block.TaxAmount, block.DiscountAmount, block.Total, err = utils.CalculateItem(block.Amount, block.Tax, block.Quantity, block.Discount)
+	var withQuantity int64
+	withQuantity = int64(math.Round(float64(block.Amount) * block.Quantity))
+	addOrLess, err := models.ComputeAddOrLess(withQuantity, block.AddOrLess)
+	// block.TaxAmount, block.DiscountAmount, block.Total, err = utils.CalculateItem(block.Amount, block.Tax, block.Quantity, block.Discount)
 	if err != nil {
 		return err
 	}
 
+	block.Total = withQuantity + addOrLess
 	return nil
 }
 
@@ -149,16 +161,17 @@ func (block *InvoiceItemBlock) AfterCreate(ctx context.Context, db *database.Ser
 		}
 	}
 
-	taxAmount, discountAmount, total, err := utils.CalculateItem(subTotal, invoice.Tax, 1, invoice.Discount)
+	addOrLess, err := models.ComputeAddOrLess(subTotal, invoice.AddOrLess)
+	// taxAmount, discountAmount, total, err := utils.CalculateItem(subTotal, invoice.Tax, 1, invoice.Discount)
 	if err != nil {
 		return err
 	}
 
 	set := fiber.Map{
-		"subTotal":       subTotal,
-		"taxAmount":      taxAmount,
-		"discountAmount": discountAmount,
-		"total":          total,
+		"subTotal": subTotal,
+		// "taxAmount":      taxAmount,
+		// "discountAmount": discountAmount,
+		"total": subTotal + addOrLess,
 	}
 
 	upd := bson.D{

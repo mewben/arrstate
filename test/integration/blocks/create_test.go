@@ -62,7 +62,7 @@ func TestCreateBlock(t *testing.T) {
 		fakeDescription := "Description A"
 		fakeAmount := 10000
 		fakeQuantity := 2
-		fakeTax := 1000
+		fakeTax := "10%"
 		fakeDiscount := "5%"
 		data := fiber.Map{
 			"type":        enums.InvoiceBlockItem,
@@ -74,6 +74,20 @@ func TestCreateBlock(t *testing.T) {
 			"quantity":    fakeQuantity,
 			"tax":         fakeTax,
 			"discount":    fakeDiscount,
+			"addOrLess": []fiber.Map{
+				{
+					"name":     "tax",
+					"value":    fakeTax,
+					"less":     false,
+					"fromBase": true,
+				},
+				{
+					"name":     "tax",
+					"value":    fakeDiscount,
+					"less":     true,
+					"fromBase": false,
+				},
+			},
 		}
 		req := helpers.DoRequest("POST", path, data, token1)
 		res, err := app.Test(req, -1)
@@ -97,10 +111,19 @@ func TestCreateBlock(t *testing.T) {
 		assert.Equal(fakeDescription, response.Description)
 		assert.EqualValues(fakeAmount, response.Amount)
 		assert.EqualValues(fakeQuantity, response.Quantity)
-		assert.EqualValues(fakeTax, response.Tax)
-		assert.Equal(fakeDiscount, response.Discount)
-		assert.EqualValues(2000, response.TaxAmount)
-		assert.EqualValues(1100, response.DiscountAmount)
+		als := response.AddOrLess
+		// alsid := als[0].ID
+		assert.False(als[0].ID.IsZero())
+		assert.Equal("tax", als[0].Name)
+		assert.Equal(fakeTax, als[0].Value)
+		assert.False(als[0].Less)
+		assert.True(als[0].FromBase)
+		assert.Equal(fakeDiscount, als[1].Value)
+		assert.True(als[1].Less)
+		// assert.EqualValues(fakeTax, response.Tax)
+		// assert.Equal(fakeDiscount, response.Discount)
+		// assert.EqualValues(2000, response.TaxAmount)
+		// assert.EqualValues(1100, response.DiscountAmount)
 		assert.EqualValues(20900, response.Total)
 	})
 

@@ -63,11 +63,20 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 		}
 		invoice.PropertyID = data.PropertyID
 	}
-	// 5. TODO: check discount
-	// 6. check tax
-	if data.Tax < 0 {
-		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	// 5. additional or deductions
+	// - computation is done on block hook
+	for i := range data.AddOrLess {
+		if data.AddOrLess[i].ID == nil {
+			id := primitive.NewObjectID()
+			data.AddOrLess[i].ID = &id
+		}
 	}
+
+	// // 5. TODO: check discount
+	// // 6. check tax
+	// if data.Tax < 0 {
+	// 	return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	// }
 
 	// Validate status
 	invoice.Status = data.Status
@@ -86,9 +95,10 @@ func (h *Handler) Create(data *Payload) (*models.InvoiceModel, error) {
 	}
 	invoice.IssueDate = data.IssueDate
 	invoice.DueDate = data.DueDate
-	invoice.Tax = data.Tax
-	invoice.Discount = data.Discount
+	//invoice.Tax = data.Tax
+	//invoice.Discount = data.Discount
 	invoice.Blocks = make([]primitive.ObjectID, 0)
+	invoice.AddOrLess = data.AddOrLess
 	// TODO: amounts will be calculated on the blocks hooks
 	invoice.Total = 0
 	invoice.SubTotal = 0

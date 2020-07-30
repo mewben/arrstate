@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/mewben/arrstate/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -16,10 +17,10 @@ import (
 //		Amount: 1500			-1000
 //		FromBase: true		false
 type AddOrLessModel struct {
-	ID    primitive.ObjectID `bson:"_id" json:"_id" validate:"required"`
-	Name  string             `bson:"name" json:"name"`
-	Less  bool               `bson:"less" json:"less"`
-	Value string             `bson:"value" json:"value" validate:"numberOrPercentage"`
+	ID    *primitive.ObjectID `bson:"_id" json:"_id"`
+	Name  string              `bson:"name" json:"name"`
+	Less  bool                `bson:"less" json:"less"`
+	Value string              `bson:"value" json:"value" validate:"numberOrPercentage"`
 	// Amount int64              `bson:"amount" json:"amount"`
 	// FromBase sets which to calculate from. Base or preceding amount
 	FromBase bool `bson:"fromBase" json:"fromBase"`
@@ -79,6 +80,11 @@ func ParseNumberOrPercentage(input string) (int64, bool, error) {
 
 	v = v + "00"
 	d, err := strconv.ParseInt(v, 0, 64)
+	if err != nil {
+		return 0, isPercent, err
+	}
+	if d < 0 {
+		return 0, isPercent, errors.NewHTTPError(errors.ErrMin0)
+	}
 	return d, isPercent, err
-
 }

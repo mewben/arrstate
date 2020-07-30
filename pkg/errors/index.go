@@ -13,6 +13,7 @@ const (
 	ErrNotFoundBlock      = "errors.notFound.block"
 	ErrUserNotInBusiness  = "errors.user.notInBusiness"
 	ErrInputInvalid       = "errors.inputInvalid"
+	ErrMin0               = "errors.min.0"
 	ErrDomainDuplicate    = "errors.domain.duplicate"
 	ErrUserDuplicate      = "errors.user.duplicate"
 	ErrToken              = "errors.token"

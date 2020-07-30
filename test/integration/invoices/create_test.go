@@ -44,8 +44,20 @@ func TestCreateInvoice(t *testing.T) {
 				"description": "Description A",
 				"amount":      10000,
 				"quantity":    2,
-				"tax":         1000, // 10%,
-				"discount":    "5%",
+				"addOrLess": []fiber.Map{
+					{
+						"name":     "tax",
+						"value":    "10%",
+						"less":     false,
+						"fromBase": true,
+					},
+					{
+						"name":     "discount",
+						"value":    "5%",
+						"less":     true,
+						"fromBase": false,
+					},
+				},
 			},
 			{
 				"type":        enums.InvoiceBlockItem,
@@ -71,8 +83,20 @@ func TestCreateInvoice(t *testing.T) {
 			"issueDate":  issueDate,
 			"dueDate":    dueDate,
 			"blocks":     blocksData,
-			"discount":   "10%",
-			"tax":        2000, // 20%
+			"addOrLess": []fiber.Map{
+				{
+					"name":     "discount",
+					"value":    "10%",
+					"less":     true,
+					"fromBase": true,
+				},
+				{
+					"name":     "tax",
+					"value":    "20%",
+					"less":     false,
+					"fromBase": false,
+				},
+			},
 		}
 
 		// computations block
@@ -128,10 +152,16 @@ func TestCreateInvoice(t *testing.T) {
 		assert.Equal(enums.StatusDraft, response.Status)
 		assert.Equal("Invoice 1", response.Name)
 		assert.EqualValues(1, response.No)
-		assert.EqualValues(2000, response.Tax)
-		assert.EqualValues(8180, response.TaxAmount)
-		assert.Equal("10%", response.Discount)
-		assert.EqualValues(4908, response.DiscountAmount)
+		als := response.AddOrLess
+		assert.False(als[0].ID.IsZero())
+		assert.Equal("discount", als[0].Name)
+		assert.Equal("10%", als[0].Value)
+		assert.True(als[0].Less)
+		assert.True(als[0].FromBase)
+		// assert.EqualValues(8180, response.TaxAmount)
+		assert.Equal("20%", als[1].Value)
+		assert.False(als[1].Less)
+		// assert.EqualValues(4908, response.DiscountAmount)
 		assert.EqualValues(40900, response.SubTotal)
 		assert.EqualValues(44172, response.Total)
 	})

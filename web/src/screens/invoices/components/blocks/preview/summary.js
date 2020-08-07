@@ -3,6 +3,7 @@ import acc from "accounting"
 
 import { Table, Th, Td } from "@Components/generic"
 import { fromMoney } from "@Utils"
+import { map } from "@Utils/lodash"
 
 const Summary = ({ block, invoice, isReceipt }) => {
   return (
@@ -16,18 +17,16 @@ const Summary = ({ block, invoice, isReceipt }) => {
                 Php {acc.formatNumber(fromMoney(invoice.subTotal), 2)}
               </Td>
             </tr>
-            <tr>
-              <Td py="py-3">Tax:</Td>
-              <Td align="right" py="py-3">
-                {invoice.tax ? `${invoice.tax}%` : 0}
-              </Td>
-            </tr>
-            <tr>
-              <Td py="py-3">Discount:</Td>
-              <Td align="right" py="py-3">
-                {invoice.discount || 0}
-              </Td>
-            </tr>
+            {map(invoice?.addOrLess, item => {
+              return (
+                <tr key={item._id}>
+                  <Td py="py-3">{item.name}:</Td>
+                  <Td align="right" py="py-3">
+                    {item.value}
+                  </Td>
+                </tr>
+              )
+            })}
           </tbody>
           <tfoot>
             <tr>

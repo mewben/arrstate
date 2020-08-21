@@ -2,23 +2,27 @@ import React from "react"
 import { Link, navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation } from "react-query"
+import { useTranslation } from "react-i18next"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
 import { Error } from "@Components/generic"
-import { t } from "@Utils/t"
 import { requestApi } from "@Utils"
 import { useAuth } from "@Providers"
-
-const req = t("errors.required")
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().email(t("errors.email")).required(req),
-  password: Yup.string().required(req),
-})
+import { ERRORS } from "@Enums"
 
 // ------- SigninForm -------- //
 const SigninForm = () => {
+  const { t } = useTranslation()
   const { authSignIn } = useAuth()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      email: Yup.string().email(t(ERRORS.EMAIL)).required(req),
+      password: Yup.string().required(req),
+    })
+  }, [])
+
   const [mutate, { reset, error }] = useMutation(formData => {
     return requestApi("/auth/signin", "POST", {
       data: formData,
@@ -57,14 +61,14 @@ const SigninForm = () => {
           <TextField name="password" label={t("password")} type="password" />
           <div className="col-span-12">
             <SubmitButton size="xl" fullWidth>
-              {t("Sign in")}
+              {t("signin.btn")}
             </SubmitButton>
             <div className="text-xs text-cool-gray-500 mt-2">
               <Link
                 to="/forgot-password"
                 className="font-medium hover:text-gray-900"
               >
-                Forgot your password?
+                {t("signin.forgot")}
               </Link>
             </div>
           </div>

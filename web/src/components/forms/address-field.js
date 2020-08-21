@@ -1,43 +1,44 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
-import { t } from "@Utils/t"
 import { TextField, InputGroup, CountriesSelectField } from "@Components/forms"
 
 const AddressField = ({ name }) => {
+  const { t } = useTranslation()
   return (
     <>
       <InputGroup>
         <TextField
           name={`${name}.street`}
-          placeholder={t("Street")}
-          label={t("Street")}
+          placeholder={t("form.address.streetP")}
+          label={t("form.address.street")}
           inputClassName="rounded-none rounded-l-md"
         />
         <TextField
           name={`${name}.city`}
-          placeholder={t("City")}
-          label={t("City")}
+          placeholder={t("form.address.cityP")}
+          label={t("form.address.city")}
           inputClassName="rounded-none rounded-r-md"
         />
       </InputGroup>
       <InputGroup>
         <TextField
           name={`${name}.state`}
-          placeholder={t("State")}
-          label={t("State")}
+          placeholder={t("form.address.stateP")}
+          label={t("form.address.state")}
           inputClassName="rounded-none rounded-l-md"
         />
         <TextField
           name={`${name}.zipCode`}
-          placeholder={t("Post / Zip Code")}
-          label={t("Post / Zip Code")}
+          placeholder={t("form.address.zipP")}
+          label={t("form.address.zip")}
           inputClassName="rounded-none rounded-r-md"
         />
       </InputGroup>
       <CountriesSelectField
         name={`${name}.country`}
-        placeholder={t("Country")}
-        label={t("Country")}
+        placeholder={t("form.address.countryP")}
+        label={t("form.address.country")}
       />
     </>
   )

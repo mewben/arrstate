@@ -3,6 +3,7 @@ import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useWatch } from "react-hook-form"
 import { useMutation, queryCache } from "react-query"
+import { useTranslation } from "react-i18next"
 
 import { ROLES } from "@Enums"
 import {
@@ -15,23 +16,27 @@ import {
   AddressField,
   NumberField,
 } from "@Components/forms"
+import { ERRORS } from "@Enums"
 import { Error } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
-import { t } from "@Utils/t"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
 import { includes, map, values } from "@Utils/lodash"
 
-const req = t("errors.required")
-const validationSchema = Yup.object().shape({
-  givenName: Yup.string().required(req),
-  familyName: Yup.string(),
-  email: Yup.string().email(t("errors.email")).required(req),
-  role: Yup.array(),
-})
-
 // ------ PersonForm ------- //
 const PersonForm = ({ model, onClose }) => {
+  const { t } = useTranslation()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      givenName: Yup.string().required(req),
+      familyName: Yup.string(),
+      email: Yup.string().email(t("errors.email")).required(req),
+      role: Yup.array(),
+    })
+  }, [])
+
   const isEdit = model?._id
   const [save, { reset, error }] = useMutation(
     formData => {
@@ -90,7 +95,7 @@ const PersonForm = ({ model, onClose }) => {
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader
-        title={isEdit ? model.name : "New Person"}
+        title={isEdit ? model.name : t("people.new")}
         onClose={onClose}
       />
       <Form
@@ -100,7 +105,11 @@ const PersonForm = ({ model, onClose }) => {
       >
         <div className="grid grid-cols-12 gap-6 p-6">
           <Error error={error} className="col-span-12" />
-          <InputGroup name="givenName" id="givenName" label={t("name")}>
+          <InputGroup
+            name="givenName"
+            id="givenName"
+            label={t("name.fullName")}
+          >
             <BaseTextField
               name="givenName"
               id="givenName"
@@ -116,7 +125,7 @@ const PersonForm = ({ model, onClose }) => {
           </InputGroup>
           <SelectField
             name="role"
-            label={t("role")}
+            label={t("form.people.role")}
             options={roleOptions}
             multiple
           />
@@ -125,7 +134,7 @@ const PersonForm = ({ model, onClose }) => {
           <AddressField name="address" />
           <div className="col-span-6">
             <div className="flex items-center justify-between">
-              <SubmitButton>Submit</SubmitButton>
+              <SubmitButton>{t("btnSubmit")}</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}
             </div>
           </div>
@@ -136,6 +145,7 @@ const PersonForm = ({ model, onClose }) => {
 }
 
 const CommissionForm = () => {
+  const { t } = useTranslation()
   const roles = useWatch({
     name: "role",
   })
@@ -147,7 +157,7 @@ const CommissionForm = () => {
     <>
       <NumberField
         name="commissionPerc"
-        label={t("Commission")}
+        label={t("form.people.commission")}
         endAddonInline="%"
         inputClassName="pr-16"
         isMoney

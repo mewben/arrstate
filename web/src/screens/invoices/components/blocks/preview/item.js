@@ -1,5 +1,6 @@
 import React from "react"
 import acc from "accounting"
+import { useTranslation } from "react-i18next"
 
 import { Table, useTable, Th, Td } from "@Components/generic"
 import { fromMoney } from "@Utils"
@@ -16,15 +17,16 @@ export const ItemWrapper = ({ children }) => {
 }
 
 const ItemHead = () => {
+  const { t } = useTranslation()
   const { renderExtraTh } = useTable()
   return (
     <thead>
       <tr>
-        <Th fullWidth>Item</Th>
-        <Th align="right">Amount (Php)</Th>
-        <Th align="right">Quantity</Th>
+        <Th fullWidth>{t("blocks.item.item")}</Th>
+        <Th align="right">{t("blocks.item.amount")} (Php)</Th>
+        <Th align="right">{t("blocks.item.quantity")}</Th>
         {renderExtraTh()}
-        <Th align="right">Total (Php)</Th>
+        <Th align="right">{t("blocks.item.total")} (Php)</Th>
       </tr>
     </thead>
   )

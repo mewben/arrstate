@@ -283,7 +283,7 @@ func TestSignup(t *testing.T) {
 		assert.Equal(400, res.StatusCode, res)
 		response, err := helpers.GetResponseError(res)
 		assert.Nil(err)
-		assert.Equal(response.Message, services.T(errors.ErrDomainDuplicate), response)
+		assert.Equal(response.Message, services.T(errors.ErrDuplicateDomain), response)
 
 	})
 
@@ -313,7 +313,7 @@ func TestSignup(t *testing.T) {
 		assert.Equal(400, res.StatusCode, res)
 		response, err := helpers.GetResponseError(res)
 		assert.Nil(err)
-		assert.Equal(response.Message, services.T(errors.ErrUserDuplicate), response)
+		assert.Equal(response.Message, services.T(errors.ErrDuplicateUser), response)
 	})
 
 	t.Run("It should cleanup business, user, people on signup error", func(t *testing.T) {

@@ -2,8 +2,9 @@ import React from "react"
 import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
+import { useTranslation } from "react-i18next"
 
-import { ROLES } from "@Enums"
+import { ROLES, ERRORS } from "@Enums"
 import {
   Form,
   TextField,
@@ -14,21 +15,24 @@ import {
 } from "@Components/forms"
 import { Error } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
-import { t } from "@Utils/t"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
 import { isEmpty } from "@Utils/lodash"
 
-const req = t("errors.required")
-const validationSchema = Yup.object().shape({
-  givenName: Yup.string().required(req),
-  familyName: Yup.string(),
-  email: Yup.string().email(t("errors.email")).required(req),
-  commissionPerc: Yup.number().min(0),
-})
-
 // ------ AgentForm ------- //
 const AgentForm = ({ model, onClose }) => {
+  const { t } = useTranslation()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      givenName: Yup.string().required(req),
+      familyName: Yup.string(),
+      email: Yup.string().email(t("errors.email")).required(req),
+      commissionPerc: Yup.number().min(0),
+    })
+  }, [])
+
   const isEdit = model?._id
   const [save, { reset, error }] = useMutation(
     formData => {
@@ -96,7 +100,7 @@ const AgentForm = ({ model, onClose }) => {
 
         <div className="grid grid-cols-6 gap-6 p-6">
           <div className="col-span-6">
-            <InputGroup label={t("name")}>
+            <InputGroup label={t("name.fullName")}>
               <BaseTextField
                 name="givenName"
                 className="rounded-none rounded-l-md"
@@ -118,14 +122,14 @@ const AgentForm = ({ model, onClose }) => {
             <TextField
               name="commissionPerc"
               type="number"
-              label={t("commission percentage")}
+              label={t("form.agent.commissionPercentage")}
               step="0.0001"
               min="0"
             />
           </div>
           <div className="col-span-6">
             <div className="flex items-center justify-between">
-              <SubmitButton>Submit</SubmitButton>
+              <SubmitButton>{t("btnSubmit")}</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}
             </div>
           </div>

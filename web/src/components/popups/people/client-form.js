@@ -2,8 +2,9 @@ import React from "react"
 import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
+import { useTranslation } from "react-i18next"
 
-import { ROLES } from "@Enums"
+import { ROLES, ERRORS } from "@Enums"
 import {
   Form,
   TextField,
@@ -14,20 +15,23 @@ import {
 } from "@Components/forms"
 import { Error } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
-import { t } from "@Utils/t"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
 import { isEmpty } from "@Utils/lodash"
 
-const req = t("errors.required")
-const validationSchema = Yup.object().shape({
-  givenName: Yup.string().required(req),
-  familyName: Yup.string(),
-  email: Yup.string().email(t("errors.email")).required(req),
-})
-
 // ------ ClientForm ------- //
 const ClientForm = ({ model, onClose }) => {
+  const { t } = useTranslation()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      givenName: Yup.string().required(req),
+      familyName: Yup.string(),
+      email: Yup.string().email(t(ERRORS.EMAIL)).required(req),
+    })
+  }, [])
+
   const isEdit = model?._id
   const [save, { reset, error }] = useMutation(
     formData => {
@@ -81,7 +85,7 @@ const ClientForm = ({ model, onClose }) => {
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader
-        title={isEdit ? model.name : "New Client"}
+        title={isEdit ? model.name : t("clients.new")}
         onClose={onClose}
       />
       <Form
@@ -93,7 +97,7 @@ const ClientForm = ({ model, onClose }) => {
 
         <div className="grid grid-cols-6 gap-6 p-6">
           <div className="col-span-6">
-            <InputGroup label={t("name")}>
+            <InputGroup label={t("name.fullName")}>
               <BaseTextField
                 name="givenName"
                 className="rounded-none rounded-l-md"
@@ -113,7 +117,7 @@ const ClientForm = ({ model, onClose }) => {
           </div>
           <div className="col-span-6">
             <div className="flex items-center justify-between">
-              <SubmitButton>Submit</SubmitButton>
+              <SubmitButton>{t("btnSubmit")}</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}
             </div>
           </div>

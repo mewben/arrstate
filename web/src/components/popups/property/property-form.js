@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation, queryCache } from "react-query"
+import { useTranslation } from "react-i18next"
 
 import { PROPERTY_TYPES } from "@Enums"
 import {
@@ -12,25 +13,30 @@ import {
   SelectField,
   SubmitButton,
 } from "@Components/forms"
+import { ERRORS } from "@Enums"
 import { Error, Loading } from "@Components/generic"
 import { Button, ButtonConfirm } from "@Components/generic/button"
-import { t, req } from "@Utils/t"
 import { useProjectOptions } from "@Hooks"
 import { DrawerHeader } from "@Wrappers/layout"
 import { get, map, values } from "@Utils/lodash"
 import { requestApi } from "@Utils"
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required(req),
-  type: Yup.string().required(req).nullable(),
-  area: Yup.number().min(0).nullable(),
-  price: Yup.number().min(0).nullable(),
-  priceAddon: Yup.number().min(0).nullable(),
-  // projectID: Yup.mixed().notOneOf([null, undefined], req),
-})
-
 // ------ PropertyForm ------- //
 const PropertyForm = ({ model, projectID, onClose }) => {
+  const { t } = useTranslation()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      name: Yup.string().required(req),
+      type: Yup.string().required(req).nullable(),
+      area: Yup.number().min(0).nullable(),
+      price: Yup.number().min(0).nullable(),
+      priceAddon: Yup.number().min(0).nullable(),
+      // projectID: Yup.mixed().notOneOf([null, undefined], req),
+    })
+  }, [])
+
   const isEdit = model?._id
   const [save, { reset, error }] = useMutation(
     formData => {
@@ -102,7 +108,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader
-        title={isEdit ? model.name : "New Property"}
+        title={isEdit ? model.name : t("properties.new")}
         onClose={onClose}
       />
       <Form
@@ -112,21 +118,21 @@ const PropertyForm = ({ model, projectID, onClose }) => {
       >
         <div className="grid grid-cols-12 gap-6 p-6">
           <Error error={error} className="col-span-12" />
-          <TextField name="name" label={t("property.name")} autoFocus />
+          <TextField name="name" label={t("form.property.name")} autoFocus />
           <SelectField
             name="type"
-            label={t("property.type")}
+            label={t("form.property.type")}
             options={propertyTypeOptions}
             disableClearable
           />
           <SelectField
             name="projectID"
-            label={t("property.project")}
+            label={t("form.property.project")}
             options={projectOptions}
           />
           <NumberField
             name="area"
-            label={t("property.area")}
+            label={t("form.property.area")}
             min={0}
             endAddonInline="sq.m"
             inputClassName="pr-16"
@@ -134,7 +140,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
           />
           <NumberField
             name="price"
-            label={t("property.price")}
+            label={t("form.property.price")}
             min={0}
             isMoney
             startAddonInline="Php"
@@ -143,7 +149,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
           />
           <NumberField
             name="priceAddon"
-            label={t("property.priceAddon")}
+            label={t("form.property.priceAddon")}
             min={0}
             isMoney
             startAddonInline="Php"
@@ -152,7 +158,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
           />
           <div className="col-span-12">
             <div className="flex items-center justify-between">
-              <SubmitButton>Submit</SubmitButton>
+              <SubmitButton>{t("btnSubmit")}</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}
             </div>
           </div>

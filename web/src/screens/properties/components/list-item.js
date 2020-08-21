@@ -1,15 +1,19 @@
 import React from "react"
 import { Link } from "gatsby"
 import acc from "accounting"
+import { useTranslation } from "react-i18next"
 
 import { Td } from "@Components/generic"
-import { t } from "@Utils/t"
 import { fromMoney } from "@Utils/money"
 import { ProjectWrapper } from "@Wrappers"
 import Status from "./status"
 
 // Properties listitem
+// t('properties.lot')
+// t('properties.house')
 const ListItem = ({ item, projectID }) => {
+  const { t } = useTranslation()
+
   return (
     <tr>
       <Td wrap>
@@ -21,7 +25,7 @@ const ListItem = ({ item, projectID }) => {
         </Link>
       </Td>
       <Td>
-        <span>{t(`${item.type}`)}</span>
+        <span>{t(`properties.${item.type}`)}</span>
       </Td>
       {!projectID && (
         <Td>

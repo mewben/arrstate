@@ -35,4 +35,7 @@ func Init() {
 		log.Fatalln(err)
 	}
 	json.Unmarshal(raw2, &Currencies)
+
+	// init i18n
+	InitI18n()
 }

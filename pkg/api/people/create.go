@@ -31,7 +31,7 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 	}
 	personFound, _ := h.DB.FindOne(h.Ctx, enums.CollPeople, filter)
 	if personFound != nil {
-		return nil, errors.NewHTTPError(errors.ErrDomainDuplicate)
+		return nil, errors.NewHTTPError(errors.ErrDuplicateDomain)
 	}
 
 	person := models.NewPersonModel(h.User.ID, h.Business.ID)

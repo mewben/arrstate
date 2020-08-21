@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Empty, Portal, Button, Table, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
@@ -7,19 +8,21 @@ import { useInvoices } from "@Hooks"
 import ListItem from "./list-item"
 
 const List = ({ propertyID }) => {
+  const { t } = useTranslation()
+
   const renderContent = content => {
     return (
       <div className="p-4">
         <Table>
           <thead>
             <tr>
-              <Th fullWidth>Invoice</Th>
-              {!!propertyID && <Th>Property</Th>}
-              <Th>Issued To</Th>
-              <Th>Issue Date</Th>
-              <Th>Due Date</Th>
-              <Th align="right">Total (Php)</Th>
-              <Th>Status</Th>
+              <Th fullWidth>{t("invoices.name")}</Th>
+              {!!propertyID && <Th>{t("invoices.property")}</Th>}
+              <Th>{t("invoices.issuedTo")}</Th>
+              <Th>{t("invoices.issueDate")}</Th>
+              <Th>{t("invoices.dueDate")}</Th>
+              <Th align="right">{t("invoices.total")} (Php)</Th>
+              <Th>{t("invoices.status")}</Th>
             </tr>
           </thead>
           <tbody className="bg-white">

@@ -1,16 +1,26 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { useTranslation } from "react-i18next"
 
 import { Button } from "@Components/generic"
 
 const ButtonConfirm = ({
   onConfirm,
   onReject,
-  children = "Delete",
-  confirmComponent = "Are you sure?",
+  children,
+  confirmComponent,
   isDisabled,
 }) => {
+  const { t } = useTranslation()
   const [isOn, setIsOn] = React.useState(false)
+
+  if (!children) {
+    children = t("delete")
+  }
+
+  if (!confirmComponent) {
+    confirmComponent = t("confirm")
+  }
 
   const onClick = () => {
     if (isOn) {

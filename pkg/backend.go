@@ -18,7 +18,6 @@ func SetupBackend(db *mongo.Database) *fiber.App {
 	// global middleware
 	app.Use(logger.New())
 	app.Use(recover.New())
-	// app.Use(cors.New())
 
 	// Register routes
 	auth.Routes(app, db)

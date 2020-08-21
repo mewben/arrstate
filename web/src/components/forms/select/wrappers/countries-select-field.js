@@ -1,12 +1,13 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Loading, Error } from "@Components/generic"
 import { useCountries } from "@Hooks"
 import { map } from "@Utils/lodash"
-import { t } from "@Utils/t"
 import SelectField from "../select-field"
 
 const CountriesSelectField = ({ ...props }) => {
+  const { t } = useTranslation()
   const { status, data, error } = useCountries()
 
   const options = React.useMemo(() => {

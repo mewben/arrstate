@@ -1,25 +1,29 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Time } from "@Components/generic"
 import { ProjectWrapper, PropertyWrapper, PersonWrapper } from "@Wrappers"
 import { fullName } from "@Utils"
 
 const Intro = ({ block, invoice, isReceipt }) => {
+  const { t } = useTranslation()
   const renderReceipt = () => {
     return (
       <>
-        <h1 className="text-xl font-medium">Receipt</h1>
+        <h1 className="text-xl font-medium">{t("receipts.title")}</h1>
         <div className="mt-4">
           <div>
-            <span className="text-gray-500 mr-2">Receipt #:</span>
+            <span className="text-gray-500 mr-2">{t("receipts.no")}:</span>
             {invoice.receiptNo}
           </div>
           <div>
-            <span className="text-gray-500 mr-2">Invoice #:</span>
+            <span className="text-gray-500 mr-2">{t("invoices.no")}:</span>
             {invoice.no}
           </div>
           <div>
-            <span className="text-gray-500 mr-2">Paid Date:</span>
+            <span className="text-gray-500 mr-2">
+              {t("invoices.paidDate")}:
+            </span>
             <Time d={invoice.paidAt} dateOnly />
           </div>
         </div>
@@ -30,31 +34,37 @@ const Intro = ({ block, invoice, isReceipt }) => {
   const renderInvoice = () => {
     return (
       <>
-        <h1 className="text-xl font-medium">Invoice</h1>
+        <h1 className="text-xl font-medium">{t("invoices.title")}</h1>
         <div className="mt-4">
           <div>
-            <span className="text-gray-500 mr-2">Invoice #:</span>
+            <span className="text-gray-500 mr-2">{t("invoices.no")}:</span>
             {invoice.no}
           </div>
           <div>
-            <span className="text-gray-500 mr-2">Invoice Ref:</span>
+            <span className="text-gray-500 mr-2">{t("invoices.ref")}:</span>
             {invoice.name}
           </div>
           {!!invoice.issueDate && (
             <div>
-              <span className="text-gray-500 mr-2">Issue Date:</span>
+              <span className="text-gray-500 mr-2">
+                {t("invoices.issueDate")}:
+              </span>
               <Time d={invoice.issueDate} dateOnly />
             </div>
           )}
           {!!invoice.dueDate && (
             <div>
-              <span className="text-gray-500 mr-2">Due Date:</span>
+              <span className="text-gray-500 mr-2">
+                {t("invoices.dueDate")}:
+              </span>
               <Time d={invoice.dueDate} dateOnly />
             </div>
           )}
           {!!invoice.paidAt && (
             <div>
-              <span className="text-gray-500 mr-2">Paid Date:</span>
+              <span className="text-gray-500 mr-2">
+                {t("invoices.paidDate")}:
+              </span>
               <Time d={invoice.paidAt} dateOnly />
             </div>
           )}
@@ -63,7 +73,9 @@ const Intro = ({ block, invoice, isReceipt }) => {
               {({ project }) => {
                 return (
                   <div>
-                    <span className="text-gray-500 mr-2">Project:</span>
+                    <span className="text-gray-500 mr-2">
+                      {t("invoices.project")}:
+                    </span>
                     {project.name}
                   </div>
                 )
@@ -75,7 +87,9 @@ const Intro = ({ block, invoice, isReceipt }) => {
               {({ property }) => {
                 return (
                   <div>
-                    <span className="text-gray-500 mr-2">Property:</span>
+                    <span className="text-gray-500 mr-2">
+                      {t("invoices.property")}:
+                    </span>
                     {property.name}
                   </div>
                 )
@@ -91,7 +105,9 @@ const Intro = ({ block, invoice, isReceipt }) => {
     <div>
       {isReceipt ? renderReceipt() : renderInvoice()}
       <div className="mt-8 flex items-start w-full space-x-4">
-        <div className="text-gray-400 uppercase tracking-wider">To:</div>
+        <div className="text-gray-400 uppercase tracking-wider">
+          {t("invoices.to")}:
+        </div>
         {!!invoice?.to?._id && (
           <PersonWrapper personID={invoice?.to?._id}>
             {({ person }) => {

@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Portal, Button } from "@Components/generic"
 import { PropertyForm } from "@Components/popups/property"
@@ -9,10 +10,11 @@ import { List } from "./components"
 
 const PropertyList = () => {
   useProjects()
+  const { t } = useTranslation()
   return (
     <>
-      <AppBar title="Properties">
-        <Portal openByClickOn={<Button>New Property</Button>}>
+      <AppBar title={t("properties.title")}>
+        <Portal openByClickOn={<Button>{t("properties.new")}</Button>}>
           <PropertyForm />
         </Portal>
       </AppBar>

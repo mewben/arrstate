@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Empty, Portal, Button, Table, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
@@ -8,11 +9,13 @@ import { PropertyForm } from "@Components/popups/property"
 import ListItem from "./list-item"
 
 const List = ({ projectID }) => {
+  const { t } = useTranslation()
+
   const renderAdd = () => {
     if (!projectID) return null
 
     return (
-      <Portal openByClickOn={<Button>Add Property</Button>}>
+      <Portal openByClickOn={<Button>{t("properties.add")}</Button>}>
         <PropertyForm projectID={projectID} />
       </Portal>
     )
@@ -25,13 +28,13 @@ const List = ({ projectID }) => {
         <Table>
           <thead>
             <tr>
-              <Th fullWidth>Property Code.</Th>
-              <Th>Type</Th>
-              {!projectID && <Th>Project</Th>}
-              <Th align="right">Area (sq.m)</Th>
-              <Th align="right">Price (Php)</Th>
-              <Th align="right">Price Addon (Php)</Th>
-              <Th>Status</Th>
+              <Th fullWidth>{t("properties.code")}</Th>
+              <Th>{t("properties.type")}</Th>
+              {!projectID && <Th>{t("properties.project")}</Th>}
+              <Th align="right">{t("properties.area")} (sq.m)</Th>
+              <Th align="right">{t("properties.price")} (Php)</Th>
+              <Th align="right">{t("properties.priceAddon")} (Php)</Th>
+              <Th>{t("properties.status")}</Th>
             </tr>
           </thead>
           <tbody className="bg-white">

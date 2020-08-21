@@ -1,6 +1,6 @@
 import React from "react"
-import { Link } from "gatsby"
 import { Router } from "@reach/router"
+import { useTranslation } from "react-i18next"
 
 import { Loading, Error, Portal, Button } from "@Components/generic"
 import { useProject } from "@Hooks"
@@ -12,23 +12,24 @@ import ProjectOverview from "./project-overview"
 import ProjectProperties from "./project-properties"
 
 const ProjectSingle = ({ projectID }) => {
+  const { t } = useTranslation()
   const { status, data, error } = useProject(projectID)
 
   const submenu = [
     {
-      label: "Overview",
+      label: t("projects.menu.overview"),
       path: `/projects/${projectID}`,
     },
     {
-      label: "Properties",
+      label: t("projects.menu.properties"),
       path: `/projects/${projectID}/properties`,
     },
     {
-      label: "Clients",
+      label: t("projects.menu.clients"),
       path: `/projects/${projectID}/clients`,
     },
     {
-      label: "Agents",
+      label: t("projects.menu.agents"),
       path: `/projects/${projectID}/agents`,
     },
   ]
@@ -54,7 +55,7 @@ const ProjectSingle = ({ projectID }) => {
   ) : (
     <>
       <AppBar title={data.name} backTo="/projects" submenu={renderSubmenu()}>
-        <Portal openByClickOn={<Button>Edit Project</Button>}>
+        <Portal openByClickOn={<Button>{t("projects.edit")}</Button>}>
           <ProjectForm model={data} />
         </Portal>
       </AppBar>

@@ -1,3 +1,4 @@
+export { PublicWrapper } from "./public"
 export { PrivateWrapper, useMeContext } from "./private"
 export { LayoutWrapper } from "./layout"
 export { PersonWrapper } from "./person"

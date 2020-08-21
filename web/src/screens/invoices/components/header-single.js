@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
 import { Loading, Error, Portal, Button } from "@Components/generic"
@@ -7,6 +8,7 @@ import { INVOICE_STATUS } from "@Enums"
 import Status from "./status"
 
 const HeaderSingle = ({ invoice }) => {
+  const { t } = useTranslation()
   const renderTitle = () => {
     return (
       <div className="flex space-x-3 items-center">
@@ -20,14 +22,14 @@ const HeaderSingle = ({ invoice }) => {
     switch (invoice.status) {
       case INVOICE_STATUS.PENDING:
         return (
-          <Portal openByClickOn={<Button>Pay</Button>}>
+          <Portal openByClickOn={<Button>{t("btnPay")}</Button>}>
             <PayForm invoice={invoice} />
           </Portal>
         )
       case INVOICE_STATUS.PAID:
         return (
           <Button to={`/receipts/${invoice._id}`} color="white">
-            View Receipt
+            {t("btnViewReceipt")}
           </Button>
         )
       default:

@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import { Router } from "@reach/router"
+import { useTranslation } from "react-i18next"
 
 import { Loading, Error, Portal, Button } from "@Components/generic"
 import { useProperty } from "@Hooks"
@@ -12,18 +13,19 @@ import PropertyInvoices from "./property-invoices"
 import PropertyReceipts from "./property-receipts"
 
 const PropertySingle = ({ propertyID }) => {
+  const { t } = useTranslation()
   const { status, data, error } = useProperty(propertyID)
   const submenu = [
     {
-      label: "Overview",
+      label: t("properties.menu.overview"),
       path: `/properties/${propertyID}`,
     },
     {
-      label: "Invoices",
+      label: t("properties.menu.invoices"),
       path: `/properties/${propertyID}/invoices`,
     },
     {
-      label: "Receipts",
+      label: t("properties.menu.receipts"),
       path: `/properties/${propertyID}/receipts`,
     },
   ]
@@ -57,7 +59,7 @@ const PropertySingle = ({ propertyID }) => {
         }
         submenu={renderSubmenu()}
       >
-        <Portal openByClickOn={<Button>Edit Property</Button>}>
+        <Portal openByClickOn={<Button>{t("properties.edit")}</Button>}>
           <PropertyForm model={data} />
         </Portal>
       </AppBar>

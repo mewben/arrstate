@@ -2,6 +2,7 @@ import React from "react"
 import { Link, navigate } from "gatsby"
 import * as Yup from "yup"
 import { useMutation } from "react-query"
+import { useTranslation } from "react-i18next"
 
 import {
   Form,
@@ -12,26 +13,26 @@ import {
   FieldError,
 } from "@Components/forms"
 import { Error } from "@Components/generic"
-import { t } from "@Utils/t"
+import { ERRORS } from "@Enums"
 import { requestApi } from "@Utils"
-import { useAuth } from "@Providers"
-
-const req = t("errors.required")
-
-const validationSchema = Yup.object().shape({
-  givenName: Yup.string().required(req),
-  familyName: Yup.string(),
-  business: Yup.string().max(255).required(req),
-  domain: Yup.string().max(255).required(req),
-  email: Yup.string().email(t("errors.email")).required(req),
-  password: Yup.string()
-    .min(6, t("errors.minLength", { count: 6 }))
-    .required(req),
-})
 
 // ------- SignupForm -------- //
 const SignupForm = () => {
-  const { authSignIn } = useAuth()
+  const { t } = useTranslation()
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      givenName: Yup.string().required(req),
+      familyName: Yup.string(),
+      business: Yup.string().max(255).required(req),
+      domain: Yup.string().max(255).required(req),
+      email: Yup.string().email(t(ERRORS.EMAIL)).required(req),
+      password: Yup.string()
+        .min(6, t(ERRORS.MIN_LENGTH, { count: 6 }))
+        .required(req),
+    })
+  }, [])
+
   const [mutate, { reset, error }] = useMutation(formData => {
     return requestApi("/auth/signup", "POST", {
       data: formData,
@@ -58,7 +59,11 @@ const SignupForm = () => {
       <Form onSubmit={onSubmit} validationSchema={validationSchema}>
         <div className="grid grid-cols-12 gap-6">
           <Error error={error} className="col-span-12" />
-          <InputGroup name="givenName" id="givenName" label={t("name")}>
+          <InputGroup
+            name="givenName"
+            id="givenName"
+            label={t("name.fullName")}
+          >
             <BaseTextField
               name="givenName"
               id="givenName"
@@ -72,23 +77,23 @@ const SignupForm = () => {
               placeholder={t("name.familyName")}
             />
           </InputGroup>
-          <TextField name="business" label={t("business")} />
+          <TextField name="business" label={t("business.name")} />
           <TextField
             name="domain"
             label={t("domain")}
-            description={t("You can change the name and domain anytime.")}
+            description={t("signup.domainHelp")}
             endAddon=".arrstate.com"
           />
           <TextField name="email" type="email" label={t("email")} />
           <TextField name="password" type="password" label={t("password")} />
           <div className="col-span-12">
             <SubmitButton size="xl" fullWidth>
-              {t("Sign up")}
+              {t("signup.btn")}
             </SubmitButton>
             <div className="text-xs text-cool-gray-500 mt-2">
-              By creating an account, you are agreeing to our{" "}
+              {t("signup.termsHelp")}{" "}
               <Link to="/terms" className="font-medium hover:text-gray-900">
-                Terms of Service
+                {t("signup.termsOfService")}
               </Link>
             </div>
           </div>

@@ -3,6 +3,7 @@ import * as Yup from "yup"
 import acc from "accounting"
 import { useWatch } from "react-hook-form"
 import { useMutation, queryCache } from "react-query"
+import { useTranslation } from "react-i18next"
 
 import { DrawerHeader } from "@Wrappers/layout"
 import {
@@ -12,43 +13,24 @@ import {
   SubmitButton,
   SelectField,
 } from "@Components/forms"
-import { ROLES, PAYMENT_SCHEMES, PAYMENT_PERIODS } from "@Enums"
+import { ROLES, PAYMENT_SCHEMES, PAYMENT_PERIODS, ERRORS } from "@Enums"
 import { Error, Loading } from "@Components/generic"
 import { requestApi } from "@Utils"
-import { t, req } from "@Utils/t"
 import { useProject } from "@Hooks"
 import { map, values, sortBy } from "@Utils/lodash"
 import { fromMoney } from "@Utils/money"
 
-const validationSchema = Yup.object().shape({
-  // propertyID: Yup.string().required(req),
-  clientID: Yup.string().required(req).nullable(),
-  paymentScheme: Yup.string().required(req), // cash, installmment
-  // paymentPeriod: Yup.string().required(req), // monthly, yearly
-  // paymentPeriod: Yup.string().when("paymentScheme", {
-  //   is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
-  //   then: Yup.string().required(req),
-  // }),
-  terms: Yup.number().required(req).min(1, req).nullable(), // 60 months
-  downPayment: Yup.number()
-    .nullable()
-    .when("paymentScheme", {
-      is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
-      then: Yup.number().required(req).min(1, req),
-    }),
-  agentID: Yup.string().nullable(),
-})
-
 const Wrapper = ({ property, onClose }) => {
+  const { t } = useTranslation()
   const { status, data: project, error } = useProject(property.projectID)
 
   const { paymentSchemeOptions, paymentPeriodOptions } = React.useMemo(() => {
     const paymentSchemeOptions = map(values(PAYMENT_SCHEMES), item => ({
-      label: t(`${item}`),
+      label: t(`paymentSchemes.${item}`),
       value: item,
     }))
     const paymentPeriodOptions = map(values(PAYMENT_PERIODS), item => ({
-      label: t(`${item}`),
+      label: t(`paymentPeriods.${item}`),
       value: item,
     }))
 
@@ -78,6 +60,30 @@ const AcquireForm = ({
   paymentPeriodOptions,
   onClose,
 }) => {
+  const { t } = useTranslation()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      // propertyID: Yup.string().required(req),
+      clientID: Yup.string().required(req).nullable(),
+      paymentScheme: Yup.string().required(req), // cash, installmment
+      // paymentPeriod: Yup.string().required(req), // monthly, yearly
+      // paymentPeriod: Yup.string().when("paymentScheme", {
+      //   is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
+      //   then: Yup.string().required(req),
+      // }),
+      terms: Yup.number().required(req).min(1, req).nullable(), // 60 months
+      downPayment: Yup.number()
+        .nullable()
+        .when("paymentScheme", {
+          is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
+          then: Yup.number().required(req).min(1, req),
+        }),
+      agentID: Yup.string().nullable(),
+    })
+  }, [])
+
   const [acquire, { reset, error }] = useMutation(
     formData => {
       return requestApi("/api/properties/acquire", "POST", {
@@ -112,8 +118,6 @@ const AcquireForm = ({
     agentID: null,
   }
 
-  console.log("initialModel", initialModel)
-
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader title="Acquire Property" onClose={onClose}>
@@ -145,7 +149,7 @@ const AcquireForm = ({
           <PeopleSelectField name="clientID" label={t("client")} />
           <SelectField
             name="paymentScheme"
-            label={t("payment scheme")}
+            label={t("form.acquire.paymentScheme")}
             options={paymentSchemeOptions}
             disableClearable
           />
@@ -156,7 +160,7 @@ const AcquireForm = ({
             label={t("agent")}
           />
           <div className="col-span-12">
-            <SubmitButton>Submit</SubmitButton>
+            <SubmitButton>{t("btnSubmit")}</SubmitButton>
           </div>
         </div>
       </Form>
@@ -165,6 +169,7 @@ const AcquireForm = ({
 }
 
 const InstallmentForm = ({ paymentPeriodOptions }) => {
+  const { t } = useTranslation()
   const paymentScheme = useWatch({
     name: "paymentScheme",
   })
@@ -174,13 +179,11 @@ const InstallmentForm = ({ paymentPeriodOptions }) => {
 
   if (paymentScheme !== PAYMENT_SCHEMES.INSTALLMENT) return null
 
-  console.log("paymentPeriod", paymentPeriod)
-
   return (
     <>
       <NumberField
         name="terms"
-        label={t("terms")}
+        label={t("form.acquire.terms")}
         endAddonInline={t(
           paymentPeriod === PAYMENT_PERIODS.YEARLY ? "years" : "months"
         )}
@@ -188,7 +191,7 @@ const InstallmentForm = ({ paymentPeriodOptions }) => {
       />
       <NumberField
         name="downPayment"
-        label={t("down payment")}
+        label={t("form.acquire.downPayment")}
         startAddonInline="Php"
         placeholder="0.00"
         inputClassName="pl-12"

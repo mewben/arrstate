@@ -5,7 +5,6 @@ import dayjs from "dayjs"
 
 import { useProperty } from "@Hooks"
 import { Td } from "@Components/generic"
-import { t } from "@Utils/t"
 import { fromMoney } from "@Utils/money"
 import { PropertyWrapper, PersonWrapper } from "@Wrappers"
 import { fullName } from "@Utils"

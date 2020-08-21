@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Empty, Portal, Button, Table, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
@@ -8,9 +9,11 @@ import { PersonForm } from "@Components/popups/people"
 import ListItem from "./list-item"
 
 const List = () => {
+  const { t } = useTranslation()
+
   const renderAdd = () => {
     return (
-      <Portal openByClickOn={<Button>Add Person</Button>}>
+      <Portal openByClickOn={<Button>{t("people.add")}</Button>}>
         <PersonForm />
       </Portal>
     )
@@ -22,8 +25,8 @@ const List = () => {
         <Table>
           <thead>
             <tr>
-              <Th fullWidth>Name</Th>
-              <Th>Role</Th>
+              <Th fullWidth>{t("people.name")}</Th>
+              <Th>{t("people.role")}</Th>
             </tr>
           </thead>
           <tbody className="bg-white">

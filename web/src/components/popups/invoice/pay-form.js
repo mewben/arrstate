@@ -2,11 +2,12 @@ import React from "react"
 import * as Yup from "yup"
 import acc from "accounting"
 import { useMutation, queryCache } from "react-query"
+import { useTranslation } from "react-i18next"
 
+import { ERRORS } from "@Enums"
 import { Error } from "@Components/generic"
 import { DrawerHeader } from "@Wrappers/layout"
 import { fromMoney, requestApi } from "@Utils"
-import { t, req } from "@Utils/t"
 import {
   Form,
   TextField,
@@ -16,11 +17,16 @@ import {
   SelectField,
 } from "@Components/forms"
 
-const validationSchema = Yup.object().shape({
-  receiptNo: Yup.string().required(req),
-})
-
 const PayForm = ({ invoice, onClose }) => {
+  const { t } = useTranslation()
+
+  const validationSchema = React.useMemo(() => {
+    const req = t(ERRORS.REQUIRED)
+    return Yup.object().shape({
+      receiptNo: Yup.string().required(req),
+    })
+  }, [])
+
   const [pay, { reset, error }] = useMutation(
     formData => {
       return requestApi("/api/invoices/pay", "POST", {
@@ -47,12 +53,14 @@ const PayForm = ({ invoice, onClose }) => {
 
   return (
     <div className="flex flex-col w-screen sm:w-96">
-      <DrawerHeader title="Payment Form" onClose={onClose}>
+      <DrawerHeader title={t("form.payment.title")} onClose={onClose}>
         <div className="mt-4 bg-cool-gray-600 p-4 rounded-sm">
           <div className="flex justify-between">
             <h2 className="text-white font-medium text-base">{invoice.name}</h2>
           </div>
-          <div className="text-xs">Invoice #: {invoice.no}</div>
+          <div className="text-xs">
+            {t("form.payment.invoiceNo")}: {invoice.no}
+          </div>
           <div className="mt-2 flex justify-end">
             <div className="text-green-300 font-medium">
               Php {acc.formatNumber(fromMoney(invoice.total), 2)}
@@ -67,9 +75,13 @@ const PayForm = ({ invoice, onClose }) => {
       >
         <div className="grid grid-cols-12 gap-6 p-6">
           <Error error={error} className="col-span-12" />
-          <TextField name="receiptNo" label={t("receipt no")} autoFocus />
+          <TextField
+            name="receiptNo"
+            label={t("form.payment.receiptNo")}
+            autoFocus
+          />
           <div className="col-span-12">
-            <SubmitButton>Submit</SubmitButton>
+            <SubmitButton>{t("btnSubmit")}</SubmitButton>
           </div>
         </div>
       </Form>

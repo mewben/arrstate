@@ -1,0 +1,211 @@
+{
+  "agent": "Agent",
+  "blocks": {
+    "item": {
+      "amount": "Amount",
+      "item": "Item",
+      "quantity": "Quantity",
+      "total": "Total"
+    },
+    "summary": {
+      "ammountDue": "Amount Due:",
+      "ammountPaid": "Amount Paid:",
+      "subTotal": "SubTotal"
+    }
+  },
+  "btnAcquire": "Acquire",
+  "btnPay": "Pay",
+  "btnSubmit": "Submit",
+  "btnViewReceipt": "View Receipt",
+  "business": {
+    "name": "Business Name"
+  },
+  "client": "Client",
+  "clients": {
+    "new": "New Client"
+  },
+  "confirm": "Are you sure?",
+  "delete": "Delete",
+  "domain": "Domain",
+  "email": "Email Address",
+  "errors": {
+    "blocks": {
+      "notAllowed": "Block not allowed"
+    },
+    "default": "Oops! Error.",
+    "delete": "Delete error",
+    "duplicate": {
+      "default": "Duplicate error",
+      "domain": "Duplicate domain",
+      "receipt": "Duplicate receipt",
+      "user": "Duplicate user"
+    },
+    "email": "Invalid email",
+    "encoding": "Encoding error",
+    "inputInvalid": "Input error. Please check.",
+    "insert": "Insert error",
+    "invoice": {
+      "alreadyPaid": "Invoice already paid"
+    },
+    "min": {
+      "0": "Minimum 0"
+    },
+    "minLength": "Minimum length: {{count}}",
+    "minLength_plural": "Minimum length: {{count}}",
+    "notFound": {
+      "block": "Block not found",
+      "business": "Business not found",
+      "default": "Not found",
+      "invoice": "Invoice not found",
+      "person": "Person not found",
+      "project": "Project not found",
+      "property": "Property not found",
+      "user": "User not found"
+    },
+    "owner": "Owner error",
+    "property": {
+      "alreadyTaken": "Property already acquired"
+    },
+    "required": "* Required",
+    "signin": {
+      "incorrect": "Signin incorrect"
+    },
+    "signup": {
+      "emailInvalid": "Signup incorrect"
+    },
+    "token": "Token error",
+    "update": "Update error",
+    "user": {
+      "notInBusiness": "User not in business"
+    }
+  },
+  "form": {
+    "acquire": {
+      "downPayment": "Down Payment",
+      "paymentScheme": "Payment Scheme",
+      "terms": "Terms"
+    },
+    "address": {
+      "city": "City",
+      "cityP": "City",
+      "country": "Country",
+      "countryP": "Country",
+      "state": "State",
+      "stateP": "State",
+      "street": "Street",
+      "streetP": "Street",
+      "zip": "Post / Zip Code",
+      "zipP": "Post / Zip Code"
+    },
+    "agent": {
+      "commissionPercentage": "Commission Percentage"
+    },
+    "payment": {
+      "invoiceNo": "Invoice #",
+      "receiptNo": "Receipt #",
+      "title": "Payment Form"
+    },
+    "people": {
+      "commission": "Commission",
+      "role": "Role"
+    },
+    "project": {
+      "area": "Area",
+      "name": "Project Name"
+    },
+    "property": {
+      "area": "Area",
+      "name": "Property Name",
+      "price": "Price",
+      "priceAddon": "Addon Price",
+      "project": "Project",
+      "type": "Property Type"
+    }
+  },
+  "invoices": {
+    "dueDate": "Due Date",
+    "issueDate": "Issue Date",
+    "issuedTo": "Issued To",
+    "name": "Invoice",
+    "no": "Invoice #",
+    "paidDate": "Paid Date",
+    "project": "Project",
+    "property": "Property",
+    "ref": "Invoice Ref",
+    "status": "Status",
+    "title": "Invoice",
+    "to": "To",
+    "total": "Total"
+  },
+  "name": {
+    "familyName": "Family Name",
+    "fullName": "Full Name",
+    "givenName": "Given Name"
+  },
+  "password": "Password",
+  "people": {
+    "add": "Add Person",
+    "name": "Name",
+    "new": "New Person",
+    "role": "Role",
+    "title": "People"
+  },
+  "projects": {
+    "add": "Add Project",
+    "area": "Area",
+    "edit": "Edit Project",
+    "menu": {
+      "agents": "Agents",
+      "clients": "Clients",
+      "overview": "Overview",
+      "properties": "Properties"
+    },
+    "name": "Project Name",
+    "new": "New Project",
+    "title": "Projects"
+  },
+  "properties": {
+    "add": "Add Property",
+    "area": "Area",
+    "code": "Property Code",
+    "edit": "Edit Property",
+    "house": "House",
+    "lot": "Lot",
+    "menu": {
+      "invoices": "Invoices",
+      "overview": "Overview",
+      "receipts": "Receipts"
+    },
+    "new": "New Property",
+    "price": "Price",
+    "priceAddon": "Addon Price",
+    "project": "Project",
+    "status": "Status",
+    "title": "Properties",
+    "type": "Type"
+  },
+  "receipts": {
+    "issuedDate": "Issued Date",
+    "issuedTo": "Issued To",
+    "no": "Receipt #",
+    "paidDate": "Paid Date",
+    "property": "Property",
+    "title": "Receipt",
+    "total": "Total"
+  },
+  "signin": {
+    "btn": "Sign In",
+    "btnCreate": "Create one",
+    "forgot": "Forgot your password?",
+    "noAccount": "Don't have an account yet?",
+    "title": "Sign In"
+  },
+  "signup": {
+    "btn": "Sign Up",
+    "domainHelp": "You can change the name and domain anytime.",
+    "hasAccount": "Already have an account?",
+    "termsHelp": "By creating an account, you are agreeing to our",
+    "termsOfService": "Terms of Service",
+    "title": "Sign Up"
+  }
+}

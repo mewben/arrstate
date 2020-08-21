@@ -1,0 +1,211 @@
+{
+  "agent": "__",
+  "blocks": {
+    "item": {
+      "amount": "__",
+      "item": "__",
+      "quantity": "__",
+      "total": "__"
+    },
+    "summary": {
+      "ammountDue": "__",
+      "ammountPaid": "__",
+      "subTotal": "__"
+    }
+  },
+  "btnAcquire": "__",
+  "btnPay": "__",
+  "btnSubmit": "__",
+  "btnViewReceipt": "__",
+  "business": {
+    "name": "__"
+  },
+  "client": "__",
+  "clients": {
+    "new": "__"
+  },
+  "confirm": "__",
+  "delete": "__",
+  "domain": "__",
+  "email": "__",
+  "errors": {
+    "blocks": {
+      "notAllowed": "__"
+    },
+    "default": "__",
+    "delete": "__",
+    "duplicate": {
+      "default": "__",
+      "domain": "__",
+      "receipt": "__",
+      "user": "__"
+    },
+    "email": "__",
+    "encoding": "__",
+    "inputInvalid": "__",
+    "insert": "__",
+    "invoice": {
+      "alreadyPaid": "__"
+    },
+    "min": {
+      "0": "__"
+    },
+    "minLength": "__",
+    "minLength_plural": "__",
+    "notFound": {
+      "block": "__",
+      "business": "__",
+      "default": "__",
+      "invoice": "__",
+      "person": "__",
+      "project": "__",
+      "property": "__",
+      "user": "__"
+    },
+    "owner": "__",
+    "property": {
+      "alreadyTaken": "__"
+    },
+    "required": "",
+    "signin": {
+      "incorrect": "__"
+    },
+    "signup": {
+      "emailInvalid": "__"
+    },
+    "token": "__",
+    "update": "__",
+    "user": {
+      "notInBusiness": "__"
+    }
+  },
+  "form": {
+    "acquire": {
+      "downPayment": "__",
+      "paymentScheme": "__",
+      "terms": "__"
+    },
+    "address": {
+      "city": "__",
+      "cityP": "__",
+      "country": "__",
+      "countryP": "__",
+      "state": "__",
+      "stateP": "__",
+      "street": "__",
+      "streetP": "__",
+      "zip": "__",
+      "zipP": "__"
+    },
+    "agent": {
+      "commissionPercentage": "__"
+    },
+    "payment": {
+      "invoiceNo": "__",
+      "receiptNo": "__",
+      "title": "__"
+    },
+    "people": {
+      "commission": "__",
+      "role": "__"
+    },
+    "project": {
+      "area": "__",
+      "name": "__"
+    },
+    "property": {
+      "area": "__",
+      "name": "__",
+      "price": "__",
+      "priceAddon": "__",
+      "project": "__",
+      "type": "__"
+    }
+  },
+  "invoices": {
+    "dueDate": "__",
+    "issueDate": "__",
+    "issuedTo": "__",
+    "name": "__",
+    "no": "__",
+    "paidDate": "__",
+    "project": "__",
+    "property": "__",
+    "ref": "__",
+    "status": "__",
+    "title": "__",
+    "to": "__",
+    "total": "__"
+  },
+  "name": {
+    "familyName": "__",
+    "fullName": "__",
+    "givenName": "__"
+  },
+  "password": "__",
+  "people": {
+    "add": "__",
+    "name": "__",
+    "new": "__",
+    "role": "__",
+    "title": "__"
+  },
+  "projects": {
+    "add": "__",
+    "area": "__",
+    "edit": "__",
+    "menu": {
+      "agents": "__",
+      "clients": "__",
+      "overview": "__",
+      "properties": "__"
+    },
+    "name": "__",
+    "new": "__",
+    "title": "__"
+  },
+  "properties": {
+    "add": "__",
+    "area": "__",
+    "code": "__",
+    "edit": "__",
+    "house": "__",
+    "lot": "__",
+    "menu": {
+      "invoices": "__",
+      "overview": "__",
+      "receipts": "__"
+    },
+    "new": "__",
+    "price": "__",
+    "priceAddon": "__",
+    "project": "__",
+    "status": "__",
+    "title": "__",
+    "type": "__"
+  },
+  "receipts": {
+    "issuedDate": "__",
+    "issuedTo": "__",
+    "no": "__",
+    "paidDate": "__",
+    "property": "__",
+    "title": "__",
+    "total": "__"
+  },
+  "signin": {
+    "btn": "__",
+    "btnCreate": "",
+    "forgot": "__",
+    "noAccount": "",
+    "title": ""
+  },
+  "signup": {
+    "btn": "__",
+    "domainHelp": "You can change the name and domain anytime.",
+    "hasAccount": "__",
+    "termsHelp": "__",
+    "termsOfService": "__",
+    "title": "__"
+  }
+}

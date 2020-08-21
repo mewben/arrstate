@@ -1,5 +1,6 @@
 import React from "react"
 import acc from "accounting"
+import { useTranslation } from "react-i18next"
 
 import { Panel, Portal, Button } from "@Components/generic"
 import { AcquireForm } from "@Components/popups/property"
@@ -10,6 +11,7 @@ import { PersonWrapper } from "@Wrappers"
 
 const PropertyOverview = ({ property }) => {
   console.log("property", property)
+  const { t } = useTranslation()
 
   return (
     <div className="grid grid-cols-6 gap-6">
@@ -32,7 +34,7 @@ const PropertyOverview = ({ property }) => {
             <div>
               {property.status === "available" && (
                 <div>
-                  <Portal openByClickOn={<Button>Acquire</Button>}>
+                  <Portal openByClickOn={<Button>{t("btnAcquire")}</Button>}>
                     <AcquireForm property={property} />
                   </Portal>
                 </div>
@@ -42,7 +44,9 @@ const PropertyOverview = ({ property }) => {
                   {({ person }) => {
                     return (
                       <div>
-                        <div className="text-gray-400 text-xs">Client</div>
+                        <div className="text-gray-400 text-xs">
+                          {t("client")}
+                        </div>
                         <div className="mt-1 font-medium text-gray-900">
                           {fullName(person.givenName, person.familyName)}
                         </div>
@@ -56,7 +60,9 @@ const PropertyOverview = ({ property }) => {
                   {({ person }) => {
                     return (
                       <div className="mt-4">
-                        <div className="text-gray-400 text-xs">Agent</div>
+                        <div className="text-gray-400 text-xs">
+                          {t("agent")}
+                        </div>
                         <div className="mt-1 font-medium text-gray-900">
                           {fullName(person.givenName, person.familyName)}
                         </div>
@@ -69,13 +75,17 @@ const PropertyOverview = ({ property }) => {
           </div>
           <div className="flex p-6 space-x-6">
             <div>
-              <div className="text-gray-400 text-xs">Area</div>
+              <div className="text-gray-400 text-xs">
+                {t("properties.area")}
+              </div>
               <div className="mt-1 font-medium text-gray-900">
                 {acc.formatNumber(property.area, 2)} sq.m
               </div>
             </div>
             <div>
-              <div className="text-green-300 text-xs">Price</div>
+              <div className="text-green-300 text-xs">
+                {t("properties.price")}
+              </div>
               <div className="mt-1 font-medium text-green-500">
                 Php {acc.formatNumber(fromMoney(property.price), 2)}
               </div>

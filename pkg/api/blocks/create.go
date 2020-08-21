@@ -14,6 +14,7 @@ import (
 func (h *Handler) Create(data fiber.Map) (BlockI, error) {
 	block, err := h.Prepare(data)
 	if err != nil {
+		log.Println("err Prepare", err)
 		return nil, err
 	}
 
@@ -26,12 +27,14 @@ func (h *Handler) Create(data fiber.Map) (BlockI, error) {
 
 	block, err = h.Decode(r)
 	if err != nil {
+		log.Println("Error Decode", err)
 		return nil, err
 	}
 
 	// block hook
 	err = block.AfterCreate(h.Ctx, h.DB)
 	if err != nil {
+		log.Println("error after create", err)
 		return nil, err
 	}
 

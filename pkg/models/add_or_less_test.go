@@ -156,12 +156,50 @@ func TestComputeAddOrLess(t *testing.T) {
 					},
 					{
 						Name:     "discount",
-						Value:    "5%", // 1000
+						Value:    "5%", // 1100
 						Less:     true,
 						FromBase: false,
 					},
 				},
 				7,
+			},
+			{
+				907,
+				20000,
+				[]AddOrLessModel{
+					{
+						Name:     "tax1",
+						Value:    "10.5%", // 2100
+						Less:     false,
+						FromBase: true,
+					},
+					{
+						Name:     "discount",
+						Value:    "5.4%", // 1193.4
+						Less:     true,
+						FromBase: false,
+					},
+				},
+				8,
+			},
+			{
+				500,
+				20000,
+				[]AddOrLessModel{
+					{
+						Name:     "tax1",
+						Value:    "10.5", // 1050
+						Less:     false,
+						FromBase: true,
+					},
+					{
+						Name:     "discount",
+						Value:    "5.5", // 550
+						Less:     true,
+						FromBase: false,
+					},
+				},
+				9,
 			},
 		}
 

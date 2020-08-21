@@ -78,11 +78,12 @@ func ParseNumberOrPercentage(input string) (int64, bool, error) {
 		isPercent = true
 	}
 
-	v = v + "00"
-	d, err := strconv.ParseInt(v, 0, 64)
+	f, err := strconv.ParseFloat(v, 64)
 	if err != nil {
 		return 0, isPercent, err
 	}
+	d := int64(f * 100)
+
 	if d < 0 {
 		return 0, isPercent, errors.NewHTTPError(errors.ErrMin0)
 	}

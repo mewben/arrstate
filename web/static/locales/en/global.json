@@ -25,9 +25,18 @@
     "new": "New Client"
   },
   "confirm": "Are you sure?",
+  "dashboard": {
+    "empty": "No dashboard data yet.",
+    "btnGenerate": "Generate dashboard data",
+    "btnRefresh": "Refresh dashboard data",
+    "title": "Dashboard"
+  },
   "delete": "Delete",
   "domain": "Domain",
   "email": "Email Address",
+  "empty": {
+    "default": "No data yet"
+  },
   "errors": {
     "blocks": {
       "notAllowed": "Block not allowed"
@@ -136,6 +145,12 @@
     "title": "Invoice",
     "to": "To",
     "total": "Total"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "people": "People",
+    "projects": "Projects",
+    "properties": "Properties"
   },
   "name": {
     "familyName": "Family Name",

@@ -13,7 +13,6 @@ func (h *Handler) GetMe() (*models.MeModel, error) {
 	response := models.NewMeModel(h.User.ID, h.Business.ID)
 
 	response.CurrentUser.User = h.User
-	response.CurrentBusiness = h.Business
 
 	// get the person models with this userID
 	// this is to get the businessIDs from this person
@@ -59,6 +58,12 @@ func (h *Handler) GetMe() (*models.MeModel, error) {
 	businesses := make([]*models.BusinessModel, 0)
 	if err = businessesCursor.All(h.Ctx, &businesses); err != nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFound, err)
+	}
+
+	for _, b := range businesses {
+		if b.ID == h.Business.ID {
+			response.CurrentBusiness = b
+		}
 	}
 	response.UserBusinesses = businesses
 

@@ -9,12 +9,19 @@ import (
 
 // BusinessModel -
 type BusinessModel struct {
-	ID        primitive.ObjectID   `bson:"_id,omitempty" json:"_id,omitempty"`
-	Name      string               `bson:"name" json:"name" validate:"required"`
-	Domain    string               `bson:"domain" json:"domain" validate:"required,min=3,max=254"`
-	CreatedAt *time.Time           `bson:"createdAt" json:"createdAt"`
-	AreaUnits *AreaUnitsModel      `bson:"areaUnits" json:"areaUnits"`
-	Invoices  BusinessInvoiceModel `bson:"invoices" json:"invoices"`
+	ID        primitive.ObjectID        `bson:"_id,omitempty" json:"_id,omitempty"`
+	Name      string                    `bson:"name" json:"name" validate:"required"`
+	Domain    string                    `bson:"domain" json:"domain" validate:"required,min=3,max=254"`
+	CreatedAt *time.Time                `bson:"createdAt" json:"createdAt"`
+	AreaUnits *AreaUnitsModel           `bson:"areaUnits" json:"areaUnits"`
+	Invoices  BusinessInvoiceModel      `bson:"invoices" json:"invoices"`
+	Dashboard map[string]DashboardModel `bson:"dashboard" json:"dashboard"`
+}
+
+// DashboardModel -
+type DashboardModel struct {
+	Total float64 `bson:"total" json:"total"`
+	Label string  `bson:"label" json:"label"`
 }
 
 // BusinessInvoiceModel -

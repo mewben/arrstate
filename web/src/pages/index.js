@@ -1,11 +1,11 @@
 import React from "react"
-import { Redirect } from "@reach/router"
 
 import { PrivateWrapper } from "@Wrappers"
+import { Dashboard } from "@Screens/dashboard"
 
 const IndexPage = () => (
   <PrivateWrapper>
-    <Redirect to="/projects" noThrow />
+    <Dashboard />
   </PrivateWrapper>
 )
 

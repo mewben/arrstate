@@ -25,9 +25,18 @@
     "new": "__"
   },
   "confirm": "__",
+  "dashboard": {
+    "empty": "__",
+    "generate": "__",
+    "refresh": "__",
+    "title": "__"
+  },
   "delete": "__",
   "domain": "__",
   "email": "__",
+  "empty": {
+    "default": "__"
+  },
   "errors": {
     "blocks": {
       "notAllowed": "__"
@@ -136,6 +145,12 @@
     "title": "__",
     "to": "__",
     "total": "__"
+  },
+  "menu": {
+    "dashboard": "__",
+    "people": "__",
+    "projects": "__",
+    "properties": "__"
   },
   "name": {
     "familyName": "__",

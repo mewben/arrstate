@@ -25,13 +25,13 @@ func InitI18n() {
 func loadTranslations(lang, path string) {
 	box, err := pkger.Open(path)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("error open", path, err)
 	}
 	defer box.Close()
 
 	raw, err := ioutil.ReadAll(box)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("error read", path, err)
 	}
 
 	I18nBundle.MustParseMessageFileBytes(raw, lang+".json")

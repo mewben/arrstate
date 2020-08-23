@@ -2,7 +2,6 @@ package users
 
 import (
 	"context"
-	"log"
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber"
@@ -37,7 +36,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	g.Get("/me", func(c *fiber.Ctx) {
+	g.Get("/users/current", func(c *fiber.Ctx) {
 		var err error
 		h.Ctx = c.Fasthttp
 		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
@@ -46,12 +45,6 @@ func Routes(g fiber.Router, db *mongo.Database) {
 			return
 		}
 
-		response, err := h.GetMe()
-		if err != nil {
-			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
-		}
-		c.Status(200).JSON(response)
+		c.Status(200).JSON(h.User)
 	})
 }

@@ -5,12 +5,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/arrstate/internal/enums"
-	"github.com/mewben/arrstate/pkg/api/users"
 	"github.com/mewben/arrstate/pkg/models"
 )
 
 // GenerateDashboard -
-func (h *Handler) GenerateDashboard() (*models.MeModel, error) {
+func (h *Handler) GenerateDashboard() (*models.BusinessModel, error) {
 	var err error
 	// TODO: optimize use waitGroup
 	dashData := h.Business.Dashboard
@@ -42,18 +41,12 @@ func (h *Handler) GenerateDashboard() (*models.MeModel, error) {
 			},
 		},
 	}
-	_, err = h.DB.FindByIDAndUpdate(h.Ctx, enums.CollBusinesses, h.Business.ID, upd)
+	businessFound, err := h.DB.FindByIDAndUpdate(h.Ctx, enums.CollBusinesses, h.Business.ID, upd)
 	if err != nil {
 		return nil, err
 	}
 
-	userHandler := users.Handler{
-		DB:       h.DB,
-		Ctx:      h.Ctx,
-		User:     h.User,
-		Business: h.Business,
-	}
-	return userHandler.GetMe()
+	return businessFound.(*models.BusinessModel), nil
 }
 
 func (h *Handler) query(collectionName string, dashData map[string]models.DashboardModel) (models.DashboardModel, error) {

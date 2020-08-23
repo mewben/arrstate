@@ -29,6 +29,25 @@ func TestGetPeople(t *testing.T) {
 	helpers.PersonFixture(app, token1, 1)
 	helpers.PersonFixture(app, token1, 2)
 	helpers.PersonFixture(app, token2, 1)
+	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+
+	t.Run("It should get the details of the current person", func(t *testing.T) {
+		assert := assert.New(t)
+		signupData := helpers.FakeSignup[0]
+		req := helpers.DoRequest("GET", path+"/current", nil, token1)
+
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(200, res.StatusCode, res)
+		ress, err := helpers.GetResponse(res, "person")
+		assert.Nil(err)
+		response := ress.(*models.PersonModel)
+		assert.Equal(userID, *response.UserID)
+		assert.Equal(businessID, response.BusinessID)
+		assert.Equal(signupData.GivenName, response.GivenName)
+		assert.Equal(signupData.FamilyName, response.FamilyName)
+		assert.Contains(response.Role, enums.RoleOwner)
+	})
 
 	t.Run("It should get the list of people inside the business", func(t *testing.T) {
 		assert := assert.New(t)

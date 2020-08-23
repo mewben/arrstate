@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/pkg/errors"
+	"github.com/mewben/arrstate/pkg/models"
 	"github.com/mewben/arrstate/pkg/services/database"
 	"github.com/mewben/arrstate/pkg/utils"
 )
@@ -17,6 +18,12 @@ import (
 type Handler struct {
 	DB  *database.Service
 	Ctx context.Context
+}
+
+// SigninResponse -
+type SigninResponse struct {
+	Token string            `json:"token"`
+	User  *models.UserModel `json:"user"`
 }
 
 // use a single instance of Validate, it caches struct info

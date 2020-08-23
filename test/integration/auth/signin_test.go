@@ -32,7 +32,7 @@ func TestSignin(t *testing.T) {
 	helpers.CleanupFixture(db)
 	helpers.SignupFixture(app, 0)
 
-	t.Run("It should return the JWT", func(t *testing.T) {
+	t.Run("It should return the JWT and User Model", func(t *testing.T) {
 		assert := assert.New(t)
 		signupFakeData := helpers.FakeSignup[0]
 		data := fiber.Map{
@@ -45,31 +45,44 @@ func TestSignin(t *testing.T) {
 
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		response, err := helpers.GetResponseMap(res)
+		ress, err := helpers.GetResponse(res, "signin")
 		assert.Nil(err)
-		helpers.CheckJWT(response["token"].(string), assert)
+		response := ress.(*auth.SigninResponse)
+
+		userID, _ := helpers.CheckJWT(response.Token, assert)
+		assert.Equal(userID, response.User.ID)
+		assert.Empty(response.User.Password)
+		assert.Empty(response.User.DeviceCode)
+		assert.Equal(enums.AccountStatusActive, response.User.AccountStatus)
+		assert.Equal(signupFakeData.Email, response.User.Email)
 	})
 
 	t.Run("It should login using deviceCode and remove it after", func(t *testing.T) {
 		assert := assert.New(t)
 		// signup
-		req := helpers.DoRequest("POST", "/auth/signup", helpers.FakeSignup[1], "")
+		signupFakeData := helpers.FakeSignup[1]
+		req := helpers.DoRequest("POST", "/auth/signup", signupFakeData, "")
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
-		response, err := helpers.GetResponseMap(res)
+		responseSignup, err := helpers.GetResponseMap(res)
 		assert.Nil(err)
 
 		signinPayload := fiber.Map{
 			"grant_type": "device_code",
-			"deviceCode": response["deviceCode"],
+			"deviceCode": responseSignup["deviceCode"],
 		}
 		req = helpers.DoRequest("POST", path, signinPayload, "")
 		req.Header.Add("origin", "http://test-domain2.example.com")
 		res, err = app.Test(req, -1)
 		assert.Nil(err)
-		response, err = helpers.GetResponseMap(res)
+		ress, err := helpers.GetResponse(res, "signin")
 		assert.Nil(err)
-		userID, _ := helpers.CheckJWT(response["token"].(string), assert)
+		response := ress.(*auth.SigninResponse)
+		userID, _ := helpers.CheckJWT(response.Token, assert)
+		assert.Equal(userID, response.User.ID)
+		assert.Empty(response.User.Password)
+		assert.Equal(enums.AccountStatusActive, response.User.AccountStatus)
+		assert.Equal(signupFakeData.Email, response.User.Email)
 
 		// get user
 		filter := bson.D{

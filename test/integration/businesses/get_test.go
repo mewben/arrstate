@@ -25,7 +25,7 @@ func TestGetProjects(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
-	_, businessID := helpers.CheckJWT(token1, assert.New(t))
+	_, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should get the list of businesses for a certain user", func(t *testing.T) {
 		assert := assert.New(t)

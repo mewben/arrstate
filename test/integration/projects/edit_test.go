@@ -29,7 +29,7 @@ func TestEditProject(t *testing.T) {
 	token2 := helpers.SignupFixture(app, 1)
 	project := helpers.ProjectFixture(app, token1, 0)
 	project2 := helpers.ProjectFixture(app, token2, 1)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should edit project", func(t *testing.T) {
 		assert := assert.New(t)

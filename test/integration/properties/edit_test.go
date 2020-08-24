@@ -32,7 +32,7 @@ func TestEditProperty(t *testing.T) {
 	project2 := helpers.ProjectFixture(app, token2, 1)
 	property1 := helpers.PropertyFixture(app, token1, &project.ID, 0)
 	property2 := helpers.PropertyFixture(app, token2, &project2.ID, 1)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should edit property", func(t *testing.T) {
 		assert := assert.New(t)

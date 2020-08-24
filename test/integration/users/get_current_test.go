@@ -25,7 +25,7 @@ func TestGetCurrent(t *testing.T) {
 	// Setup
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
-	userID, _ := helpers.CheckJWT(token1, assert.New(t))
+	userID, _, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should get the details of the current user", func(t *testing.T) {
 		assert := assert.New(t)

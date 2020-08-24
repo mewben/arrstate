@@ -80,7 +80,7 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (*SigninResponse, e
 	}
 	person := personFound.(*models.PersonModel)
 
-	token, err := user.GenerateJWT(user.ID, person.BusinessID)
+	token, err := user.GenerateJWT(user.ID, person.ID, person.BusinessID)
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect, err)
 	}

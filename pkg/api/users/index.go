@@ -39,7 +39,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 	g.Get("/users/current", func(c *fiber.Ctx) {
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return

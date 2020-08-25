@@ -15,7 +15,10 @@ const Dashboard = () => {
       return requestApi("/api/dashboard", "GET")
     },
     {
-      onSuccess: ({ data }) => queryCache.setQueryData("me", data),
+      onSuccess: ({ data }) => {
+        queryCache.setQueryData("currentBusiness", data)
+        queryCache.invalidateQueries("currentBusiness")
+      },
     }
   )
 

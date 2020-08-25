@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
 import * as Yup from "yup"
-import { useMutation } from "react-query"
+import { useMutation, queryCache } from "react-query"
 import { useTranslation } from "react-i18next"
 
 import { Form, TextField, SubmitButton } from "@Components/forms"
@@ -23,20 +23,25 @@ const SigninForm = () => {
     })
   }, [])
 
-  const [mutate, { reset, error }] = useMutation(formData => {
-    return requestApi("/auth/signin", "POST", {
-      data: formData,
-      noToken: true,
-    })
-  })
+  const [signin, { reset, error }] = useMutation(
+    formData => {
+      return requestApi("/auth/signin", "POST", {
+        data: formData,
+        noToken: true,
+      })
+    },
+    {
+      onSuccess: ({ data }) =>
+        queryCache.setQueryData("currentUser", data?.user),
+    }
+  )
 
   const onSubmit = async formData => {
     reset()
-    const res = await mutate(formData)
+    const res = await signin(formData)
     if (res) {
       // store token,
       // redirect to '/'
-      console.log("ressss", res.data)
       authSignIn(res.data.token)
       navigate("/", { replace: true })
     }

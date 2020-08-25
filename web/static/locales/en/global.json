@@ -1,4 +1,9 @@
 {
+  "account": {
+    "localization": {
+      "title": "Account Localization"
+    }
+  },
   "agent": "Agent",
   "blocks": {
     "item": {
@@ -15,6 +20,7 @@
   },
   "btnAcquire": "Acquire",
   "btnPay": "Pay",
+  "btnSave": "Save",
   "btnSubmit": "Submit",
   "btnViewReceipt": "View Receipt",
   "business": {
@@ -26,9 +32,9 @@
   },
   "confirm": "Are you sure?",
   "dashboard": {
-    "empty": "No dashboard data yet.",
     "btnGenerate": "Generate dashboard data",
     "btnRefresh": "Refresh dashboard data",
+    "empty": "No dashboard data yet.",
     "title": "Dashboard"
   },
   "delete": "Delete",
@@ -108,6 +114,12 @@
     },
     "agent": {
       "commissionPercentage": "Commission Percentage"
+    },
+    "localization": {
+      "dateFormat": "Date Format",
+      "language": "Language",
+      "timeFormat": "Time Format",
+      "timestampFormat": "Timestamp Format"
     },
     "payment": {
       "invoiceNo": "Invoice #",
@@ -207,6 +219,12 @@
     "property": "Property",
     "title": "Receipt",
     "total": "Total"
+  },
+  "settings": {
+    "menu": {
+      "account": "Account"
+    },
+    "title": "Settings"
   },
   "signin": {
     "btn": "Sign In",

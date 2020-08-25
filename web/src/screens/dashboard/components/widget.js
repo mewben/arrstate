@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 import acc from "accounting"
 import cx from "clsx"
 
-const Widget = ({ data, icon, color }) => {
+const Widget = ({ data, icon, color, link }) => {
   if (!data) {
     return null
   }
@@ -32,7 +32,7 @@ const Widget = ({ data, icon, color }) => {
       <div className="bg-gray-50 px-4 py-4 sm:px-6">
         <div className="text-sm leading-5">
           <Link
-            to={data.link}
+            to={link}
             className="font-medium text-blue-600 hover:text-blue-500 transition ease-in-out duration-150"
           >
             View all

@@ -38,7 +38,7 @@
     "react-hook-form": "6.0.2",
     "react-i18next": "11.7.0",
     "react-number-format": "4.4.1",
-    "react-query": "2.0.3",
+    "react-query": "2.9.0",
     "react-redux": "7.2.0",
     "redux": "4.0.5",
     "redux-promise-middleware": "6.1.2",
@@ -51,6 +51,7 @@
     "cypress": "4.8.0",
     "i18next-parser": "3.0.1",
     "prettier": "2.0.5",
+    "react-query-devtools": "2.4.4",
     "redux-logger": "3.0.6"
   },
   "keywords": [

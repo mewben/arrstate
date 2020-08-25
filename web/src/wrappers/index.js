@@ -1,5 +1,5 @@
 export { PublicWrapper } from "./public"
-export { PrivateWrapper, useMeContext } from "./private"
+export { PrivateWrapper, useCurrentContext } from "./private"
 export { LayoutWrapper } from "./layout"
 export { PersonWrapper } from "./person"
 export { ProjectWrapper } from "./project"

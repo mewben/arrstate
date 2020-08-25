@@ -5,5 +5,10 @@ export { default as InputGroup } from "./input-group"
 export { default as SubmitButton } from "./submit-button"
 export { default as TextField, BaseTextField } from "./text-field"
 export { default as NumberField } from "./number-field"
-export { SelectField, PeopleSelectField, CountriesSelectField } from "./select"
+export {
+  SelectField,
+  PeopleSelectField,
+  CountriesSelectField,
+  LanguageSelectField,
+} from "./select"
 export { default as AddressField } from "./address-field"

@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers"
 const Form = ({ model, validationSchema, onSubmit, children, ...props }) => {
   const methods = useForm({
     defaultValues: model,
-    resolver: yupResolver(validationSchema),
+    resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     ...props,
   })
 

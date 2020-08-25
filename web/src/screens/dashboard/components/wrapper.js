@@ -4,7 +4,7 @@ import RecentActorsIcon from "@material-ui/icons/RecentActors"
 import TextureIcon from "@material-ui/icons/Texture"
 import { useTranslation } from "react-i18next"
 
-import { useMeContext } from "@Wrappers"
+import { useCurrentContext } from "@Wrappers"
 import { Empty, Button } from "@Components/generic"
 
 import Widget from "./widget"
@@ -13,7 +13,7 @@ const Wrapper = ({ generateData }) => {
   const { t } = useTranslation()
   const {
     currentBusiness: { dashboard },
-  } = useMeContext()
+  } = useCurrentContext()
 
   if (!dashboard) {
     return (

@@ -41,7 +41,7 @@ func TestAcquireProperty(t *testing.T) {
 	person1 := helpers.PersonFixture(app, token1, 0)
 	person2 := helpers.PersonFixture(app, token1, 1)
 	// person3 := helpers.PersonFixture(app, token2, 1)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should let a client acquire a property in cash", func(t *testing.T) {
 		assert := assert.New(t)

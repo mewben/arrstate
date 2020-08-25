@@ -27,7 +27,7 @@ func TestCreateBlock(t *testing.T) {
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
 	invoice1 := helpers.InvoiceFixture(app, token1, nil, 0)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should create a block", func(t *testing.T) {
 		assert := assert.New(t)

@@ -1,6 +1,6 @@
 import React from "react"
 import { navigate, useLocation } from "@reach/router"
-import { useMutation } from "react-query"
+import { useMutation, queryCache } from "react-query"
 
 import { useAuth } from "@Providers"
 import { Loading, Error } from "@Components/generic"
@@ -12,20 +12,27 @@ const CbPage = () => {
   const { authSignIn } = useAuth()
   const location = useLocation()
   const params = new URLSearchParams(location.search)
-  const [mutate, { reset, error }] = useMutation(formData => {
-    return requestApi("/auth/signin", "POST", {
-      data: formData,
-      noToken: true,
-    })
-  })
+  const [signin, { reset, error }] = useMutation(
+    formData => {
+      return requestApi("/auth/signin", "POST", {
+        data: formData,
+        noToken: true,
+      })
+    },
+    {
+      onSuccess: ({ data }) =>
+        queryCache.setQueryData("currentUser", data?.user),
+    }
+  )
 
   const deviceCode = params.get("deviceCode")
 
   React.useEffect(() => {
-    const signin = async () => {
+    const doSignin = async () => {
       if (deviceCode) {
+        reset()
         // login here to get token
-        const res = await mutate({
+        const res = await signin({
           grant_type: "device_code",
           deviceCode,
         })
@@ -37,7 +44,7 @@ const CbPage = () => {
         setLoading(false)
       }
     }
-    signin()
+    doSignin()
   }, [deviceCode])
 
   return loading ? (

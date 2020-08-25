@@ -1,5 +1,6 @@
 export { default as get } from "lodash/get"
 export { default as set } from "lodash/set"
+export { default as pick } from "lodash/pick"
 export { default as map } from "lodash/map"
 export { default as forEach } from "lodash/forEach"
 export { default as keys } from "lodash/keys"

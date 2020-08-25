@@ -1,18 +1,25 @@
 import React from "react"
 import { useFormContext } from "react-hook-form"
 import { get } from "@Utils/lodash"
+import cx from "clsx"
 
-export const FieldLabel = ({ id, label, hint }) => {
-  if (!label) {
+export const FieldLabel = ({ id, label, leftLabel, hint }) => {
+  if (!label && !leftLabel) {
     return null
   }
+
+  const cl = cx(
+    label ? "flex justify-between" : "",
+    leftLabel ? "w-1/3 break-all" : ""
+  )
+
   return (
-    <div className="flex justify-between">
+    <div className={cl}>
       <label
         htmlFor={id}
         className="block text-sm font-medium leading-5 text-gray-700"
       >
-        {label}
+        {label || leftLabel}
       </label>
       {!!hint && (
         <span className="text-sm leading-5 text-gray-500">{hint}</span>

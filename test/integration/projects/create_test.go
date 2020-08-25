@@ -28,7 +28,7 @@ func TestCreateProject(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 	token := helpers.SignupFixture(app, 0)
-	userID, businessID := helpers.CheckJWT(token, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token, assert.New(t))
 
 	t.Run("It should create project", func(t *testing.T) {
 		assert := assert.New(t)

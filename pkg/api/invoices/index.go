@@ -70,7 +70,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 	g.Get("/invoices", func(c *fiber.Ctx) {
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -92,7 +92,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		log.Println("invoices.getOne")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -111,7 +111,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		log.Println("invoices.post")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -138,7 +138,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		log.Println("invoices.pay")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return

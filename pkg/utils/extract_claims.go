@@ -7,7 +7,7 @@ import (
 )
 
 // ExtractClaims -
-func ExtractClaims(c *fiber.Ctx) (userID, businessID primitive.ObjectID, err error) {
+func ExtractClaims(c *fiber.Ctx) (userID, businessID, personID primitive.ObjectID, err error) {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userID, err = primitive.ObjectIDFromHex(claims["sub"].(string))
@@ -15,5 +15,10 @@ func ExtractClaims(c *fiber.Ctx) (userID, businessID primitive.ObjectID, err err
 		return
 	}
 	businessID, err = primitive.ObjectIDFromHex(claims["businessID"].(string))
+	if err != nil {
+		return
+	}
+
+	personID, err = primitive.ObjectIDFromHex(claims["personID"].(string))
 	return
 }

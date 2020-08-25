@@ -1,9 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import acc from "accounting"
-import dayjs from "dayjs"
 
-import { useProperty } from "@Hooks"
 import { Td, Time } from "@Components/generic"
 import { fromMoney } from "@Utils/money"
 import { PropertyWrapper, PersonWrapper } from "@Wrappers"

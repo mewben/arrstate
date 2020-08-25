@@ -3,14 +3,15 @@ package utils
 import (
 	"github.com/gofiber/fiber"
 
+	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/errors"
 	"github.com/mewben/arrstate/pkg/models"
 	"github.com/mewben/arrstate/pkg/services/database"
 )
 
 // PrepareHandler -
-func PrepareHandler(c *fiber.Ctx, db *database.Service) (user *models.UserModel, business *models.BusinessModel, err error) {
-	userID, businessID, err := ExtractClaims(c)
+func PrepareHandler(c *fiber.Ctx, db *database.Service) (user *models.UserModel, business *models.BusinessModel, person *models.PersonModel, err error) {
+	userID, businessID, personID, err := ExtractClaims(c)
 	if err != nil {
 		return
 	}
@@ -28,6 +29,14 @@ func PrepareHandler(c *fiber.Ctx, db *database.Service) (user *models.UserModel,
 		err = errors.NewHTTPError(errors.ErrNotFoundBusiness)
 		return
 	}
+
+	// get person
+	personFound, _ := db.FindByID(c.Fasthttp, enums.CollPeople, personID, businessID)
+	if personFound == nil {
+		err = errors.NewHTTPError(errors.ErrNotFoundPerson)
+		return
+	}
+	person = personFound.(*models.PersonModel)
 
 	return
 }

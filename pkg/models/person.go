@@ -24,6 +24,7 @@ type PersonModel struct {
 
 // Locale -
 type Locale struct {
+	Language        string `bson:"language" json:"language"`
 	TimeZone        string `bson:"timeZone" json:"timeZone"`
 	WeekStartDay    string `bson:"weekStartDay" json:"weekStartDay"`
 	DateFormat      string `bson:"dateFormat" json:"dateFormat"`

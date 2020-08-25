@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"strings"
+
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/logger"
 	"github.com/gofiber/recover"
@@ -26,8 +28,12 @@ func SetupBackend(db *mongo.Database) *fiber.App {
 	// static
 	app.Static("/", "./web/public")
 	app.Get("/*", func(c *fiber.Ctx) {
-		if err := c.SendFile("./web/public/index.html"); err != nil {
-			c.Next(fiber.ErrInternalServerError)
+		if strings.Contains(c.Path(), "/api") {
+			c.Next()
+		} else {
+			if err := c.SendFile("./web/public/index.html"); err != nil {
+				c.Next(fiber.ErrInternalServerError)
+			}
 		}
 	})
 

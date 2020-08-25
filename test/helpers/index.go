@@ -41,7 +41,7 @@ func DoRequest(method, path string, body interface{}, token string) *http.Reques
 }
 
 // CheckJWT and returns userID and businessID parsed from the token
-func CheckJWT(token string, assert *assert.Assertions) (userID, businessID primitive.ObjectID) {
+func CheckJWT(token string, assert *assert.Assertions) (userID, businessID, personID primitive.ObjectID) {
 	assert.NotEmpty(token)
 	tokenSigningKey := viper.GetString("TOKEN_SIGNING_KEY")
 	assert.NotEmpty(tokenSigningKey)
@@ -66,5 +66,10 @@ func CheckJWT(token string, assert *assert.Assertions) (userID, businessID primi
 	businessID, err = primitive.ObjectIDFromHex(claims["businessID"].(string))
 	assert.Nil(err)
 	assert.False(businessID.IsZero())
+
+	// personID
+	personID, err = primitive.ObjectIDFromHex(claims["personID"].(string))
+	assert.Nil(err)
+	assert.False(personID.IsZero())
 	return
 }

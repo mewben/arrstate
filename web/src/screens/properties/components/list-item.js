@@ -30,7 +30,10 @@ const ListItem = ({ item, projectID }) => {
       {!projectID && (
         <Td>
           {!!item.projectID && (
-            <ProjectWrapper projectID={item.projectID}>
+            <ProjectWrapper
+              projectID={item.projectID}
+              loadingVariant="skeleton"
+            >
               {({ project }) => {
                 return (
                   <Link

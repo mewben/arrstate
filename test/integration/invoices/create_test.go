@@ -30,7 +30,7 @@ func TestCreateInvoice(t *testing.T) {
 	person2 := helpers.PersonFixture(app, token1, 1)
 	project1 := helpers.ProjectFixture(app, token1, 0)
 	property1 := helpers.PropertyFixture(app, token1, &project1.ID, 0)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should create invoice", func(t *testing.T) {
 		assert := assert.New(t)

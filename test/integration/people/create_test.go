@@ -24,7 +24,7 @@ func TestCreatePerson(t *testing.T) {
 	// setup
 	helpers.CleanupFixture(db)
 	token1 := helpers.SignupFixture(app, 0)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should create person inside business", func(t *testing.T) {
 		assert := assert.New(t)

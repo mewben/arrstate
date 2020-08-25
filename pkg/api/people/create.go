@@ -44,6 +44,9 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 	person.MetaModel = data.MetaModel
 	person.CommissionPerc = data.CommissionPerc
 	person.CustomFields = data.CustomFields
+	if person.Locale.Language == "" {
+		person.Locale.Language = enums.DefaultLanguage
+	}
 	if person.Locale.DateFormat == "" {
 		person.Locale.DateFormat = enums.DefaultDateFormat
 	}

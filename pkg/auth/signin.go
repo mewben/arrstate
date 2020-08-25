@@ -3,11 +3,11 @@ package auth
 import (
 	"strings"
 
-	"github.com/gofiber/fiber"
+	"go.mongodb.org/mongo-driver/bson"
+
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/errors"
 	"github.com/mewben/arrstate/pkg/models"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 // SigninPayload -
@@ -19,7 +19,7 @@ type SigninPayload struct {
 }
 
 // Signin -
-func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) {
+func (h *Handler) Signin(data *SigninPayload, domain string) (*SigninResponse, error) {
 	user := &models.UserModel{}
 	if data.GrantType == "device_code" && data.DeviceCode != "" {
 		// find user by device_code
@@ -80,12 +80,17 @@ func (h *Handler) Signin(data *SigninPayload, domain string) (fiber.Map, error) 
 	}
 	person := personFound.(*models.PersonModel)
 
-	token, err := user.GenerateJWT(user.ID, person.BusinessID)
+	token, err := user.GenerateJWT(user.ID, person.ID, person.BusinessID)
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrSigninIncorrect, err)
 	}
 
 	go h.SigninHook(user)
 
-	return fiber.Map{"token": token}, nil
+	response := &SigninResponse{
+		Token: token,
+		User:  user,
+	}
+
+	return response, nil
 }

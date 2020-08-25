@@ -184,21 +184,6 @@ func SignupFixture(app *fiber.App, n int) string {
 	return response["token"].(string)
 }
 
-// MeFixture -
-func MeFixture(app *fiber.App, token string) *models.MeModel {
-	req := DoRequest("GET", "/api/me", nil, token)
-	res, err := app.Test(req, -1)
-	if err != nil {
-		log.Fatalln("err app test me", err)
-	}
-	response, err := GetResponse(res, "me")
-	if err != nil {
-		log.Fatalln("err get response me", err)
-	}
-
-	return response.(*models.MeModel)
-}
-
 // ProjectFixture -
 func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
 

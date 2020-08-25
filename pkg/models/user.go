@@ -19,49 +19,20 @@ type UserModel struct {
 	DeviceCode    string             `bson:"deviceCode" json:"deviceCode"`
 }
 
-// CurrentUser -
-type CurrentUser struct {
-	User   *UserModel   `json:"user"`
-	Person *PersonModel `json:"person"`
-}
-
-// MeModel -
-type MeModel struct {
-	CurrentUser     *CurrentUser     `json:"currentUser"`
-	CurrentBusiness *BusinessModel   `json:"currentBusiness"`
-	UserBusinesses  []*BusinessModel `json:"userBusinesses"`
-}
-
 // NewUserModel -
 func NewUserModel() *UserModel {
 	return &UserModel{}
 }
 
-// NewCurrentUser -
-func NewCurrentUser(userID, businessID primitive.ObjectID) *CurrentUser {
-	return &CurrentUser{
-		User:   NewUserModel(),
-		Person: NewPersonModel(userID, businessID),
-	}
-}
-
-// NewMeModel -
-func NewMeModel(userID, businessID primitive.ObjectID) *MeModel {
-	return &MeModel{
-		CurrentUser:     NewCurrentUser(userID, businessID),
-		CurrentBusiness: NewBusinessModel(),
-		UserBusinesses:  make([]*BusinessModel, 0),
-	}
-}
-
 // GenerateJWT for signup/signin repsonse
-func (*UserModel) GenerateJWT(sub, businessID primitive.ObjectID) (string, error) {
+func (*UserModel) GenerateJWT(sub, personID, businessID primitive.ObjectID) (string, error) {
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["sub"] = sub
+	claims["personID"] = personID
 	claims["businessID"] = businessID
 	claims["exp"] = time.Now().Add(time.Hour * viper.GetDuration("TOKEN_EXPIRY")).Unix()
 

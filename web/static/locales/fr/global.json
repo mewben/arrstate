@@ -1,4 +1,9 @@
 {
+  "account": {
+    "localization": {
+      "title": "__"
+    }
+  },
   "agent": "__",
   "blocks": {
     "item": {
@@ -15,6 +20,7 @@
   },
   "btnAcquire": "__",
   "btnPay": "__",
+  "btnSave": "__",
   "btnSubmit": "__",
   "btnViewReceipt": "__",
   "business": {
@@ -26,9 +32,9 @@
   },
   "confirm": "__",
   "dashboard": {
+    "btnGenerate": "__",
+    "btnRefresh": "__",
     "empty": "__",
-    "generate": "__",
-    "refresh": "__",
     "title": "__"
   },
   "delete": "__",
@@ -108,6 +114,12 @@
     },
     "agent": {
       "commissionPercentage": "__"
+    },
+    "localization": {
+      "dateFormat": "__",
+      "language": "__",
+      "timeFormat": "__",
+      "timestampFormat": "__"
     },
     "payment": {
       "invoiceNo": "__",
@@ -207,6 +219,12 @@
     "property": "__",
     "title": "__",
     "total": "__"
+  },
+  "settings": {
+    "menu": {
+      "account": "__"
+    },
+    "title": "__"
   },
   "signin": {
     "btn": "__",

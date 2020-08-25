@@ -1,10 +1,9 @@
 import React from "react"
 import { Link } from "gatsby"
 import acc from "accounting"
-import dayjs from "dayjs"
 
 import { useProperty } from "@Hooks"
-import { Td } from "@Components/generic"
+import { Time, Td } from "@Components/generic"
 import { fromMoney } from "@Utils/money"
 import { PropertyWrapper, PersonWrapper } from "@Wrappers"
 import { fullName } from "@Utils"
@@ -53,10 +52,8 @@ const ListItem = ({ item, propertyID }) => {
           </PersonWrapper>
         )}
       </Td>
-      <Td>
-        {!!item?.issueDate && dayjs(item?.issueDate).format("MMMM D, YYYY")}
-      </Td>
-      <Td>{!!item?.dueDate && dayjs(item?.dueDate).format("MMMM D, YYYY")}</Td>
+      <Td>{!!item?.issueDate && <Time d={item?.issueDate} dateOnly />}</Td>
+      <Td>{!!item?.dueDate && <Time d={item?.dueDate} dateOnly />}</Td>
       <Td align="right">{acc.formatNumber(fromMoney(item.total), 2)}</Td>
       <Td>
         <Status status={item.status} />

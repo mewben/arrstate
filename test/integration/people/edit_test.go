@@ -30,7 +30,7 @@ func TestEditPerson(t *testing.T) {
 	token2 := helpers.SignupFixture(app, 1)
 	person1 := helpers.PersonFixture(app, token1, 0) // person1
 	person2 := helpers.PersonFixture(app, token2, 1)
-	userID, businessID := helpers.CheckJWT(token1, assert.New(t))
+	userID, businessID, _ := helpers.CheckJWT(token1, assert.New(t))
 
 	t.Run("It should edit person", func(t *testing.T) {
 		assert := assert.New(t)

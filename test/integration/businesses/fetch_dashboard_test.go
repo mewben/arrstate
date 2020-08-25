@@ -35,21 +35,20 @@ func TestFetchDashboard(t *testing.T) {
 		res, err := app.Test(req, -1)
 		assert.Nil(err)
 		assert.Equal(200, res.StatusCode, res)
-		ress, err := helpers.GetResponse(res, "me")
+		ress, err := helpers.GetResponse(res, "business")
 		assert.Nil(err)
-		response := ress.(*models.MeModel)
-		business := response.CurrentBusiness
+		response := ress.(*models.BusinessModel)
 
-		assert.NotZero(business.Dashboard, business.Dashboard)
-		assert.Equal(business.Dashboard["projects"], models.DashboardModel{
+		assert.NotZero(response.Dashboard, response.Dashboard)
+		assert.Equal(response.Dashboard["projects"], models.DashboardModel{
 			Total: 2,
 			Label: "Projects",
 		})
-		assert.Equal(business.Dashboard["properties"], models.DashboardModel{
+		assert.Equal(response.Dashboard["properties"], models.DashboardModel{
 			Total: 3,
 			Label: "Properties",
 		})
-		assert.Equal(business.Dashboard["people"], models.DashboardModel{
+		assert.Equal(response.Dashboard["people"], models.DashboardModel{
 			Total: 2,
 			Label: "People",
 		})

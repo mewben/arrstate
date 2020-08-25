@@ -21,6 +21,7 @@ type Handler struct {
 	Ctx      context.Context
 	User     *models.UserModel
 	Business *models.BusinessModel
+	Person   *models.PersonModel
 }
 
 // Payload -
@@ -47,7 +48,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		log.Println("people.get")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -73,7 +74,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 	g.Get("/people/:personID", func(c *fiber.Ctx) {
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -93,7 +94,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		log.Println("people.post")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -124,7 +125,7 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		log.Println("people.put")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return
@@ -147,11 +148,38 @@ func Routes(g fiber.Router, db *mongo.Database) {
 
 	})
 
+	g.Put("/people/:personID/locale", func(c *fiber.Ctx) {
+		log.Println("people.edit.locale")
+		var err error
+		h.Ctx = c.Fasthttp
+		h.User, h.Business, h.Person, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			c.Status(400).JSON(err)
+			return
+		}
+
+		payload := &models.Locale{}
+		if err := c.BodyParser(&payload); err != nil {
+			log.Println("errrbodyparser", err)
+			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
+			return
+		}
+
+		response, err := h.EditLocale(c.Params("personID"), payload)
+		if err != nil {
+			log.Println("errrrrr", err)
+			c.Status(400).JSON(err)
+			return
+		}
+		c.Status(200).JSON(response)
+
+	})
+
 	g.Delete("/people/:personID", func(c *fiber.Ctx) {
 		log.Println("people.delete")
 		var err error
 		h.Ctx = c.Fasthttp
-		h.User, h.Business, err = utils.PrepareHandler(c, h.DB)
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
 			c.Status(400).JSON(err)
 			return

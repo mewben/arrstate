@@ -47,6 +47,7 @@ module.exports = {
           `/agents/*`,
           `/people/*`,
           `/settings/*`,
+          `/reports/*`,
         ],
       },
     },

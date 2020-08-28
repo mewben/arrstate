@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 
-import { Empty, Portal, Button, Table, Th } from "@Components/generic"
+import { Empty, Portal, Button, Table, TBody, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { map } from "@Utils/lodash"
 import { useProperties } from "@Hooks"
@@ -37,13 +37,13 @@ const List = ({ projectID }) => {
               <Th>{t("properties.status")}</Th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <TBody>
             {map(content?.list, item => {
               return (
                 <ListItem key={item._id} item={item} projectID={projectID} />
               )
             })}
-          </tbody>
+          </TBody>
         </Table>
       </div>
     )

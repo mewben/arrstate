@@ -1,12 +1,19 @@
 import React from "react"
 
-import { ReactQueryProvider, StylesProvider, AuthProvider } from "@Providers"
+import {
+  ReactQueryProvider,
+  StylesProvider,
+  AuthProvider,
+  DatePickerProvider,
+} from "@Providers"
 
 export const wrapRootElement = ({ element }) => {
   return (
     <ReactQueryProvider>
       <StylesProvider>
-        <AuthProvider>{element}</AuthProvider>
+        <DatePickerProvider>
+          <AuthProvider>{element}</AuthProvider>
+        </DatePickerProvider>
       </StylesProvider>
     </ReactQueryProvider>
   )

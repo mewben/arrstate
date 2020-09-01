@@ -1,7 +1,21 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
-const Filters = () => {
-  return <div>Filters</div>
+import { Form, DateRangePickerField, SubmitButton } from "@Components/forms"
+
+const Filters = ({ onSubmit }) => {
+  const { t } = useTranslation()
+
+  return (
+    <div className="bg-cool-gray-200 py-2 px-4 border-b border-cool-gray-300">
+      <Form model={{ range: [null, null] }} onSubmit={onSubmit}>
+        <div className="flex items-center space-x-4">
+          <DateRangePickerField name="range" />
+          <SubmitButton>{t("btnGenerate")}</SubmitButton>
+        </div>
+      </Form>
+    </div>
+  )
 }
 
 export default Filters

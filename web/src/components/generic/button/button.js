@@ -44,7 +44,7 @@ const Button = ({
         to={to ? to : undefined}
         disabled={isDisabled}
         className={cx(
-          "inline-flex items-center border border-transparent leading-4 font-medium rounded focus:outline-none transition ease-in-out duration-150",
+          "inline-flex items-center border border-transparent leading-5 font-medium rounded focus:outline-none transition ease-in-out duration-150",
           cxSize,
           cxColor,
           fullWidth ? "w-full justify-center" : ""

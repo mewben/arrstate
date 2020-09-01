@@ -19,6 +19,7 @@
     }
   },
   "btnAcquire": "Acquire",
+  "btnGenerate": "Generate",
   "btnPay": "Pay",
   "btnSave": "Save",
   "btnSubmit": "Submit",
@@ -162,7 +163,7 @@
     "people": "People",
     "projects": "Projects",
     "properties": "Properties",
-    "reports": "__"
+    "reports": "Reports"
   },
   "name": {
     "familyName": "Family Name",
@@ -251,5 +252,6 @@
     "absolute": "Absolute",
     "both": "Both",
     "relative": "Relative"
-  }
+  },
+  "to": "To"
 }

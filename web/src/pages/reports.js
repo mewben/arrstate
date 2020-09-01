@@ -19,7 +19,7 @@ const ReportsPage = () => {
       <AppBar title={t("reports.title")} submenu={submenu} />
       <Router className="flex flex-col flex-1 overflow-hidden">
         <Income path="/reports/income" />
-        <Redirect from="/reports" to="/reports/income" />
+        <Redirect from="/reports" to="/reports/income" noThrow />
       </Router>
     </PrivateWrapper>
   )

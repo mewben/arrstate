@@ -20,7 +20,7 @@ const SettingsPage = () => {
       <AppBar title={t("settings.title")} submenu={submenu} />
       <Router className="flex flex-col flex-1 overflow-hidden">
         <Account path="/settings/account" />
-        <Redirect from="/settings" to="/settings/account" />
+        <Redirect from="/settings" to="/settings/account" noThrow />
       </Router>
     </PrivateWrapper>
   )

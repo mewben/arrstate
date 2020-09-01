@@ -4,16 +4,16 @@ import {
   ReactQueryProvider,
   StylesProvider,
   AuthProvider,
-  DatePickerProvider,
+  DateProvider,
 } from "@Providers"
 
 export const wrapRootElement = ({ element }) => {
   return (
     <ReactQueryProvider>
       <StylesProvider>
-        <DatePickerProvider>
+        <DateProvider>
           <AuthProvider>{element}</AuthProvider>
-        </DatePickerProvider>
+        </DateProvider>
       </StylesProvider>
     </ReactQueryProvider>
   )

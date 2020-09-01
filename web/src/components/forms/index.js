@@ -12,3 +12,4 @@ export {
   LanguageSelectField,
 } from "./select"
 export { default as AddressField } from "./address-field"
+export { default as DateRangePickerField } from "./date-range-picker-field"

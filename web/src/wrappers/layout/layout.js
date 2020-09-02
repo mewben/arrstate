@@ -17,7 +17,7 @@ export const LayoutWrapper = ({ children }) => {
     >
       <Helmet
         bodyAttributes={{
-          class: "h-screen flex overflow-hidden bg-gray-100",
+          class: "h-screen flex overflow-hidden bg-cool-gray-100",
         }}
       />
       <div className="app-root h-screen w-screen overflow-hidden">

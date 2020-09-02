@@ -4,6 +4,21 @@
 
 @tailwind utilities;
 
+/*** APPLY ***/
+.form-input {
+  @apply relative block w-full transition ease-in-out duration-150;
+}
+
+.form-input:focus {
+  @apply z-10;
+}
+
+@screen sm {
+  .form-input {
+    @apply text-sm leading-5;
+  }
+}
+
 /***** CUSTOM *****/
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {

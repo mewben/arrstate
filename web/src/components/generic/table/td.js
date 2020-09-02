@@ -13,7 +13,7 @@ const Td = ({ children, className, align = "left", py, wrap, ...props }) => {
   return (
     <td
       className={cx(
-        "px-6 border-b border-gray-200 text-sm leading-5 text-gray-500",
+        "px-6 text-sm leading-5 text-cool-gray-500",
         cxAlign,
         wrap ? "whitespace-normal" : "whitespace-no-wrap",
         py ? py : "py-4",

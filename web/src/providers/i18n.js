@@ -16,7 +16,7 @@ i18n
   .init(
     {
       fallbackLng: "en",
-      ns: "global",
+      ns: ["global", "countries"],
       defaultNS: "global",
       debug: true,
 

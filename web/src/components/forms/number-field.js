@@ -35,7 +35,7 @@ const MaskedNumberInput = ({
       value={v}
       thousandSeparator=","
       className={cx(
-        "form-input relative block w-full bg-transparent focus:z-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5",
+        "form-input",
         !!endAddon ? "rounded-none rounded-l-md" : "",
         inputClassName
       )}

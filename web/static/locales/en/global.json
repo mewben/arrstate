@@ -19,6 +19,7 @@
     }
   },
   "btnAcquire": "Acquire",
+  "btnGenerate": "Generate",
   "btnPay": "Pay",
   "btnSave": "Save",
   "btnSubmit": "Submit",
@@ -118,8 +119,7 @@
     "localization": {
       "dateFormat": "Date Format",
       "language": "Language",
-      "timeFormat": "Time Format",
-      "timestampFormat": "Timestamp Format"
+      "timeFormat": "Time Format"
     },
     "payment": {
       "invoiceNo": "Invoice #",
@@ -162,7 +162,8 @@
     "dashboard": "Dashboard",
     "people": "People",
     "projects": "Projects",
-    "properties": "Properties"
+    "properties": "Properties",
+    "reports": "Reports"
   },
   "name": {
     "familyName": "Family Name",
@@ -220,6 +221,15 @@
     "title": "Receipt",
     "total": "Total"
   },
+  "reports": {
+    "amount": "Amount",
+    "invoiceName": "Item",
+    "menu": {
+      "income": "Income"
+    },
+    "paidAt": "Paid Date",
+    "title": "Reports"
+  },
   "settings": {
     "menu": {
       "account": "Account"
@@ -240,5 +250,11 @@
     "termsHelp": "By creating an account, you are agreeing to our",
     "termsOfService": "Terms of Service",
     "title": "Sign Up"
-  }
+  },
+  "timestampFormats": {
+    "absolute": "Absolute",
+    "both": "Both",
+    "relative": "Relative"
+  },
+  "to": "To"
 }

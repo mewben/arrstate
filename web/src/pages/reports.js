@@ -4,26 +4,25 @@ import { useTranslation } from "react-i18next"
 
 import { PrivateWrapper } from "@Wrappers"
 import { AppBar } from "@Wrappers/layout"
-import { Account } from "@Screens/settings"
+import { Income } from "@Screens/reports"
 
-const SettingsPage = () => {
+const ReportsPage = () => {
   const { t } = useTranslation()
   const submenu = [
     {
-      label: t("settings.menu.account"),
-      path: `/settings/account`,
+      label: t("reports.menu.income"),
+      path: `/reports/income`,
     },
   ]
-
   return (
     <PrivateWrapper>
-      <AppBar title={t("settings.title")} submenu={submenu} />
+      <AppBar title={t("reports.title")} submenu={submenu} />
       <Router className="flex flex-col flex-1 overflow-hidden">
-        <Account path="/settings/account" />
-        <Redirect from="/settings" to="/settings/account" noThrow />
+        <Income path="/reports/income" />
+        <Redirect from="/reports" to="/reports/income" noThrow />
       </Router>
     </PrivateWrapper>
   )
 }
 
-export default SettingsPage
+export default ReportsPage

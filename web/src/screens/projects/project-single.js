@@ -4,9 +4,8 @@ import { useTranslation } from "react-i18next"
 
 import { Loading, Error, Portal, Button } from "@Components/generic"
 import { useProject } from "@Hooks"
-import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
+import { AppBar } from "@Wrappers/layout"
 import { ProjectForm } from "@Components/popups/project"
-import { map } from "@Utils/lodash"
 // import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
 import ProjectProperties from "./project-properties"
@@ -34,27 +33,13 @@ const ProjectSingle = ({ projectID }) => {
     },
   ]
 
-  const renderSubmenu = () => {
-    return (
-      <SubMenu>
-        {map(submenu, (item, i) => {
-          return (
-            <SubMenuItem key={i} to={item.path}>
-              {item.label}
-            </SubMenuItem>
-          )
-        })}
-      </SubMenu>
-    )
-  }
-
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
     <Error error={error} />
   ) : (
     <>
-      <AppBar title={data.name} backTo="/projects" submenu={renderSubmenu()}>
+      <AppBar title={data.name} backTo="/projects" submenu={submenu}>
         <Portal openByClickOn={<Button>{t("projects.edit")}</Button>}>
           <ProjectForm model={data} />
         </Portal>

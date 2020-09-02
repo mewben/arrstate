@@ -14,6 +14,7 @@ import (
 	"github.com/mewben/arrstate/pkg/api/people"
 	"github.com/mewben/arrstate/pkg/api/projects"
 	"github.com/mewben/arrstate/pkg/api/properties"
+	"github.com/mewben/arrstate/pkg/api/reports"
 	"github.com/mewben/arrstate/pkg/auth"
 	"github.com/mewben/arrstate/pkg/errors"
 	"github.com/mewben/arrstate/pkg/models"
@@ -89,6 +90,8 @@ func GetResponse(res *http.Response, entity string) (interface{}, error) {
 		response = &invoices.ResponseList{}
 	} else if entity == "blocks" {
 		response = &blocks.ResponseList{}
+	} else if entity == "reports" {
+		response = &reports.ResponseList{}
 	}
 
 	err = json.Unmarshal(body, &response)

@@ -2,7 +2,7 @@ import React from "react"
 import acc from "accounting"
 import { useTranslation } from "react-i18next"
 
-import { Table, useTable, Th, Td } from "@Components/generic"
+import { Table, TBody, useTable, Th, Td } from "@Components/generic"
 import { fromMoney } from "@Utils"
 
 export const ItemWrapper = ({ children }) => {
@@ -10,7 +10,7 @@ export const ItemWrapper = ({ children }) => {
     <div className="py-8">
       <Table className="border border-gray-200 shadow-none">
         <ItemHead />
-        <tbody>{children}</tbody>
+        <TBody>{children}</TBody>
       </Table>
     </div>
   )

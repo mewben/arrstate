@@ -13,6 +13,7 @@ import (
 	"github.com/mewben/arrstate/pkg/api/people"
 	"github.com/mewben/arrstate/pkg/api/projects"
 	"github.com/mewben/arrstate/pkg/api/properties"
+	"github.com/mewben/arrstate/pkg/api/reports"
 	"github.com/mewben/arrstate/pkg/api/users"
 )
 
@@ -36,5 +37,6 @@ func Routes(app *fiber.App, db *mongo.Database) {
 	people.Routes(g, db)
 	invoices.Routes(g, db)
 	blocks.Routes(g, db)
+	reports.Routes(g, db)
 
 }

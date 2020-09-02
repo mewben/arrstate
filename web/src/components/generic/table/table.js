@@ -49,11 +49,13 @@ const Table = ({ className, children }) => {
     >
       <div
         className={cx(
-          "align-middle inline-block min-w-full shadow-sm overflow-hidden sm:rounded-lg",
+          "align-middle min-w-full shadow-sm overflow-hidden sm:rounded-lg",
           className
         )}
       >
-        <table className="w-full">{children}</table>
+        <table className="min-w-full divide-y divide-cool-gray-200">
+          {children}
+        </table>
       </div>
     </TableContext.Provider>
   )

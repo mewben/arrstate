@@ -5,9 +5,8 @@ import { useTranslation } from "react-i18next"
 
 import { Loading, Error, Portal, Button } from "@Components/generic"
 import { useProperty } from "@Hooks"
-import { AppBar, SubMenu, SubMenuItem } from "@Wrappers/layout"
+import { AppBar } from "@Wrappers/layout"
 import { PropertyForm } from "@Components/popups/property"
-import { map } from "@Utils/lodash"
 import PropertyOverview from "./property-overview"
 import PropertyInvoices from "./property-invoices"
 import PropertyReceipts from "./property-receipts"
@@ -30,20 +29,6 @@ const PropertySingle = ({ propertyID }) => {
     },
   ]
 
-  const renderSubmenu = () => {
-    return (
-      <SubMenu>
-        {map(submenu, (item, i) => {
-          return (
-            <SubMenuItem key={i} to={item.path}>
-              {item.label}
-            </SubMenuItem>
-          )
-        })}
-      </SubMenu>
-    )
-  }
-
   return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
@@ -57,7 +42,7 @@ const PropertySingle = ({ propertyID }) => {
             ? `/projects/${data?.projectID}/properties`
             : "/properties"
         }
-        submenu={renderSubmenu()}
+        submenu={submenu}
       >
         <Portal openByClickOn={<Button>{t("properties.edit")}</Button>}>
           <PropertyForm model={data} />

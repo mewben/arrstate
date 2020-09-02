@@ -14,7 +14,7 @@ const CountriesSelectField = ({ ...props }) => {
     return map(data?.countries, item => {
       return {
         value: item,
-        label: t(`countries.${item}`),
+        label: t(`countries:${item}`),
       }
     })
   }, [data?.countries])

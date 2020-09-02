@@ -63,7 +63,7 @@ const SelectField = ({
                     <div className="mt-1 flex relative rounded-md shadow-sm">
                       <TextField
                         {...params}
-                        className="form-input relative bg-transparent focus:z-10 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                        className="form-input"
                         placeholder={placeholder}
                         InputProps={{
                           ...params.InputProps,

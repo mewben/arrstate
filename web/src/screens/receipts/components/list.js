@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
 
-import { Empty, Portal, Button, Table, Th } from "@Components/generic"
+import { Empty, Table, TBody, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { map } from "@Utils/lodash"
 import { useInvoices } from "@Hooks"
@@ -25,13 +25,13 @@ const List = ({ propertyID }) => {
               <Th align="right">{t("receipts.total")} (Php)</Th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <TBody>
             {map(content?.list, item => {
               return (
                 <ListItem key={item._id} item={item} propertyID={propertyID} />
               )
             })}
-          </tbody>
+          </TBody>
         </Table>
       </div>
     )

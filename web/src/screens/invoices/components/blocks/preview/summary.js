@@ -2,7 +2,7 @@ import React from "react"
 import acc from "accounting"
 import { useTranslation } from "react-i18next"
 
-import { Table, Th, Td } from "@Components/generic"
+import { Table, TBody, Th, Td } from "@Components/generic"
 import { fromMoney } from "@Utils"
 import { map } from "@Utils/lodash"
 
@@ -12,7 +12,7 @@ const Summary = ({ block, invoice, isReceipt }) => {
     <div className="flex w-full justify-end pb-8">
       <div className="w-1/2">
         <Table className="border border-gray-200">
-          <tbody>
+          <TBody>
             <tr>
               <Td py="py-3">{t("blocks.summary.subTotal")}:</Td>
               <Td align="right" py="py-3">
@@ -29,7 +29,7 @@ const Summary = ({ block, invoice, isReceipt }) => {
                 </tr>
               )
             })}
-          </tbody>
+          </TBody>
           <tfoot>
             <tr>
               <Th fullWidth>

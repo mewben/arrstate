@@ -19,6 +19,7 @@
     }
   },
   "btnAcquire": "__",
+  "btnGenerate": "__",
   "btnPay": "__",
   "btnSave": "__",
   "btnSubmit": "__",
@@ -118,8 +119,7 @@
     "localization": {
       "dateFormat": "__",
       "language": "__",
-      "timeFormat": "__",
-      "timestampFormat": "__"
+      "timeFormat": "__"
     },
     "payment": {
       "invoiceNo": "__",
@@ -162,7 +162,8 @@
     "dashboard": "__",
     "people": "__",
     "projects": "__",
-    "properties": "__"
+    "properties": "__",
+    "reports": "__"
   },
   "name": {
     "familyName": "__",
@@ -220,6 +221,15 @@
     "title": "__",
     "total": "__"
   },
+  "reports": {
+    "amount": "__",
+    "invoiceName": "__",
+    "menu": {
+      "income": "__"
+    },
+    "paidAt": "__",
+    "title": "__"
+  },
   "settings": {
     "menu": {
       "account": "__"
@@ -240,5 +250,11 @@
     "termsHelp": "__",
     "termsOfService": "__",
     "title": "__"
-  }
+  },
+  "timestampFormats": {
+    "absolute": "__",
+    "both": "__",
+    "relative": "__"
+  },
+  "to": "__"
 }

@@ -8,7 +8,7 @@ const InvoiceList = () => {
   const { t } = useTranslation()
   return (
     <>
-      <AppBar title={t("invoices.title")}></AppBar>
+      <AppBar title={t("invoices.title")} />
       <List />
     </>
   )

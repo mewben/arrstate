@@ -4,7 +4,6 @@ import { useQuery } from "react-query"
 
 import { Loading, Error } from "@Components/generic"
 import { useAuth } from "@Providers"
-import { useMe } from "@Hooks"
 import { LayoutWrapper } from "@Wrappers"
 
 const CurrentContext = React.createContext()

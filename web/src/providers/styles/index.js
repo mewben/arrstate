@@ -9,7 +9,7 @@ import "./main.css"
 
 const theme = createMuiTheme({
   palette: {
-    divider: colors.gray[200], // "#e5e7eb",
+    divider: colors["cool-gray"][200], // "#e5e7eb",
   },
   typography: {
     fontFamily: ["Inter var", ...defaultTheme.fontFamily.sans].join(","),

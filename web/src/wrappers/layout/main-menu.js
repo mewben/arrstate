@@ -4,6 +4,7 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen"
 import TextureIcon from "@material-ui/icons/Texture"
 import RecentActorsIcon from "@material-ui/icons/RecentActors"
 import HomeIcon from "@material-ui/icons/Home"
+import AssignmentIcon from "@material-ui/icons/Assignment"
 import { useTranslation } from "react-i18next"
 
 import { map } from "@Utils/lodash"
@@ -33,6 +34,7 @@ const MainMenu = () => {
       label: t("menu.people"),
       icon: <RecentActorsIcon />,
     },
+    { path: "/reports", label: t("menu.reports"), icon: <AssignmentIcon /> },
   ]
 
   return (

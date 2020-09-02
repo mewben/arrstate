@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { Form, DateRangePickerField, SubmitButton } from "@Components/forms"
 
-const Filters = ({ onSubmit }) => {
+const Filters = ({ isLoading, onSubmit }) => {
   const { t } = useTranslation()
 
   return (
@@ -11,7 +11,7 @@ const Filters = ({ onSubmit }) => {
       <Form model={{ range: [null, null] }} onSubmit={onSubmit}>
         <div className="flex items-center space-x-4">
           <DateRangePickerField name="range" />
-          <SubmitButton>{t("btnGenerate")}</SubmitButton>
+          <SubmitButton disabled={isLoading}>{t("btnGenerate")}</SubmitButton>
         </div>
       </Form>
     </div>

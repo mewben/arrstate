@@ -222,9 +222,12 @@
     "total": "__"
   },
   "reports": {
+    "amount": "__",
+    "invoiceName": "__",
     "menu": {
       "income": "__"
     },
+    "paidAt": "__",
     "title": "__"
   },
   "settings": {

@@ -10,7 +10,7 @@ const BackButton = ({ to }) => {
       <button
         // to={to}
         onClick={() => navigate(-1)}
-        className="text-xs font-medium text-gray-400 hover:text-gray-800"
+        className="text-xs font-medium text-gray-400 hover:text-gray-800 h-full w-full focus:outline-none"
       >
         <ChevronLeftIcon fontSize="default" />
       </button>

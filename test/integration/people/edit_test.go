@@ -36,8 +36,8 @@ func TestEditPerson(t *testing.T) {
 		assert := assert.New(t)
 		updEmail := "editemail@email.com"
 		updRole := []string{enums.RoleClient}
-		updGivenName := "edit1"
-		updFamilyName := "edit2"
+		updFirstName := "edit1"
+		updLastName := "edit2"
 		updAddress := models.NewAddressModel()
 		updAddress.Country = "US"
 		updAddress.State = "Ohio"
@@ -49,11 +49,13 @@ func TestEditPerson(t *testing.T) {
 			"color":   "red",
 		}
 		data := fiber.Map{
-			"_id":            person1.ID,
-			"email":          updEmail,
-			"role":           updRole,
-			"givenName":      updGivenName,
-			"familyName":     updFamilyName,
+			"_id":   person1.ID,
+			"email": updEmail,
+			"role":  updRole,
+			"name": fiber.Map{
+				"first": updFirstName,
+				"last":  updLastName,
+			},
 			"address":        updAddress,
 			"notes":          updNotes,
 			"commissionPerc": updCommissionPerc,
@@ -72,8 +74,8 @@ func TestEditPerson(t *testing.T) {
 		assert.Nil(response.UserID)
 		assert.False(response.ID.IsZero())
 		assert.Equal(updRole, response.Role)
-		assert.Equal(updGivenName, response.GivenName)
-		assert.Equal(updFamilyName, response.FamilyName)
+		assert.Equal(updFirstName, response.Name.First)
+		assert.Equal(updLastName, response.Name.Last)
 		assert.Equal(updAddress.Country, response.Address.Country)
 		assert.Equal(updAddress.State, response.Address.State)
 		assert.Equal(updNotes, response.Notes)
@@ -103,38 +105,46 @@ func TestEditPerson(t *testing.T) {
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":       person1.ID,
-					"role":      []string{enums.RoleAgent},
-					"givenName": "",
-					"i":         2,
+					"_id":  person1.ID,
+					"role": []string{enums.RoleAgent},
+					"name": fiber.Map{
+						"first": "",
+					},
+					"i": 2,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":       person1.ID,
-					"role":      []string{enums.RoleAgent},
-					"givenName": "givenName",
-					"email":     "",
-					"i":         3,
+					"_id":  person1.ID,
+					"role": []string{enums.RoleAgent},
+					"name": fiber.Map{
+						"first": "first",
+					},
+					"email": "",
+					"i":     3,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":       person1.ID,
-					"role":      []string{enums.RoleAgent},
-					"givenName": "givenName",
-					"email":     "notavalidemail",
-					"i":         4,
+					"_id":  person1.ID,
+					"role": []string{enums.RoleAgent},
+					"name": fiber.Map{
+						"first": "first",
+					},
+					"email": "notavalidemail",
+					"i":     4,
 				},
 			},
 			{
 				errors.ErrInputInvalid,
 				fiber.Map{
-					"_id":            person1.ID,
-					"role":           []string{enums.RoleAgent},
-					"givenName":      "givenName",
+					"_id":  person1.ID,
+					"role": []string{enums.RoleAgent},
+					"name": fiber.Map{
+						"first": "first",
+					},
 					"email":          "sample@email.com",
 					"commissionPerc": -34,
 					"i":              5,
@@ -144,9 +154,11 @@ func TestEditPerson(t *testing.T) {
 				errors.ErrUpdate,
 				fiber.Map{
 					// duplicate person for this business
-					"_id":            person1.ID,
-					"role":           []string{enums.RoleAgent},
-					"givenName":      "givenNameerr",
+					"_id":  person1.ID,
+					"role": []string{enums.RoleAgent},
+					"name": fiber.Map{
+						"first": "first",
+					},
 					"email":          "test@email.com",
 					"commissionPerc": 34,
 					"i":              6,
@@ -171,10 +183,12 @@ func TestEditPerson(t *testing.T) {
 	t.Run("It should not be able to edit role as owner", func(t *testing.T) {
 		assert := assert.New(t)
 		data := fiber.Map{
-			"_id":       person2.ID,
-			"role":      []string{enums.RoleOwner},
-			"email":     "eddfe@email.com",
-			"givenName": "given",
+			"_id":   person2.ID,
+			"role":  []string{enums.RoleOwner},
+			"email": "eddfe@email.com",
+			"name": fiber.Map{
+				"first": "first",
+			},
 		}
 		req := helpers.DoRequest("PUT", path, data, token2)
 
@@ -191,10 +205,12 @@ func TestEditPerson(t *testing.T) {
 		t.Run("It should not edit from other business", func(t *testing.T) {
 			assert := assert.New(t)
 			data := fiber.Map{
-				"_id":       person2.ID,
-				"role":      []string{enums.RoleAgent},
-				"email":     "eddfe@email.com",
-				"givenName": "given",
+				"_id":   person2.ID,
+				"role":  []string{enums.RoleAgent},
+				"email": "eddfe@email.com",
+				"name": fiber.Map{
+					"first": "first",
+				},
 			}
 			req := helpers.DoRequest("PUT", path, data, token1)
 

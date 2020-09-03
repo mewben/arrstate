@@ -38,8 +38,7 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 	person.UserID = data.UserID
 	person.Email = data.Email
 	person.Role = data.Role
-	person.GivenName = data.GivenName
-	person.FamilyName = data.FamilyName
+	person.Name = data.Name
 	person.Address = data.Address
 	person.MetaModel = data.MetaModel
 	person.CommissionPerc = data.CommissionPerc

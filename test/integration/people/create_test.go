@@ -30,8 +30,8 @@ func TestCreatePerson(t *testing.T) {
 		assert := assert.New(t)
 		fakeEmail := "test3@email.com"
 		fakeRole := []string{enums.RoleCoOwner}
-		fakeGivenName := "given"
-		fakeFamilyName := "family"
+		fakeFirstName := "given"
+		fakeLastName := "family"
 		fakeAddress := models.NewAddressModel()
 		fakeAddress.Country = "PH"
 		fakeAddress.State = "Bohol"
@@ -42,10 +42,12 @@ func TestCreatePerson(t *testing.T) {
 			"contact": "contact",
 		}
 		data := fiber.Map{
-			"email":          fakeEmail,
-			"role":           fakeRole,
-			"givenName":      fakeGivenName,
-			"familyName":     fakeFamilyName,
+			"email": fakeEmail,
+			"role":  fakeRole,
+			"name": fiber.Map{
+				"first": fakeFirstName,
+				"last":  fakeLastName,
+			},
 			"address":        fakeAddress,
 			"notes":          fakeNotes,
 			"commissionPerc": fakeCommissionPerc,
@@ -64,8 +66,8 @@ func TestCreatePerson(t *testing.T) {
 		assert.Nil(response.UserID)
 		assert.False(response.ID.IsZero())
 		assert.Equal(fakeRole, response.Role)
-		assert.Equal(fakeGivenName, response.GivenName)
-		assert.Equal(fakeFamilyName, response.FamilyName)
+		assert.Equal(fakeFirstName, response.Name.First)
+		assert.Equal(fakeLastName, response.Name.Last)
 		assert.Equal(fakeAddress.Country, response.Address.Country)
 		assert.Equal(fakeAddress.State, response.Address.State)
 		assert.Equal(fakeNotes, response.Notes)
@@ -82,29 +84,39 @@ func TestCreatePerson(t *testing.T) {
 				"role": "",
 			},
 			{
-				"role":      []string{enums.RoleAgent},
-				"givenName": "",
+				"role": []string{enums.RoleAgent},
+				"name": fiber.Map{
+					"first": "",
+				},
 			},
 			{
-				"role":      []string{enums.RoleAgent},
-				"givenName": "givenName",
-				"email":     "",
+				"role": []string{enums.RoleAgent},
+				"name": fiber.Map{
+					"first": "first",
+				},
+				"email": "",
 			},
 			{
-				"role":      []string{enums.RoleAgent},
-				"givenName": "givenName",
-				"email":     "notavalidemail",
+				"role": []string{enums.RoleAgent},
+				"name": fiber.Map{
+					"first": "first",
+				},
+				"email": "notavalidemail",
 			},
 			{
-				"role":           []string{enums.RoleAgent},
-				"givenName":      "givenName",
+				"role": []string{enums.RoleAgent},
+				"name": fiber.Map{
+					"first": "first",
+				},
 				"email":          "sample@email.com",
 				"commissionPerc": -34,
 			},
 			{
 				// duplicate person for this business
-				"role":           []string{enums.RoleAgent},
-				"givenName":      "givenName",
+				"role": []string{enums.RoleAgent},
+				"name": fiber.Map{
+					"first": "first",
+				},
 				"email":          "test3@email.com",
 				"commissionPerc": -34,
 			},
@@ -128,9 +140,11 @@ func TestCreatePerson(t *testing.T) {
 	t.Run("It should not allow create with owner role", func(t *testing.T) {
 		assert := assert.New(t)
 		data := fiber.Map{
-			"email":     "random1@email.com",
-			"role":      []string{enums.RoleOwner},
-			"givenName": "givenname",
+			"email": "random1@email.com",
+			"role":  []string{enums.RoleOwner},
+			"name": fiber.Map{
+				"first": "first",
+			},
 		}
 		req := helpers.DoRequest("POST", path, data, token1)
 

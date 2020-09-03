@@ -1,5 +1,5 @@
 import { compact } from "@Utils/lodash"
 
-export const fullName = (givenName, familyName) => {
-  return compact([givenName, familyName]).join(" ")
+export const fullName = name => {
+  return compact([name?.first, name?.last]).join(" ")
 }

@@ -114,7 +114,7 @@ const Intro = ({ block, invoice, isReceipt }) => {
               return (
                 <div className="text-gray-600">
                   <div className="font-medium text-gray-900">
-                    {fullName(person.givenName, person.familyName)}
+                    {fullName(person?.name)}
                   </div>
                   <div className="mt-1">
                     <div>{person.email}</div>

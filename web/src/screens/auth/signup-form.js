@@ -1,6 +1,5 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
-import * as Yup from "yup"
 import { useMutation } from "react-query"
 import { useTranslation } from "react-i18next"
 
@@ -13,25 +12,14 @@ import {
   FieldError,
 } from "@Components/forms"
 import { Error } from "@Components/generic"
-import { ERRORS } from "@Enums"
-import { requestApi } from "@Utils"
+import { requestApi, getValidationSchema } from "@Utils"
 
 // ------- SignupForm -------- //
 const SignupForm = () => {
   const { t } = useTranslation()
   const validationSchema = React.useMemo(() => {
-    const req = t(ERRORS.REQUIRED)
-    return Yup.object().shape({
-      givenName: Yup.string().required(req),
-      familyName: Yup.string(),
-      business: Yup.string().max(255).required(req),
-      domain: Yup.string().max(255).required(req),
-      email: Yup.string().email(t(ERRORS.EMAIL)).required(req),
-      password: Yup.string()
-        .min(6, t(ERRORS.MIN_LENGTH, { count: 6 }))
-        .required(req),
-    })
-  }, [])
+    return getValidationSchema(t, "signup")
+  }, [t])
 
   const [mutate, { reset, error }] = useMutation(formData => {
     return requestApi("/auth/signup", "POST", {
@@ -60,24 +48,25 @@ const SignupForm = () => {
         <div className="grid grid-cols-12 gap-6">
           <Error error={error} className="col-span-12" />
           <InputGroup
-            name="givenName"
+            name="name.first"
             id="givenName"
             label={t("name.fullName")}
           >
             <BaseTextField
-              name="givenName"
+              name="name.first"
               id="givenName"
               inputClassName="rounded-none rounded-l-md"
               placeholder={t("name.givenName")}
               autoFocus
             />
             <BaseTextField
-              name="familyName"
+              name="name.last"
               inputClassName="rounded-none rounded-r-md"
               placeholder={t("name.familyName")}
             />
           </InputGroup>
           <TextField name="business" label={t("business.name")} />
+          <TextField name="name.first" label={t("fsldkjfdk")} />
           <TextField
             name="domain"
             label={t("domain")}

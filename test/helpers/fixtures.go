@@ -30,38 +30,48 @@ var (
 func init() {
 	// business
 	FakeSignup[0] = &auth.SignupPayload{
-		GivenName:  "testgn",
-		FamilyName: "testfn",
-		Business:   "Test Business",
-		Domain:     "test-domain",
-		Email:      "test@email.com",
-		Password:   "password",
+		Name: models.PersonName{
+			First: "first",
+			Last:  "last",
+		},
+		Business: "Test Business",
+		Domain:   "test-domain",
+		Email:    "test@email.com",
+		Password: "password",
 	}
 	FakeSignup[1] = &auth.SignupPayload{
-		GivenName:  "testgn2",
-		FamilyName: "testfn2",
-		Business:   "Test Business2",
-		Domain:     "test-domain2",
-		Email:      "test2@email.com",
-		Password:   "password2",
+		Name: models.PersonName{
+			First: "first2",
+			Last:  "last2",
+		},
+		Business: "Test Business2",
+		Domain:   "test-domain2",
+		Email:    "test2@email.com",
+		Password: "password2",
 	}
 
 	// people
 	FakePerson[0] = fiber.Map{
-		"email":     "email1@email.com",
-		"role":      []string{enums.RoleAgent},
-		"givenName": "given",
+		"email": "email1@email.com",
+		"role":  []string{enums.RoleAgent},
+		"name": fiber.Map{
+			"first": "first",
+		},
 	}
 	FakePerson[1] = fiber.Map{
-		"email":          "email2@email.com",
-		"role":           []string{enums.RoleClient, enums.RoleAgent},
-		"givenName":      "given2",
+		"email": "email2@email.com",
+		"role":  []string{enums.RoleClient, enums.RoleAgent},
+		"name": fiber.Map{
+			"first": "first2",
+		},
 		"commissionPerc": 1000,
 	}
 	FakePerson[2] = fiber.Map{
-		"email":          "email3@email.com",
-		"role":           []string{enums.RoleClient, enums.RoleAgent},
-		"givenName":      "given3",
+		"email": "email3@email.com",
+		"role":  []string{enums.RoleClient, enums.RoleAgent},
+		"name": fiber.Map{
+			"first": "first3",
+		},
 		"commissionPerc": 500,
 	}
 

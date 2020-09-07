@@ -143,6 +143,7 @@
       "type": "__"
     }
   },
+  "fsldkjfdk": "__",
   "invoices": {
     "dueDate": "__",
     "issueDate": "__",
@@ -173,6 +174,8 @@
   "password": "__",
   "people": {
     "add": "__",
+    "address": "__",
+    "edit": "__",
     "name": "__",
     "new": "__",
     "role": "__",

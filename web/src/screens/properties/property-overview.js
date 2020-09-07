@@ -48,7 +48,7 @@ const PropertyOverview = ({ property }) => {
                           {t("client")}
                         </div>
                         <div className="mt-1 font-medium text-gray-900">
-                          {fullName(person.givenName, person.familyName)}
+                          {fullName(person?.name)}
                         </div>
                       </div>
                     )
@@ -64,7 +64,7 @@ const PropertyOverview = ({ property }) => {
                           {t("agent")}
                         </div>
                         <div className="mt-1 font-medium text-gray-900">
-                          {fullName(person.givenName, person.familyName)}
+                          {fullName(person?.name)}
                         </div>
                       </div>
                     )

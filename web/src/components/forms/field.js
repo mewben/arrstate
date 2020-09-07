@@ -38,7 +38,7 @@ export const FieldDescription = ({ description }) => {
 
 export const FieldError = ({ name }) => {
   const { errors } = useFormContext()
-  const errorMessage = get(errors, [name, "message"])
+  const errorMessage = get(errors, `${name}.message`)
   if (!errorMessage) {
     return null
   }

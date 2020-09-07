@@ -3,6 +3,7 @@ import React from "react"
 import { Loading, Error } from "@Components/generic"
 import { usePeople } from "@Hooks"
 import { map, sortBy } from "@Utils/lodash"
+import { fullName } from "@Utils"
 import SelectField from "../select-field"
 
 const PeopleSelectField = ({ role = [], ...props }) => {
@@ -12,7 +13,7 @@ const PeopleSelectField = ({ role = [], ...props }) => {
     const items = map(data?.list, item => {
       return {
         value: item._id,
-        label: `${item.givenName} ${item.familyName}`,
+        label: fullName(item.name),
       }
     })
     return sortBy(items, "label")

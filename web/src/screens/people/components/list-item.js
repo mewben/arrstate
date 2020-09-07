@@ -1,8 +1,9 @@
 import React from "react"
 import { Link } from "gatsby"
 
-import { Td } from "@Components/generic"
+import { Person, Td } from "@Components/generic"
 import { map } from "@Utils/lodash"
+import { fullName } from "@Utils"
 
 const ListItem = ({ item }) => {
   return (
@@ -12,7 +13,7 @@ const ListItem = ({ item }) => {
           to={`/people/${item._id}`}
           className="font-medium text-cool-gray-700 hover:text-blue-500"
         >
-          {item.givenName}
+          <Person person={item} />
         </Link>
       </Td>
       <Td>

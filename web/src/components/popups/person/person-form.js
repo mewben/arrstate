@@ -15,7 +15,7 @@ import {
   AddressField,
   NumberField,
 } from "@Components/forms"
-import { Error } from "@Components/generic"
+import { Error, Person } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi, getValidationSchema } from "@Utils"
@@ -89,7 +89,7 @@ const PersonForm = ({ model, onClose }) => {
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader
-        title={isEdit ? model.name : t("people.new")}
+        title={isEdit ? <Person person={model} /> : t("people.new")}
         onClose={onClose}
       />
       <Form
@@ -126,7 +126,7 @@ const PersonForm = ({ model, onClose }) => {
           <CommissionForm />
           <TextField name="email" label={t("email")} />
           <AddressField name="address" />
-          <div className="col-span-6">
+          <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>{t("btnSubmit")}</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}

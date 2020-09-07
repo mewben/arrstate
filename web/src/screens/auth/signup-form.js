@@ -66,7 +66,6 @@ const SignupForm = () => {
             />
           </InputGroup>
           <TextField name="business" label={t("business.name")} />
-          <TextField name="name.first" label={t("fsldkjfdk")} />
           <TextField
             name="domain"
             label={t("domain")}

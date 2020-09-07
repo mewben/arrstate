@@ -20,16 +20,16 @@ func (h *Handler) Edit(data *Payload) (*models.PersonModel, error) {
 		return nil, errors.NewHTTPError(errors.ErrInputInvalid, err)
 	}
 
-	if utils.Contains(data.Role, enums.RoleOwner) {
-		return nil, errors.NewHTTPError(errors.ErrOwner)
-	}
-
 	// get current document
 	foundOldDoc, err := h.DB.FindByID(h.Ctx, enums.CollPeople, data.ID, h.Business.ID)
 	if err != nil {
 		return nil, err
 	}
 	oldDoc := foundOldDoc.(*models.PersonModel)
+
+	if utils.Contains(data.Role, enums.RoleOwner) && !utils.Contains(oldDoc.Role, enums.RoleOwner) {
+		return nil, errors.NewHTTPError(errors.ErrOwner)
+	}
 
 	// prepare fields to be $set
 	upd := fiber.Map{

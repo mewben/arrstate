@@ -1,7 +1,7 @@
 export { extractError } from "./extract-error"
 export { requestApi } from "./request-api"
 export { buildParams } from "./build-params"
-export { fullName } from "./full-name"
+export { fullName, initialsName } from "./full-name"
 export { formatDate } from "./format-date"
 export { fromMoney, toMoney } from "./money"
 export { getValidationSchema } from "./get-validation-schema"

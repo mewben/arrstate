@@ -173,6 +173,8 @@
   "password": "Password",
   "people": {
     "add": "Add Person",
+    "address": "Address",
+    "edit": "Edit Person",
     "name": "Name",
     "new": "New Person",
     "role": "Role",

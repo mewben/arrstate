@@ -49,9 +49,7 @@ const ListItem = ({ item, propertyID }) => {
           <PersonWrapper personID={item?.to?._id}>
             {({ person }) => {
               return (
-                <div className="text-gray-700">
-                  {fullName(person?.givenName, person?.familyName)}
-                </div>
+                <div className="text-gray-700">{fullName(person?.name)}</div>
               )
             }}
           </PersonWrapper>

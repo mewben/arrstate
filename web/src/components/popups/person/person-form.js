@@ -1,6 +1,5 @@
 import React from "react"
 import { navigate } from "gatsby"
-import * as Yup from "yup"
 import { useWatch } from "react-hook-form"
 import { useMutation, queryCache } from "react-query"
 import { useTranslation } from "react-i18next"
@@ -16,11 +15,10 @@ import {
   AddressField,
   NumberField,
 } from "@Components/forms"
-import { ERRORS } from "@Enums"
-import { Error } from "@Components/generic"
+import { Error, Person } from "@Components/generic"
 import { ButtonConfirm } from "@Components/generic/button"
 import { DrawerHeader } from "@Wrappers/layout"
-import { requestApi } from "@Utils"
+import { requestApi, getValidationSchema } from "@Utils"
 import { includes, map, values } from "@Utils/lodash"
 
 // ------ PersonForm ------- //
@@ -28,14 +26,8 @@ const PersonForm = ({ model, onClose }) => {
   const { t } = useTranslation()
 
   const validationSchema = React.useMemo(() => {
-    const req = t(ERRORS.REQUIRED)
-    return Yup.object().shape({
-      givenName: Yup.string().required(req),
-      familyName: Yup.string(),
-      email: Yup.string().email(t("errors.email")).required(req),
-      role: Yup.array(),
-    })
-  }, [])
+    return getValidationSchema(t, "person")
+  }, [t])
 
   const isEdit = model?._id
   const [save, { reset, error }] = useMutation(
@@ -85,8 +77,10 @@ const PersonForm = ({ model, onClose }) => {
   }, [])
 
   const initialModel = {
-    givenName: "",
-    familyName: "",
+    name: {
+      first: "",
+      last: "",
+    },
     email: "",
     role: [],
     ...model,
@@ -95,7 +89,7 @@ const PersonForm = ({ model, onClose }) => {
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader
-        title={isEdit ? model.name : t("people.new")}
+        title={isEdit ? <Person person={model} /> : t("people.new")}
         onClose={onClose}
       />
       <Form
@@ -106,19 +100,19 @@ const PersonForm = ({ model, onClose }) => {
         <div className="grid grid-cols-12 gap-6 p-6">
           <Error error={error} className="col-span-12" />
           <InputGroup
-            name="givenName"
+            name="name.first"
             id="givenName"
             label={t("name.fullName")}
           >
             <BaseTextField
-              name="givenName"
+              name="name.first"
               id="givenName"
               inputClassName="rounded-none rounded-l-md"
               placeholder={t("name.givenName")}
               autoFocus
             />
             <BaseTextField
-              name="familyName"
+              name="name.last"
               inputClassName="rounded-none rounded-r-md"
               placeholder={t("name.familyName")}
             />
@@ -132,7 +126,7 @@ const PersonForm = ({ model, onClose }) => {
           <CommissionForm />
           <TextField name="email" label={t("email")} />
           <AddressField name="address" />
-          <div className="col-span-6">
+          <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>{t("btnSubmit")}</SubmitButton>
               {isEdit && <ButtonConfirm onConfirm={onDelete} />}

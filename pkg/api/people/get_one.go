@@ -32,16 +32,16 @@ func (h *Handler) GetOne(id string) (*models.PersonModel, error) {
 		}
 		return personFound.(*models.PersonModel), nil
 
-	} else {
-		oid, err := primitive.ObjectIDFromHex(id)
-		if err != nil {
-			return nil, errors.NewHTTPError(errors.ErrInputInvalid)
-		}
-
-		doc, err := h.DB.FindByID(h.Ctx, enums.CollPeople, oid, h.Business.ID)
-		if err != nil {
-			return nil, err
-		}
-		return doc.(*models.PersonModel), nil
 	}
+
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, errors.NewHTTPError(errors.ErrInputInvalid)
+	}
+
+	doc, err := h.DB.FindByID(h.Ctx, enums.CollPeople, oid, h.Business.ID)
+	if err != nil {
+		return nil, err
+	}
+	return doc.(*models.PersonModel), nil
 }

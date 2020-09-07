@@ -2,7 +2,7 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 
 import { Portal, Button } from "@Components/generic"
-import { PersonForm } from "@Components/popups/people"
+import { PersonForm } from "@Components/popups/person"
 import { AppBar } from "@Wrappers/layout"
 import { List } from "./components"
 

@@ -36,16 +36,18 @@ func TestSignup(t *testing.T) {
 		fakeEmail := "test@email.com"
 		fakeBusiness := "Test Business"
 		fakeDomain := "test-domain"
-		fakeGivenName := "Given Name"
-		fakeFamilyName := "Family Name"
+		fakeFirstName := "Given Name"
+		fakeLastName := "Family Name"
 		fakePassword := "passworD"
 		data := fiber.Map{
-			"email":      fakeEmail,
-			"password":   fakePassword,
-			"business":   fakeBusiness,
-			"domain":     fakeDomain,
-			"givenName":  fakeGivenName,
-			"familyName": fakeFamilyName,
+			"email":    fakeEmail,
+			"password": fakePassword,
+			"business": fakeBusiness,
+			"domain":   fakeDomain,
+			"name": fiber.Map{
+				"first": fakeFirstName,
+				"last":  fakeLastName,
+			},
 		}
 		req := helpers.DoRequest("POST", path, data, "")
 
@@ -82,8 +84,8 @@ func TestSignup(t *testing.T) {
 		person := &models.PersonModel{}
 		err = db.Collection(enums.CollPeople).FindOne(context.TODO(), filter).Decode(&person)
 		assert.Nil(err)
-		assert.Equal(fakeGivenName, person.GivenName)
-		assert.Equal(fakeFamilyName, person.FamilyName)
+		assert.Equal(fakeFirstName, person.Name.First)
+		assert.Equal(fakeLastName, person.Name.Last)
 		assert.Equal(enums.DefaultDateFormat, person.Locale.DateFormat)
 		assert.Equal(enums.DefaultTimeFormat, person.Locale.TimeFormat)
 		assert.Equal(enums.DefaultTimestampFormat, person.Locale.TimestampFormat)
@@ -111,16 +113,18 @@ func TestSignup(t *testing.T) {
 		fakeEmail := "Test2@email.com"
 		fakeBusiness := "Test Business2"
 		fakeDomain := "Test Domain 2"
-		fakeGivenname := "Given Name"
-		fakeFamilyName := "Family Name"
+		fakeFirstName := "Given Name"
+		fakeLastName := "Family Name"
 		fakePassword := "passworD"
 		data := fiber.Map{
-			"email":      fakeEmail,
-			"password":   fakePassword,
-			"business":   fakeBusiness,
-			"domain":     fakeDomain,
-			"givenName":  fakeGivenname,
-			"familyName": fakeFamilyName,
+			"email":    fakeEmail,
+			"password": fakePassword,
+			"business": fakeBusiness,
+			"domain":   fakeDomain,
+			"name": fiber.Map{
+				"first": fakeFirstName,
+				"last":  fakeLastName,
+			},
 		}
 		req := helpers.DoRequest("POST", path, data, "")
 
@@ -176,70 +180,86 @@ func TestSignup(t *testing.T) {
 		payloads := []auth.SignupPayload{
 			{},
 			{
-				GivenName:  "",
-				FamilyName: "",
-				Business:   "",
-				Domain:     "",
-				Email:      "",
-				Password:   "",
+				Name: models.PersonName{
+					First: "",
+					Last:  "",
+				},
+				Business: "",
+				Domain:   "",
+				Email:    "",
+				Password: "",
 			},
 			{
-				GivenName:  "",
-				FamilyName: "testfn",
-				Business:   "testb",
-				Domain:     "testd",
-				Email:      "teste",
-				Password:   "test",
+				Name: models.PersonName{
+					First: "",
+					Last:  "testlast",
+				},
+				Business: "testb",
+				Domain:   "testd",
+				Email:    "teste",
+				Password: "test",
 			},
 			{
-				GivenName:  "testgn",
-				FamilyName: "testfn",
-				Business:   "",
-				Domain:     "testd",
-				Email:      "teste",
-				Password:   "test",
+				Name: models.PersonName{
+					First: "testfn",
+					Last:  "testln",
+				},
+				Business: "",
+				Domain:   "testd",
+				Email:    "teste",
+				Password: "test",
 			},
 			{
-				GivenName:  "testgn",
-				FamilyName: "testfn",
-				Business:   "testb",
-				Domain:     "",
-				Email:      "teste",
-				Password:   "test",
+				Name: models.PersonName{
+					First: "testfn",
+					Last:  "testln",
+				},
+				Business: "testb",
+				Domain:   "",
+				Email:    "teste",
+				Password: "test",
 			},
 			{
-				GivenName:  "testgn",
-				FamilyName: "testfn",
-				Business:   "testb",
-				Domain:     "testd",
-				Email:      "",
-				Password:   "test",
+				Name: models.PersonName{
+					First: "testfn",
+					Last:  "testln",
+				},
+				Business: "testb",
+				Domain:   "testd",
+				Email:    "",
+				Password: "test",
 			},
 			{
-				GivenName:  "testgn",
-				FamilyName: "testfn",
-				Business:   "testb",
-				Domain:     "testd",
-				Email:      "teste",
-				Password:   "",
+				Name: models.PersonName{
+					First: "testfn",
+					Last:  "testln",
+				},
+				Business: "testb",
+				Domain:   "testd",
+				Email:    "teste",
+				Password: "",
 			},
 			{
 				// invalid email
-				GivenName:  "testgn",
-				FamilyName: "testfn",
-				Business:   "testb",
-				Domain:     "testd",
-				Email:      "teste",
-				Password:   "test",
+				Name: models.PersonName{
+					First: "testfn",
+					Last:  "testln",
+				},
+				Business: "testb",
+				Domain:   "testd",
+				Email:    "teste",
+				Password: "test",
 			},
 			{
 				// password must be at least 6 chars
-				GivenName:  "testgn",
-				FamilyName: "testfn",
-				Business:   "testb",
-				Domain:     "testd",
-				Email:      "sample@email.com",
-				Password:   "test",
+				Name: models.PersonName{
+					First: "testfn",
+					Last:  "testln",
+				},
+				Business: "testb",
+				Domain:   "testd",
+				Email:    "sample@email.com",
+				Password: "test",
 			},
 		}
 
@@ -263,16 +283,18 @@ func TestSignup(t *testing.T) {
 		fakeEmail := "test@email.com"
 		fakeBusiness := "Test Business"
 		fakeDomain := "test-domain"
-		fakeGivenname := "Given Name"
-		fakeFamilyName := "Family Name"
+		fakeFirstName := "Given Name"
+		fakeLastName := "Family Name"
 		fakePassword := "passworD"
 		data := fiber.Map{
-			"email":      fakeEmail,
-			"password":   fakePassword,
-			"business":   fakeBusiness,
-			"domain":     fakeDomain,
-			"givenName":  fakeGivenname,
-			"familyName": fakeFamilyName,
+			"email":    fakeEmail,
+			"password": fakePassword,
+			"business": fakeBusiness,
+			"domain":   fakeDomain,
+			"name": fiber.Map{
+				"first": fakeFirstName,
+				"last":  fakeLastName,
+			},
 		}
 		req := helpers.DoRequest("POST", path, data, "")
 
@@ -293,16 +315,18 @@ func TestSignup(t *testing.T) {
 		fakeEmail := "test@email.com"
 		fakeBusiness := "Test Business"
 		fakeDomain := "test-domain-3"
-		fakeGivenname := "Given Name"
-		fakeFamilyName := "Family Name"
+		fakeFirstName := "Given Name"
+		fakeLastName := "Family Name"
 		fakePassword := "passworD"
 		data := fiber.Map{
-			"email":      fakeEmail,
-			"password":   fakePassword,
-			"business":   fakeBusiness,
-			"domain":     fakeDomain,
-			"givenName":  fakeGivenname,
-			"familyName": fakeFamilyName,
+			"email":    fakeEmail,
+			"password": fakePassword,
+			"business": fakeBusiness,
+			"domain":   fakeDomain,
+			"name": fiber.Map{
+				"first": fakeFirstName,
+				"last":  fakeLastName,
+			},
 		}
 		req := helpers.DoRequest("POST", path, data, "")
 

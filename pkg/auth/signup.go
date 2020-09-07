@@ -15,12 +15,11 @@ import (
 
 // SignupPayload -
 type SignupPayload struct {
-	GivenName  string `json:"givenName" validate:"required"`
-	FamilyName string `json:"familyName"`
-	Business   string `json:"business" validate:"required"`
-	Domain     string `json:"domain" validate:"required"`
-	Email      string `json:"email" validate:"email,required"`
-	Password   string `json:"password" validate:"required,min=6"`
+	Name     models.PersonName `json:"name"`
+	Business string            `json:"business" validate:"required"`
+	Domain   string            `json:"domain" validate:"required"`
+	Email    string            `json:"email" validate:"email,required"`
+	Password string            `json:"password" validate:"required,min=6"`
 }
 
 // Signup -
@@ -73,11 +72,10 @@ func (h *Handler) Signup(data *SignupPayload) (fiber.Map, error) {
 	}
 	personPayload := &people.Payload{
 		PersonModel: models.PersonModel{
-			UserID:     &user.ID,
-			Email:      data.Email,
-			Role:       []string{enums.RoleOwner},
-			GivenName:  data.GivenName,
-			FamilyName: data.FamilyName,
+			UserID: &user.ID,
+			Email:  data.Email,
+			Role:   []string{enums.RoleOwner},
+			Name:   data.Name,
 		},
 	}
 	_, err = personHandler.Create(personPayload)

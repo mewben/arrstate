@@ -4,7 +4,7 @@ import { Empty, Portal, Button, Table, TBody, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { map } from "@Utils/lodash"
 import { useClients } from "@Hooks"
-import { ClientForm } from "@Components/popups/people"
+import { ClientForm } from "@Components/popups/person"
 import ListItem from "./list-item"
 
 const List = () => {

@@ -1,7 +1,7 @@
 import React from "react"
 
 import { Portal, Button } from "@Components/generic"
-import { AgentForm } from "@Components/popups/people"
+import { AgentForm } from "@Components/popups/person"
 import { AppBar } from "@Wrappers/layout"
 
 import { useAgents } from "@Hooks"

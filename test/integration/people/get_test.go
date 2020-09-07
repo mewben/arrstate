@@ -45,8 +45,9 @@ func TestGetPeople(t *testing.T) {
 		assert.Equal(personID, response.ID)
 		assert.Equal(userID, *response.UserID)
 		assert.Equal(businessID, response.BusinessID)
-		assert.Equal(signupData.GivenName, response.GivenName)
-		assert.Equal(signupData.FamilyName, response.FamilyName)
+		assert.Equal(signupData.Name, response.Name)
+		// assert.Equal(signupData.GivenName, response.GivenName)
+		// assert.Equal(signupData.FamilyName, response.FamilyName)
 		assert.Contains(response.Role, enums.RoleOwner)
 
 		locale := response.Locale

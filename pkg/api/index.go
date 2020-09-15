@@ -9,6 +9,7 @@ import (
 
 	"github.com/mewben/arrstate/pkg/api/blocks"
 	"github.com/mewben/arrstate/pkg/api/businesses"
+	"github.com/mewben/arrstate/pkg/api/files"
 	"github.com/mewben/arrstate/pkg/api/invoices"
 	"github.com/mewben/arrstate/pkg/api/people"
 	"github.com/mewben/arrstate/pkg/api/projects"
@@ -38,5 +39,6 @@ func Routes(app *fiber.App, db *mongo.Database) {
 	invoices.Routes(g, db)
 	blocks.Routes(g, db)
 	reports.Routes(g, db)
+	files.Routes(g, db)
 
 }

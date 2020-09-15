@@ -1,15 +1,12 @@
 package helpers
 
 import (
-	"context"
 	"log"
 	"math/rand"
 	"time"
 
 	"github.com/gofiber/fiber"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/auth"
@@ -20,8 +17,8 @@ import (
 
 // FakeSignup -
 var (
-	FakeSignup   [2]*auth.SignupPayload
-	FakeProject  [2]fiber.Map
+	FakeSignup [2]*auth.SignupPayload
+	// FakeProject  [2]fiber.Map
 	FakeProperty [2]fiber.Map
 	FakePerson   [3]fiber.Map
 	FakeInvoice  [2]fiber.Map
@@ -73,20 +70,6 @@ func init() {
 			"first": "first3",
 		},
 		"commissionPerc": 500,
-	}
-
-	// projects
-	address := models.NewAddressModel()
-	address.Country = "PH"
-	address.State = "Bohol"
-	FakeProject[0] = fiber.Map{
-		"name":    "testproject",
-		"address": address,
-		"area":    100.5,
-		"notes":   "Sample Notes",
-	}
-	FakeProject[1] = fiber.Map{
-		"name": "testproject2",
 	}
 
 	// properties
@@ -146,22 +129,6 @@ func randStr(n int) string {
 	return string(b)
 }
 
-// CleanupFixture -
-func CleanupFixture(db *mongo.Database) {
-	collections := []string{
-		enums.CollBusinesses,
-		enums.CollUsers,
-		enums.CollPeople,
-		enums.CollProjects,
-		enums.CollProperties,
-		enums.CollInvoices,
-		enums.CollBlocks,
-	}
-	for _, col := range collections {
-		db.Collection(col).DeleteMany(context.TODO(), bson.D{})
-	}
-}
-
 // SignupFixture -
 func SignupFixture(app *fiber.App, n int) string {
 	req := DoRequest("POST", "/auth/signup", FakeSignup[n], "")
@@ -192,23 +159,6 @@ func SignupFixture(app *fiber.App, n int) string {
 	}
 
 	return response["token"].(string)
-}
-
-// ProjectFixture -
-func ProjectFixture(app *fiber.App, token string, n int) *models.ProjectModel {
-
-	req := DoRequest("POST", "/api/projects", FakeProject[n], token)
-	res, err := app.Test(req, -1)
-	if err != nil {
-		log.Fatalln("err app test project", err)
-	}
-
-	response, err := GetResponse(res, "project")
-	if err != nil {
-		log.Fatalln("err get response project", err)
-	}
-
-	return response.(*models.ProjectModel)
 }
 
 // PropertyFixture -

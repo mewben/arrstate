@@ -18,6 +18,7 @@ var (
 	ErrNotFoundPerson   = t("errors.notFound.person")
 	ErrNotFoundInvoice  = t("errors.notFound.invoice")
 	ErrNotFoundBlock    = t("errors.notFound.block")
+	ErrNotFoundFile     = t("errors.notFound.file")
 
 	ErrDuplicate        = t("errors.duplicate.default")
 	ErrDuplicateDomain  = t("errors.duplicate.domain")

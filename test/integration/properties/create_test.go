@@ -40,12 +40,14 @@ func TestCreateProperty(t *testing.T) {
 		fakePrice := 10050
 		fakePriceAddon := 10100
 		fakeNotes := "Sample Notes"
-		fakeImages := []*models.ImageModel{
+		fakeImages := []*models.FileSchemaWID{
 			{
-				ID:          primitive.NewObjectID(),
-				Src:         "src",
-				Alt:         "alt",
-				Description: "description",
+				ID:        primitive.NewObjectID(),
+				URL:       "url",
+				Title:     "alt",
+				Extension: "jpg",
+				Size:      1235,
+				MimeType:  "image/*",
 			},
 		}
 
@@ -57,7 +59,7 @@ func TestCreateProperty(t *testing.T) {
 			"price":      fakePrice,
 			"priceAddon": fakePriceAddon,
 			"notes":      fakeNotes,
-			"images":     fakeImages,
+			"files":      fakeImages,
 		}
 		req := helpers.DoRequest("POST", path, data, token1)
 
@@ -78,11 +80,13 @@ func TestCreateProperty(t *testing.T) {
 		assert.EqualValues(fakePrice, response.Price)
 		assert.EqualValues(fakePriceAddon, response.PriceAddon)
 		assert.Equal(fakeNotes, response.Notes)
-		assert.Len(response.Images, 1)
-		assert.Equal(fakeImages[0].ID, response.Images[0].ID)
-		assert.Equal(fakeImages[0].Src, response.Images[0].Src)
-		assert.Equal(fakeImages[0].Alt, response.Images[0].Alt)
-		assert.Equal(fakeImages[0].Description, response.Images[0].Description)
+		assert.Len(response.Files, 1)
+		assert.Equal(fakeImages[0].ID, response.Files[0].ID)
+		assert.Equal(fakeImages[0].URL, response.Files[0].URL)
+		assert.Equal(fakeImages[0].Title, response.Files[0].Title)
+		assert.Equal(fakeImages[0].Extension, response.Files[0].Extension)
+		assert.Equal(fakeImages[0].MimeType, response.Files[0].MimeType)
+		assert.Equal(fakeImages[0].Size, response.Files[0].Size)
 	})
 
 	t.Run("It should create property without projectID", func(t *testing.T) {
@@ -92,12 +96,14 @@ func TestCreateProperty(t *testing.T) {
 		fakePrice := 10050
 		fakePriceAddon := 1010
 		fakeNotes := "Sample Notes"
-		fakeImages := []*models.ImageModel{
+		fakeImages := []*models.FileSchemaWID{
 			{
-				ID:          primitive.NewObjectID(),
-				Src:         "src",
-				Alt:         "alt",
-				Description: "description",
+				ID:        primitive.NewObjectID(),
+				URL:       "url",
+				Title:     "alt",
+				Extension: "jpg",
+				Size:      1235,
+				MimeType:  "image/*",
 			},
 		}
 
@@ -108,7 +114,7 @@ func TestCreateProperty(t *testing.T) {
 			"price":      fakePrice,
 			"priceAddon": fakePriceAddon,
 			"notes":      fakeNotes,
-			"images":     fakeImages,
+			"files":      fakeImages,
 		}
 		req := helpers.DoRequest("POST", path, data, token1)
 
@@ -128,11 +134,13 @@ func TestCreateProperty(t *testing.T) {
 		assert.EqualValues(fakePrice, response.Price)
 		assert.EqualValues(fakePriceAddon, response.PriceAddon)
 		assert.Equal(fakeNotes, response.Notes)
-		assert.Len(response.Images, 1)
-		assert.Equal(fakeImages[0].ID, response.Images[0].ID)
-		assert.Equal(fakeImages[0].Src, response.Images[0].Src)
-		assert.Equal(fakeImages[0].Alt, response.Images[0].Alt)
-		assert.Equal(fakeImages[0].Description, response.Images[0].Description)
+		assert.Len(response.Files, 1)
+		assert.Equal(fakeImages[0].ID, response.Files[0].ID)
+		assert.Equal(fakeImages[0].URL, response.Files[0].URL)
+		assert.Equal(fakeImages[0].Title, response.Files[0].Title)
+		assert.Equal(fakeImages[0].Extension, response.Files[0].Extension)
+		assert.Equal(fakeImages[0].MimeType, response.Files[0].MimeType)
+		assert.Equal(fakeImages[0].Size, response.Files[0].Size)
 	})
 
 	t.Run("It should validate property inputs", func(t *testing.T) {

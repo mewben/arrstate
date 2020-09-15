@@ -92,6 +92,8 @@ func GetResponse(res *http.Response, entity string) (interface{}, error) {
 		response = &blocks.ResponseList{}
 	} else if entity == "reports" {
 		response = &reports.ResponseList{}
+	} else if entity == "file" {
+		response = &models.FileModel{}
 	}
 
 	err = json.Unmarshal(body, &response)

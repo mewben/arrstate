@@ -70,6 +70,15 @@ func DecodeSingle(result *mongo.SingleResult, collectionName string) (interface{
 		block := fiber.Map{}
 		result.Decode(&block)
 		return block, nil
+
+	case enums.CollFiles:
+		if err != nil {
+			return nil, errors.NewHTTPError(errors.ErrNotFoundFile)
+		}
+		file := models.NewFileModel()
+		result.Decode(&file)
+		return file, nil
+
 	}
 
 	return nil, errors.NewHTTPError(errors.ErrNotFound)

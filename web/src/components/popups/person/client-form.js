@@ -14,7 +14,7 @@ import {
   FieldError,
 } from "@Components/forms"
 import { Error } from "@Components/generic"
-import { ButtonConfirm } from "@Components/generic/button"
+import { ConfirmButton } from "@Components/generic/button"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
 import { isEmpty } from "@Utils/lodash"
@@ -95,7 +95,7 @@ const ClientForm = ({ model, onClose }) => {
       >
         <Error error={error} />
 
-        <div className="grid grid-cols-6 gap-6 p-6">
+        <div className="grid grid-cols-6 gap-x-6 gap-y-6 p-6">
           <div className="col-span-6">
             <InputGroup label={t("name.fullName")}>
               <BaseTextField
@@ -118,7 +118,7 @@ const ClientForm = ({ model, onClose }) => {
           <div className="col-span-6">
             <div className="flex items-center justify-between">
               <SubmitButton>{t("btnSubmit")}</SubmitButton>
-              {isEdit && <ButtonConfirm onConfirm={onDelete} />}
+              {isEdit && <ConfirmButton onConfirm={onDelete} />}
             </div>
           </div>
         </div>

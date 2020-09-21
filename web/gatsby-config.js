@@ -15,6 +15,10 @@ module.exports = {
       prefix: "/api",
       url: "http://localhost:5000",
     },
+    {
+      prefix: "/files",
+      url: "http://localhost:8080",
+    },
   ],
   plugins: [
     `gatsby-plugin-react-helmet`,

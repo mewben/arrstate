@@ -14,7 +14,7 @@ const PropertyOverview = ({ property }) => {
   const { t } = useTranslation()
 
   return (
-    <div className="grid grid-cols-6 gap-6">
+    <div className="grid grid-cols-6 gap-x-6 gap-y-6">
       <div className="col-span-6 sm:col-span-3 p-4">
         <Panel noPadding>
           <div className="w-full flex items-start justify-between px-4 py-5 sm:p-6 space-x-6">

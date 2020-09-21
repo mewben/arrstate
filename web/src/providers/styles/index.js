@@ -1,10 +1,11 @@
 import React from "react"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import Button from "@material-ui/core/Button"
 import defaultTheme from "tailwindcss/defaultTheme"
 import colors from "@tailwindcss/ui/colors"
 import "typeface-inter"
+import "@uppy/core/dist/style.css"
+import "@uppy/dashboard/dist/style.css"
 import "./main.css"
 
 const theme = createMuiTheme({

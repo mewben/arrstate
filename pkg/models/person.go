@@ -12,6 +12,7 @@ type PersonModel struct {
 	Role           []string            `bson:"role" json:"role" validate:"required"`
 	Email          string              `bson:"email" json:"email" validate:"email,required"`
 	Name           PersonName          `bson:"name" json:"name"`
+	Avatar         *FileSchemaWID      `bson:"avatar" json:"avatar"`
 	CommissionPerc int64               `bson:"commissionPerc" json:"commissionPerc" validate:"number,min=0,max=10000"`
 	CustomFields   fiber.Map           `bson:"customFields" json:"customFields"`
 	Address        AddressModel        `bson:"address" json:"address"`

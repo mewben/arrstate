@@ -38,6 +38,7 @@ func (h *Handler) Edit(data *Payload) (*models.PersonModel, error) {
 		"role":           data.Role,
 		"name":           data.Name,
 		"address":        data.Address,
+		"avatar":         data.Avatar,
 		"notes":          data.Notes,
 		"commissionPerc": data.CommissionPerc,
 		"customFields":   data.CustomFields,

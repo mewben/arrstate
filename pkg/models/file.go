@@ -9,7 +9,7 @@ type FileSchema struct {
 	Extension string `bson:"ext" json:"ext"`
 	MimeType  string `bson:"mimeType" json:"mimeType"`
 	Size      int    `bson:"size" json:"size"`
-	URL       string `bson:"url" json:"url" validate:"url"`
+	URL       string `bson:"url" json:"url"`
 }
 
 // FileSchemaWID - fileSchema with ID
@@ -19,7 +19,7 @@ type FileSchemaWID struct {
 	Extension string             `bson:"ext" json:"ext"`
 	MimeType  string             `bson:"mimeType" json:"mimeType"`
 	Size      int                `bson:"size" json:"size"`
-	URL       string             `bson:"url" json:"url" validate:"omitempty,url"`
+	URL       string             `bson:"url" json:"url"`
 }
 
 // FileModel -

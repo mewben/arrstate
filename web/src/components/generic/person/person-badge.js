@@ -1,11 +1,14 @@
 import React from "react"
 import cx from "clsx"
 
-import { initialsName } from "@Utils"
+import { initialsName, uploadURL } from "@Utils"
 
 const PersonBadge = ({ person, size = "sm", canEdit }) => {
   const [hovered, setHovered] = React.useState(false)
   const initials = initialsName(person?.name)
+  const imageURL = React.useMemo(() => {
+    return uploadURL(person.avatar)
+  }, [person])
 
   const cl = cx(
     "flex items-center justify-center bg-cool-gray-200 text-cool-gray-500 uppercase",
@@ -14,6 +17,10 @@ const PersonBadge = ({ person, size = "sm", canEdit }) => {
   )
 
   let content = <span>{initials}</span>
+  if (imageURL) {
+    content = <img src={imageURL} alt={person._id} />
+  }
+
   if (canEdit) {
     const onMouseOver = () => {
       setHovered(!hovered)
@@ -30,11 +37,7 @@ const PersonBadge = ({ person, size = "sm", canEdit }) => {
     )
   }
 
-  return (
-    <div className={cl}>
-      <span>{initials}</span>
-    </div>
-  )
+  return <div className={cl}>{content}</div>
 }
 
 export default PersonBadge

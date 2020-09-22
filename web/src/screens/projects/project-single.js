@@ -9,6 +9,7 @@ import { ProjectForm } from "@Components/popups/project"
 // import { Header, SubMenu } from "./components"
 import ProjectOverview from "./project-overview"
 import ProjectProperties from "./project-properties"
+import ProjectFiles from "./project-files"
 
 const ProjectSingle = ({ projectID }) => {
   const { t } = useTranslation()
@@ -31,6 +32,10 @@ const ProjectSingle = ({ projectID }) => {
       label: t("projects.menu.agents"),
       path: `/projects/${projectID}/agents`,
     },
+    {
+      label: t("projects.menu.files"),
+      path: `/projects/${projectID}/files`,
+    },
   ]
 
   return status === "loading" ? (
@@ -47,6 +52,7 @@ const ProjectSingle = ({ projectID }) => {
       <Router className="flex-1 overflow-y-scroll pb-28">
         <ProjectOverview path="/" project={data} />
         <ProjectProperties path="/properties" project={data} />
+        <ProjectFiles path="/files" project={data} />
       </Router>
     </>
   )

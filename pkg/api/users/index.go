@@ -4,7 +4,7 @@ import (
 	"context"
 
 	validator "github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/pkg/models"
@@ -36,15 +36,14 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	g.Get("/users/current", func(c *fiber.Ctx) {
+	g.Get("/users/current", func(c *fiber.Ctx) error {
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
-		c.Status(200).JSON(h.User)
+		return c.Status(200).JSON(h.User)
 	})
 }

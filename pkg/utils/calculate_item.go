@@ -22,7 +22,6 @@ func CalculateItem(amount, tax int64, qty float64, discountStr string) (taxAmoun
 	if d != "" {
 		discount, err = strconv.ParseInt(d, 0, 64) // 5
 		if err != nil {
-			return
 		}
 	}
 

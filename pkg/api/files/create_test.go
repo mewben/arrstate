@@ -1,20 +1,16 @@
 package files_test
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"testing"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/arrstate/internal/startup"
 	"github.com/mewben/arrstate/pkg"
-	"github.com/mewben/arrstate/pkg/models"
 	"github.com/mewben/arrstate/test/helpers"
 )
 
@@ -39,7 +35,7 @@ func TestCreateFile(t *testing.T) {
 			"size":       12343,
 			"mimeType":   "image/*",
 			"entityType": "invoice",
-			"entityID":   primitive.NewObjectID(),
+			"entityID":   primitive.NewObjectID().Hex(),
 			"type":       "file",
 			"link":       "",
 		}
@@ -60,21 +56,10 @@ func TestCreateFile(t *testing.T) {
 		assert.Equal(data["ext"], response.Extension)
 		assert.EqualValues(data["size"], response.Size)
 		assert.Equal(data["ext"], response.Extension)
-		assert.Equal(data["entityType"], response.EntityType)
-		assert.Equal(data["entityID"], *response.EntityID)
+		assert.Equal(data["entityType"], *response.EntityType)
+		assert.Equal(data["entityID"], response.EntityID.Hex())
 		assert.Equal(data["type"], response.Type)
 		assert.Equal(data["link"], response.Link)
 
 	})
-}
-
-func GetResponse(res *http.Response) (*models.FileModel, error) {
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	response := &models.FileModel{}
-	err = json.Unmarshal(body, &response)
-	return response, err
 }

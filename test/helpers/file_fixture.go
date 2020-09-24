@@ -3,7 +3,7 @@ package helpers
 import (
 	"log"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/mewben/arrstate/pkg/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

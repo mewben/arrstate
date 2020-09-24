@@ -1,7 +1,7 @@
 package projects
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/arrstate/internal/enums"

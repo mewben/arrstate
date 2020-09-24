@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/pkg/models"
@@ -32,23 +32,21 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	g.Get("/reports/income", func(c *fiber.Ctx) {
+	g.Get("/reports/income", func(c *fiber.Ctx) error {
 		log.Println("get income reports")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		response, err := h.GetIncome(c.Query("from"), c.Query("to"))
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 }

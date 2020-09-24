@@ -3,7 +3,7 @@ package auth
 import (
 	"log"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/labstack/gommon/random"
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/api/businesses"

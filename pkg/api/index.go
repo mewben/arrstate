@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gofiber/fiber"
-	jwtware "github.com/gofiber/jwt"
+	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v2"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 

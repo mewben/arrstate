@@ -5,7 +5,7 @@ import (
 	"log"
 
 	validator "github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/pkg/errors"
@@ -35,45 +35,41 @@ func Routes(app *fiber.App, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	app.Post("/auth/signup", func(c *fiber.Ctx) {
-		h.Ctx = c.Fasthttp
+	app.Post("/auth/signup", func(c *fiber.Ctx) error {
+		h.Ctx = c.Context()
 		payload := &SignupPayload{}
 
 		if err := c.BodyParser(&payload); err != nil {
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Signup(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(201).JSON(response)
+		return c.Status(201).JSON(response)
 	})
 
-	app.Post("/auth/signin", func(c *fiber.Ctx) {
-		h.Ctx = c.Fasthttp
+	app.Post("/auth/signin", func(c *fiber.Ctx) error {
+		h.Ctx = c.Context()
 		payload := &SigninPayload{}
 
 		log.Println("signinb4parse")
 		if err := c.BodyParser(&payload); err != nil {
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 		log.Println("signinafterparse")
 
 		// get business domain
-		domain := utils.GetSubdomain(string(c.Fasthttp.Request.Header.Peek("origin")))
+		domain := utils.GetSubdomain(string(c.Context().Request.Header.Peek("origin")))
 
 		response, err := h.Signin(payload, domain)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 }

@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/mewben/arrstate/pkg/api/blocks"
 	"github.com/mewben/arrstate/pkg/api/businesses"

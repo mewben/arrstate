@@ -25,13 +25,12 @@ type FileSchemaWID struct {
 // FileModel -
 type FileModel struct {
 	FileSchema `bson:",inline"`
-	EntityType string              `bson:"entityType" json:"entityType"`
-	EntityID   *primitive.ObjectID `bson:"entityID" json:"entityID"`
-	Type       string              `bson:"type" json:"type"`
-	Link       string              `bson:"link" json:"link" validate:"omitempty,url"`
+	Type       string `bson:"type" json:"type"`
+	Link       string `bson:"link" json:"link" validate:"omitempty,url"`
 
 	// Extended
-	BaseModel `bson:",inline"`
+	EntitySchema `bson:",inline"`
+	BaseModel    `bson:",inline"`
 }
 
 // NewFileSchema -
@@ -49,7 +48,8 @@ func NewFileSchemaWID() FileSchemaWID {
 // NewFileModel -
 func NewFileModel(arg ...primitive.ObjectID) *FileModel {
 	return &FileModel{
-		FileSchema: NewFileSchema(),
-		BaseModel:  NewBaseModel(arg...),
+		FileSchema:   NewFileSchema(),
+		EntitySchema: NewEntitySchema(),
+		BaseModel:    NewBaseModel(arg...),
 	}
 }

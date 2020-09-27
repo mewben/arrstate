@@ -1,4 +1,5 @@
 import React from "react"
+import filesize from "filesize"
 
 import { Td } from "@Components/generic"
 
@@ -7,7 +8,7 @@ const ListItem = ({ item }) => {
     <tr>
       <Td wrap>{item.title}</Td>
       <Td>{item.ext}</Td>
-      <Td align="right">{item.size}</Td>
+      <Td align="right">{filesize(item.size)}</Td>
     </tr>
   )
 }

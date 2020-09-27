@@ -1,9 +1,14 @@
 import React from "react"
 import { Link } from "gatsby"
+import { useTranslation } from "react-i18next"
 import acc from "accounting"
 import cx from "clsx"
 
+import { Button } from "@Components/generic/button"
+
 const Widget = ({ data, icon, color, link }) => {
+  const { t } = useTranslation()
+
   if (!data) {
     return null
   }
@@ -31,12 +36,9 @@ const Widget = ({ data, icon, color, link }) => {
       </div>
       <div className="bg-gray-50 px-4 py-4 sm:px-6">
         <div className="text-sm leading-5">
-          <Link
-            to={link}
-            className="font-medium text-blue-600 hover:text-blue-500 transition ease-in-out duration-150"
-          >
-            View all
-          </Link>
+          <Button to={link} size="xs">
+            {t("btnViewAll")}
+          </Button>
         </div>
       </div>
     </div>

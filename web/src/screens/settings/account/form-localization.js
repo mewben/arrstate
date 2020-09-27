@@ -104,7 +104,9 @@ const FormLocalization = ({ model }) => {
             options={timestampFormatOptions}
             disableClearable
           /> */}
-          <SubmitButton>{t("btnSave")}</SubmitButton>
+          <div>
+            <SubmitButton>{t("btnSave")}</SubmitButton>
+          </div>
         </div>
       </Form>
     </div>

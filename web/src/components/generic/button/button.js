@@ -5,7 +5,7 @@ import cx from "clsx"
 
 const Button = ({
   children,
-  variant = "text",
+  variant = "contained",
   type = "button",
   to,
   size = "md",
@@ -14,6 +14,7 @@ const Button = ({
   fullWidth,
   isDisabled,
   isLoading,
+  className,
   ...props
 }) => {
   let Component = "button"
@@ -26,13 +27,19 @@ const Button = ({
       type={!to ? type : undefined}
       to={to ? to : undefined}
       disabled={isDisabled || isLoading}
-      className={cx("btn", color, size, {
-        "btn-contained": variant === "contained",
-        "btn-outlined": variant === "outlined",
-        "btn-text": variant === "text",
-        "btn-circle": circle,
-        "w-full": fullWidth,
-      })}
+      className={cx(
+        "btn",
+        color,
+        size,
+        {
+          "btn-contained": variant === "contained",
+          "btn-outlined": variant === "outlined",
+          "btn-text": variant === "text",
+          "btn-circle": circle,
+          "w-full": fullWidth,
+        },
+        className
+      )}
       {...props}
     >
       {children}

@@ -1,11 +1,14 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 import { Panel, Button } from "@Components/generic"
 import FormLocalization from "./form-localization"
 import { useCurrentContext } from "@Wrappers"
 
 const AccountSettings = () => {
+  const { t } = useTranslation()
   const { currentPerson } = useCurrentContext()
+
   return (
     <div className="overflow-y-scroll pb-28">
       <div className="container mx-auto max-w-2xl mt-8">
@@ -15,7 +18,7 @@ const AccountSettings = () => {
           </Panel>
           <Panel>
             <Button color="red" to="/signout">
-              Sign out
+              {t("btnSignout")}
             </Button>
           </Panel>
         </div>

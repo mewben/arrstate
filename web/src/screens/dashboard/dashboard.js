@@ -33,7 +33,7 @@ const Dashboard = () => {
   return (
     <>
       <AppBar title={t("dashboard.title")}>
-        <Button onClick={handleGenerateData} color="white">
+        <Button variant="text" onClick={handleGenerateData}>
           {t("dashboard.btnRefresh")}
         </Button>
       </AppBar>

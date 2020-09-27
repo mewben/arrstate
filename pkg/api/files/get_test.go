@@ -60,4 +60,19 @@ func TestGetFiles(t *testing.T) {
 		assert.Len(response.Data, 2)
 		assert.Equal(2, response.Total)
 	})
+
+	t.Run("It should get list of global files", func(t *testing.T) {
+		assert := assert.New(t)
+
+		req := helpers.DoRequest("GET", path, nil, token1)
+
+		res, err := app.Test(req, -1)
+		assert.Nil(err)
+		assert.Equal(200, res.StatusCode, res)
+		response, err := GetResponses(res)
+		assert.Nil(err)
+		assert.Len(response.Data, 4)
+		assert.Equal(4, response.Total)
+
+	})
 }

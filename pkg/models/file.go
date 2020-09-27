@@ -4,7 +4,6 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 // FileSchema -
 type FileSchema struct {
-	// ID        primitive.ObjectID `bson:"_id" json:"_id"`
 	Title     string `bson:"title" json:"title"`
 	Extension string `bson:"ext" json:"ext"`
 	MimeType  string `bson:"mimeType" json:"mimeType"`
@@ -14,12 +13,13 @@ type FileSchema struct {
 
 // FileSchemaWID - fileSchema with ID
 type FileSchemaWID struct {
-	ID        primitive.ObjectID `bson:"_id" json:"_id"`
-	Title     string             `bson:"title" json:"title"`
-	Extension string             `bson:"ext" json:"ext"`
-	MimeType  string             `bson:"mimeType" json:"mimeType"`
-	Size      int                `bson:"size" json:"size"`
-	URL       string             `bson:"url" json:"url"`
+	ID         primitive.ObjectID `bson:"_id" json:"_id"`
+	FileSchema `bson:",inline"`
+	// Title     string             `bson:"title" json:"title"`
+	// Extension string             `bson:"ext" json:"ext"`
+	// MimeType  string             `bson:"mimeType" json:"mimeType"`
+	// Size      int                `bson:"size" json:"size"`
+	// URL       string             `bson:"url" json:"url"`
 }
 
 // FileModel -
@@ -41,7 +41,8 @@ func NewFileSchema() FileSchema {
 // NewFileSchemaWID -
 func NewFileSchemaWID() FileSchemaWID {
 	return FileSchemaWID{
-		ID: primitive.NewObjectID(),
+		ID:         primitive.NewObjectID(),
+		FileSchema: NewFileSchema(),
 	}
 }
 

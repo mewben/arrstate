@@ -87,8 +87,6 @@ const PersonForm = ({ model = {}, onClose }) => {
     ...model,
   }
 
-  console.log("mdoddd", model)
-
   return (
     <div className="flex flex-col w-screen sm:w-96">
       <DrawerHeader
@@ -106,7 +104,7 @@ const PersonForm = ({ model = {}, onClose }) => {
             <AttachmentField
               name="avatar"
               entityType={ENTITIES.PERSON}
-              entityId={model._id}
+              entityID={model._id}
               isAttachment
             />
           )}

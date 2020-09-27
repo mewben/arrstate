@@ -1,23 +1,42 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
+import { useMutation, queryCache } from "react-query"
 
 import { Empty, Portal, Button, Table, TBody, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
+import { UploadFileButton } from "@Components/files"
+import { requestApi } from "@Utils"
 import { map } from "@Utils/lodash"
 import { useFiles } from "@Hooks"
-import { PropertyForm } from "@Components/popups/property"
 import ListItem from "./list-item"
 
-const List = ({ entityType, entityId }) => {
+const List = ({ entityType, entityID }) => {
   const { t } = useTranslation()
+  const getMethodParams = { entityType, entityID }
+
+  const [upload, { reset, error }] = useMutation(formData => {
+    return requestApi(`/api/files`, "POST", { data: formData })
+  })
+
+  const onUpload = data => {
+    reset()
+    upload(data)
+  }
+
+  const onUploadComplete = result => {
+    queryCache.invalidateQueries(["files", getMethodParams])
+  }
 
   const renderAdd = () => {
-    if (!projectID) return null
-
     return (
-      <Portal openByClickOn={<Button>{t("properties.add")}</Button>}>
-        <PropertyForm projectID={projectID} />
-      </Portal>
+      <UploadFileButton
+        entityType={entityType}
+        entityID={entityID}
+        onUpload={onUpload}
+        onUploadComplete={onUploadComplete}
+      >
+        <Button>{t("files.add")}</Button>
+      </UploadFileButton>
     )
   }
 
@@ -28,20 +47,14 @@ const List = ({ entityType, entityId }) => {
         <Table>
           <thead>
             <tr>
-              <Th fullWidth>{t("properties.code")}</Th>
-              <Th>{t("properties.type")}</Th>
-              {!projectID && <Th>{t("properties.project")}</Th>}
-              <Th align="right">{t("properties.area")} (sq.m)</Th>
-              <Th align="right">{t("properties.price")} (Php)</Th>
-              <Th align="right">{t("properties.priceAddon")} (Php)</Th>
-              <Th>{t("properties.status")}</Th>
+              <Th fullWidth>{t("files.filename")}</Th>
+              <Th>{t("files.type")}</Th>
+              <Th align="right">{t("files.size")}</Th>
             </tr>
           </thead>
           <TBody>
             {map(content?.list, item => {
-              return (
-                <ListItem key={item._id} item={item} projectID={projectID} />
-              )
+              return <ListItem key={item._id} item={item} />
             })}
           </TBody>
         </Table>
@@ -57,8 +70,6 @@ const List = ({ entityType, entityId }) => {
       </div>
     )
   }
-
-  const getMethodParams = { entityType, entityId }
 
   return (
     <InfiniteScroll

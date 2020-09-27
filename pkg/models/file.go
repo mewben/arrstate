@@ -13,7 +13,7 @@ type FileSchema struct {
 
 // FileSchemaWID - fileSchema with ID
 type FileSchemaWID struct {
-	ID         primitive.ObjectID `bson:"_id" json:"_id"`
+	ID         *primitive.ObjectID `bson:"_id" json:"_id"`
 	FileSchema `bson:",inline"`
 	// Title     string             `bson:"title" json:"title"`
 	// Extension string             `bson:"ext" json:"ext"`
@@ -39,9 +39,8 @@ func NewFileSchema() FileSchema {
 }
 
 // NewFileSchemaWID -
-func NewFileSchemaWID() FileSchemaWID {
-	return FileSchemaWID{
-		ID:         primitive.NewObjectID(),
+func NewFileSchemaWID() *FileSchemaWID {
+	return &FileSchemaWID{
 		FileSchema: NewFileSchema(),
 	}
 }

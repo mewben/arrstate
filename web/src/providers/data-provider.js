@@ -13,7 +13,7 @@ export const ListProvider = ({
     return emptyRenderer ? emptyRenderer() : <Empty />
   }
 
-  return status === "loading" || isFetching ? (
+  return status === "loading" ? (
     <Loading />
   ) : status === "error" ? (
     <Error error={error} />

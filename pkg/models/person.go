@@ -41,9 +41,7 @@ type Locale struct {
 
 // NewPersonModel -
 func NewPersonModel(arg ...primitive.ObjectID) *PersonModel {
-	avatar := NewFileSchemaWID()
 	return &PersonModel{
-		Avatar:    &avatar,
 		BaseModel: NewBaseModel(arg...),
 		Address:   NewAddressModel(),
 		MetaModel: NewMetaModel(),

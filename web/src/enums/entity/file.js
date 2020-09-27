@@ -37,7 +37,7 @@ export const FILE_UPLOAD_S3_FOLDERS = {
 }
 
 export const FILE_UPLOAD_SETTINGS = {
-  MAX_SIZE: 100 * 1024 * 1024,
+  MAX_SIZE: 20 * 1024 * 1024, // 20MB
   MAX_FILES: 20,
 }
 

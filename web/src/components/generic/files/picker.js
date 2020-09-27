@@ -8,6 +8,7 @@ import { onUpload as handleUpload } from "./utils/on-upload"
 const FilePicker = ({
   onClose,
   onUpload,
+  onUploadComplete,
   createOptions,
   maxFiles,
   maxSize,
@@ -38,6 +39,12 @@ const FilePicker = ({
           createFile,
         }
       )
+    })
+
+    client.on("complete", result => {
+      if (onUploadComplete) {
+        onUploadComplete(result)
+      }
     })
 
     return client

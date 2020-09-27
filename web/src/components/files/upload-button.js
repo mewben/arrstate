@@ -5,13 +5,14 @@ import { AddButton } from "@Components/generic/button"
 import { FilePicker } from "@Components/generic/files"
 
 const UploadFileButton = ({
-  maxFiles = 1,
+  maxFiles,
   maxSize,
   accept,
-  folderId,
+  folderID,
   entityType,
-  entityId,
+  entityID,
   onUpload,
+  onUploadComplete,
   children,
   buttonText = "Upload",
   autoProceed,
@@ -44,10 +45,11 @@ const UploadFileButton = ({
         <FilePicker
           onClose={closePicker}
           onUpload={handleUpload}
+          onUploadComplete={onUploadComplete}
           createOptions={{
-            entityId,
+            entityID,
             entityType,
-            folderId,
+            folderID,
           }}
           maxFiles={maxFiles}
           maxSize={maxSize}
@@ -63,8 +65,8 @@ const UploadFileButton = ({
 UploadFileButton.propTypes = {
   buttonText: PropTypes.string,
   entityType: PropTypes.string,
-  entityId: PropTypes.string,
-  folderId: PropTypes.string,
+  entityID: PropTypes.string,
+  folderID: PropTypes.string,
   onUpload: PropTypes.func,
   accept: PropTypes.oneOfType([
     PropTypes.string,

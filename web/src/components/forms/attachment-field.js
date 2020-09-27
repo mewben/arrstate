@@ -10,6 +10,7 @@ import { Button, ConfirmButton } from "@Components/generic/button"
 import { UploadFileButton } from "@Components/files"
 import { pick, isEmpty } from "@Utils/lodash"
 import { uploadURL } from "@Utils"
+import { FILE_TYPES } from "@Enums"
 
 const attachmentFields = ["_id", "title", "ext", "mimeType", "size", "url"]
 
@@ -29,7 +30,7 @@ const Component = ({
   onChange,
   label,
   entityType,
-  entityId,
+  entityID,
   isAttachment,
   className,
   isOutlined = true,
@@ -63,8 +64,9 @@ const Component = ({
     content = (
       <UploadFileButton
         entityType={entityType}
-        entityId={entityId}
+        entityID={entityID}
         onUpload={handleChange}
+        accept={FILE_TYPES.IMAGE}
         maxFiles={1}
       >
         <div className="image-badge-trigger">

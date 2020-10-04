@@ -24,9 +24,7 @@ func Routes(app *fiber.App, db *mongo.Database) {
 	proxyConfig := proxy.Config{
 		Hosts: fileServer,
 		Before: func(c *fiber.Ctx) error {
-			log.Println("beforee:", string(c.Request().RequestURI()))
 			c.Request().SetRequestURI(strings.Replace(string(c.Request().RequestURI()), "/files", "", -1))
-			log.Println("beforee2:", string(c.Request().RequestURI()))
 			c.Request().Header.Set("X-Forwarded-Host", c.Hostname())
 			c.Request().Header.Set("X-Forwarded-Proto", c.Protocol())
 

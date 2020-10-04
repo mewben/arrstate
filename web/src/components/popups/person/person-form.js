@@ -4,7 +4,7 @@ import { useWatch } from "react-hook-form"
 import { useMutation, queryCache } from "react-query"
 import { useTranslation } from "react-i18next"
 
-import { ROLES } from "@Enums"
+import { ROLES, ENTITIES } from "@Enums"
 import {
   Form,
   TextField,
@@ -14,15 +14,16 @@ import {
   InputGroup,
   AddressField,
   NumberField,
+  AttachmentField,
 } from "@Components/forms"
 import { Error, Person } from "@Components/generic"
-import { ButtonConfirm } from "@Components/generic/button"
+import { ConfirmButton } from "@Components/generic/button"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi, getValidationSchema } from "@Utils"
 import { includes, map, values } from "@Utils/lodash"
 
 // ------ PersonForm ------- //
-const PersonForm = ({ model, onClose }) => {
+const PersonForm = ({ model = {}, onClose }) => {
   const { t } = useTranslation()
 
   const validationSchema = React.useMemo(() => {
@@ -97,8 +98,16 @@ const PersonForm = ({ model, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <div className="grid grid-cols-12 gap-6 p-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-6 p-6">
           <Error error={error} className="col-span-12" />
+          {!!model._id && (
+            <AttachmentField
+              name="avatar"
+              entityType={ENTITIES.PERSON}
+              entityID={model._id}
+              isAttachment
+            />
+          )}
           <InputGroup
             name="name.first"
             id="givenName"
@@ -129,7 +138,7 @@ const PersonForm = ({ model, onClose }) => {
           <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>{t("btnSubmit")}</SubmitButton>
-              {isEdit && <ButtonConfirm onConfirm={onDelete} />}
+              {isEdit && <ConfirmButton onSubmit={onDelete} />}
             </div>
           </div>
         </div>

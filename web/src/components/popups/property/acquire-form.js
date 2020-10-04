@@ -144,7 +144,7 @@ const AcquireForm = ({
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <div className="grid grid-cols-12 gap-6 p-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-6 p-6">
           <Error error={error} className="col-span-12" />
           <PeopleSelectField name="clientID" label={t("client")} />
           <SelectField

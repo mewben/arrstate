@@ -22,7 +22,9 @@
   "btnGenerate": "__",
   "btnPay": "__",
   "btnSave": "__",
+  "btnSignout": "__",
   "btnSubmit": "__",
+  "btnViewAll": "__",
   "btnViewReceipt": "__",
   "business": {
     "name": "__"
@@ -72,6 +74,7 @@
       "block": "__",
       "business": "__",
       "default": "__",
+      "file": "__",
       "invoice": "__",
       "person": "__",
       "project": "__",
@@ -94,6 +97,12 @@
     "user": {
       "notInBusiness": "__"
     }
+  },
+  "files": {
+    "add": "__",
+    "filename": "__",
+    "size": "__",
+    "type": "__"
   },
   "form": {
     "acquire": {
@@ -143,7 +152,7 @@
       "type": "__"
     }
   },
-  "fsldkjfdk": "__",
+  "image": "__",
   "invoices": {
     "dueDate": "__",
     "issueDate": "__",
@@ -188,6 +197,7 @@
     "menu": {
       "agents": "__",
       "clients": "__",
+      "files": "__",
       "overview": "__",
       "properties": "__"
     },
@@ -203,6 +213,7 @@
     "house": "__",
     "lot": "__",
     "menu": {
+      "files": "__",
       "invoices": "__",
       "overview": "__",
       "receipts": "__"
@@ -259,5 +270,6 @@
     "both": "__",
     "relative": "__"
   },
-  "to": "__"
+  "to": "__",
+  "upload": "__"
 }

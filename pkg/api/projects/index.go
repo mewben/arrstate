@@ -5,7 +5,7 @@ import (
 	"log"
 
 	validator "github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/pkg/errors"
@@ -42,113 +42,101 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	g.Get("/projects", func(c *fiber.Ctx) {
+	g.Get("/projects", func(c *fiber.Ctx) error {
 		log.Println("projects.get")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		response, err := h.Get()
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 	})
 
-	g.Get("/projects/:projectID", func(c *fiber.Ctx) {
+	g.Get("/projects/:projectID", func(c *fiber.Ctx) error {
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		response, err := h.GetOne(c.Params("projectID"))
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 	})
 
-	g.Post("/projects", func(c *fiber.Ctx) {
+	g.Post("/projects", func(c *fiber.Ctx) error {
 		log.Println("projects.post")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := &Payload{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Create(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(201).JSON(response)
+		return c.Status(201).JSON(response)
 	})
 
-	g.Put("/projects", func(c *fiber.Ctx) {
+	g.Put("/projects", func(c *fiber.Ctx) error {
 		log.Println("projects.edit")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := &Payload{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Edit(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 
-	g.Delete("/projects/:projectID", func(c *fiber.Ctx) {
+	g.Delete("/projects/:projectID", func(c *fiber.Ctx) error {
 		log.Println("projects.delete")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		response, err := h.Remove(c.Params("projectID"))
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 }

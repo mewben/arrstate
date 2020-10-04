@@ -9,4 +9,5 @@ const (
 	CollProperties = "properties"
 	CollInvoices   = "invoices"
 	CollBlocks     = "blocks"
+	CollFiles      = "files"
 )

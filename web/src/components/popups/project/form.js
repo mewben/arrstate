@@ -13,7 +13,7 @@ import {
 } from "@Components/forms"
 import { Error } from "@Components/generic"
 import { ERRORS } from "@Enums"
-import { ButtonConfirm } from "@Components/generic/button"
+import { ConfirmButton } from "@Components/generic/button"
 import { DrawerHeader } from "@Wrappers/layout"
 import { requestApi } from "@Utils"
 
@@ -85,7 +85,7 @@ const ProjectForm = ({ model, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <div className="grid grid-cols-12 gap-6 p-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-6 p-6">
           <Error error={error} className="col-span-12" />
           <TextField name="name" label={t("form.project.name")} autoFocus />
           <NumberField name="area" label={t("form.project.area")} min={0} />
@@ -93,7 +93,7 @@ const ProjectForm = ({ model, onClose }) => {
           <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>{t("btnSubmit")}</SubmitButton>
-              {isEdit && <ButtonConfirm onConfirm={onDelete} />}
+              {isEdit && <ConfirmButton onConfirm={onDelete} />}
             </div>
           </div>
         </div>

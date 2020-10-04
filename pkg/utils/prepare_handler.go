@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/errors"
@@ -17,21 +17,21 @@ func PrepareHandler(c *fiber.Ctx, db *database.Service) (user *models.UserModel,
 	}
 
 	// get user
-	user = db.FindUser(c.Fasthttp, userID)
+	user = db.FindUser(c.Context(), userID)
 	if user == nil {
 		err = errors.NewHTTPError(errors.ErrNotFoundUser)
 		return
 	}
 
 	// get business
-	business = db.FindBusiness(c.Fasthttp, businessID)
+	business = db.FindBusiness(c.Context(), businessID)
 	if business == nil {
 		err = errors.NewHTTPError(errors.ErrNotFoundBusiness)
 		return
 	}
 
 	// get person
-	personFound, _ := db.FindByID(c.Fasthttp, enums.CollPeople, personID, businessID)
+	personFound, _ := db.FindByID(c.Context(), enums.CollPeople, personID, businessID)
 	if personFound == nil {
 		err = errors.NewHTTPError(errors.ErrNotFoundPerson)
 		return

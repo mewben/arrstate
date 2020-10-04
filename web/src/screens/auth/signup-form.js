@@ -45,7 +45,7 @@ const SignupForm = () => {
   return (
     <div className="mt-6 w-full max-w-sm">
       <Form onSubmit={onSubmit} validationSchema={validationSchema}>
-        <div className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-6">
           <Error error={error} className="col-span-12" />
           <InputGroup
             name="name.first"

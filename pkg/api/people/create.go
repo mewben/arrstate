@@ -43,6 +43,7 @@ func (h *Handler) Create(data *Payload) (*models.PersonModel, error) {
 	person.MetaModel = data.MetaModel
 	person.CommissionPerc = data.CommissionPerc
 	person.CustomFields = data.CustomFields
+	person.Avatar = data.Avatar
 	if person.Locale.Language == "" {
 		person.Locale.Language = enums.DefaultLanguage
 	}

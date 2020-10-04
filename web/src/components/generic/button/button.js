@@ -5,6 +5,50 @@ import cx from "clsx"
 
 const Button = ({
   children,
+  variant = "contained",
+  type = "button",
+  to,
+  size = "md",
+  color = "cool-gray",
+  circle,
+  fullWidth,
+  isDisabled,
+  isLoading,
+  className,
+  ...props
+}) => {
+  let Component = "button"
+  if (to) {
+    Component = Link
+  }
+
+  return (
+    <Component
+      type={!to ? type : undefined}
+      to={to ? to : undefined}
+      disabled={isDisabled || isLoading}
+      className={cx(
+        "btn",
+        color,
+        size,
+        {
+          "btn-contained": variant === "contained",
+          "btn-outlined": variant === "outlined",
+          "btn-text": variant === "text",
+          "btn-circle": circle,
+          "w-full": fullWidth,
+        },
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
+
+const Button2 = ({
+  children,
   to,
   type = "button",
   size = "md",

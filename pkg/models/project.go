@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/mewben/arrstate/internal/enums"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	"github.com/mewben/arrstate/internal/enums"
 )
 
 // ProjectModel -

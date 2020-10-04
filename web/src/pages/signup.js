@@ -17,7 +17,7 @@ const SignupPage = () => {
           <SignupForm />
         </div>
         <div className="text-gray-500">
-          {t("signup.hasAccount")}Already have an account?{" "}
+          {t("signup.hasAccount")}{" "}
           <Link to="/signin" className="font-bold hover:text-gray-900">
             {t("signin.title")}
           </Link>

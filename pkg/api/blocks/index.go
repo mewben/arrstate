@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/errors"
 	"github.com/mewben/arrstate/pkg/models"
@@ -66,56 +66,50 @@ func Routes(g fiber.Router, db *mongo.Database) {
 	}
 
 	// We use Post here because we supply a pretty large payload of blockIDs
-	g.Post("/blocks/get", func(c *fiber.Ctx) {
+	g.Post("/blocks/get", func(c *fiber.Ctx) error {
 		log.Println("blocks.get")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := &GetPayload{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Get(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 
-	g.Post("/blocks", func(c *fiber.Ctx) {
+	g.Post("/blocks", func(c *fiber.Ctx) error {
 		log.Println("blocks.post")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := fiber.Map{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Create(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(201).JSON(response)
+		return c.Status(201).JSON(response)
 	})
 }

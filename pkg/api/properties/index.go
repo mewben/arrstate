@@ -5,7 +5,7 @@ import (
 	"log"
 
 	validator "github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/mewben/arrstate/internal/enums"
@@ -52,13 +52,12 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		DB: database.NewService(db),
 	}
 
-	g.Get("/properties", func(c *fiber.Ctx) {
+	g.Get("/properties", func(c *fiber.Ctx) error {
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		log.Println("--- queryyy:", c.Query("projectID"))
@@ -66,127 +65,113 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		response, err := h.Get(c.Query("projectID"))
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 	})
 
-	g.Get("/properties/:propertyID", func(c *fiber.Ctx) {
+	g.Get("/properties/:propertyID", func(c *fiber.Ctx) error {
 		log.Println("properties.get")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		response, err := h.GetOne(c.Params("propertyID"))
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 	})
 
-	g.Post("/properties", func(c *fiber.Ctx) {
+	g.Post("/properties", func(c *fiber.Ctx) error {
 		log.Println("properties.post")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := &Payload{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Create(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(201).JSON(response)
+		return c.Status(201).JSON(response)
 	})
 
-	g.Put("/properties", func(c *fiber.Ctx) {
+	g.Put("/properties", func(c *fiber.Ctx) error {
 		log.Println("properties.put")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := &Payload{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Edit(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 
-	g.Delete("/properties/:propertyID", func(c *fiber.Ctx) {
+	g.Delete("/properties/:propertyID", func(c *fiber.Ctx) error {
 		log.Println("properties.delete")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		response, err := h.Remove(c.Params("propertyID"))
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 
 	})
 
-	g.Post("/properties/acquire", func(c *fiber.Ctx) {
+	g.Post("/properties/acquire", func(c *fiber.Ctx) error {
 		log.Println("properties.acquire")
 		var err error
-		h.Ctx = c.Fasthttp
+		h.Ctx = c.Context()
 		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
 		if err != nil {
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
 
 		payload := &AcquisitionPayload{}
 		if err := c.BodyParser(&payload); err != nil {
 			log.Println("errrbodyparser", err)
-			c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
-			return
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
 		}
 
 		response, err := h.Acquire(payload)
 		if err != nil {
 			log.Println("errrrrr", err)
-			c.Status(400).JSON(err)
-			return
+			return c.Status(400).JSON(err)
 		}
-		c.Status(200).JSON(response)
+		return c.Status(200).JSON(response)
 	})
 }

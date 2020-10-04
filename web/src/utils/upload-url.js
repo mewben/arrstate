@@ -1,6 +1,6 @@
 import { isEmpty } from "@Utils/lodash"
 
-const filesEndpoint = process.env.GATSBY_FILES_ENDPOINT
+const filesEndpoint = process.env.GATSBY_S3_FILES_ENDPOINT
 
 export const uploadURL = file => {
   if (isEmpty(file)) {

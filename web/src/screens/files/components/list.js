@@ -1,11 +1,10 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { useMutation, queryCache } from "react-query"
+import { queryCache } from "react-query"
 
 import { Empty, Portal, Button, Table, TBody, Th } from "@Components/generic"
 import { InfiniteScroll } from "@Components/infinite-scroll"
 import { UploadFileButton } from "@Components/files"
-import { requestApi } from "@Utils"
 import { map } from "@Utils/lodash"
 import { useFiles } from "@Hooks"
 import ListItem from "./list-item"
@@ -14,17 +13,9 @@ const List = ({ entityType, entityID }) => {
   const { t } = useTranslation()
   const getMethodParams = { entityType, entityID }
 
-  const [upload, { reset, error }] = useMutation(formData => {
-    return requestApi(`/api/files`, "POST", { data: formData })
-  })
-
-  const onUpload = data => {
-    reset()
-    upload(data)
-  }
-
-  const onUploadComplete = result => {
+  const onUploadComplete = (result, cb) => {
     queryCache.invalidateQueries(["files", getMethodParams])
+    cb()
   }
 
   const renderAdd = () => {
@@ -32,7 +23,6 @@ const List = ({ entityType, entityID }) => {
       <UploadFileButton
         entityType={entityType}
         entityID={entityID}
-        onUpload={onUpload}
         onUploadComplete={onUploadComplete}
       >
         <Button>{t("files.add")}</Button>

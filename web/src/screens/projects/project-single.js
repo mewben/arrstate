@@ -24,14 +24,14 @@ const ProjectSingle = ({ projectID }) => {
       label: t("projects.menu.properties"),
       path: `/projects/${projectID}/properties`,
     },
-    {
-      label: t("projects.menu.clients"),
-      path: `/projects/${projectID}/clients`,
-    },
-    {
-      label: t("projects.menu.agents"),
-      path: `/projects/${projectID}/agents`,
-    },
+    // {
+    //   label: t("projects.menu.clients"),
+    //   path: `/projects/${projectID}/clients`,
+    // },
+    // {
+    //   label: t("projects.menu.agents"),
+    //   path: `/projects/${projectID}/agents`,
+    // },
     {
       label: t("projects.menu.files"),
       path: `/projects/${projectID}/files`,

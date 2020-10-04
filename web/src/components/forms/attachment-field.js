@@ -66,7 +66,7 @@ const Component = ({
         entityType={entityType}
         entityID={entityID}
         onUpload={handleChange}
-        accept={FILE_TYPES.IMAGE}
+        accept={[FILE_TYPES.IMAGE]}
         maxFiles={1}
       >
         <div className="image-badge-trigger">

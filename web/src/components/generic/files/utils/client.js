@@ -1,5 +1,6 @@
 import Uppy from "@uppy/core"
 import Tus from "@uppy/tus"
+import AwsS3 from "@uppy/aws-s3"
 // import AwsS3Multipart from "@uppy/aws-s3-multipart"
 // import GoogleDrive from "@uppy/google-drive"
 // import Dropbox from "@uppy/dropbox"
@@ -11,8 +12,12 @@ import Tus from "@uppy/tus"
 // import ScreenCapture from "@uppy/screen-capture"
 import { FILE_UPLOAD_SETTINGS } from "@Enums/entity/file"
 // import { SETTING_PUBLIC } from "@Enums"
+import { authToken } from "@Providers"
 
 // const companionUrl = SETTING_PUBLIC.FILE_UPLOADS.ENDPOINT
+// const companionUrl = "https://upload.plutio.com" // "http://localhost:3020"
+// const companionUrl = "http://localhost:3020"
+const companionUrl = "/files"
 
 export const fileUploadClient = ({
   autoProceed,
@@ -43,9 +48,16 @@ export const fileUploadClient = ({
         companionError: "Connection with Companion failed",
       },
     },
-  }).use(Tus, {
-    endpoint: "/files/",
   })
+    // .use(Tus, {
+    //   endpoint: "/files/",
+    //   headers: {
+    //     Authorization: authToken.authorizationString,
+    //   },
+    // })
+    .use(AwsS3, {
+      companionUrl,
+    })
 // .use(AwsS3Multipart, {
 //   companionUrl,
 // })

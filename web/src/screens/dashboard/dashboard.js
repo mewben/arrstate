@@ -39,6 +39,7 @@ const Dashboard = () => {
       </AppBar>
       <div className="overflow-y-scroll">
         <Wrapper generateData={handleGenerateData} />
+        {/*
         <FileUploader />
         <div className="m-8 p-8 border border-gray-500">
           <h1 className="text-2xl">Buttons</h1>
@@ -170,7 +171,7 @@ const Dashboard = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </div>*/}
       </div>
     </>
   )

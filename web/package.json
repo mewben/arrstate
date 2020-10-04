@@ -12,6 +12,8 @@
     "@material-ui/pickers": "4.0.0-alpha.12",
     "@material-ui/styles": "4.10.0",
     "@tailwindcss/ui": "0.5.0",
+    "@uppy/aws-s3": "1.7.0",
+    "@uppy/aws-s3-multipart": "1.8.6",
     "@uppy/core": "1.13.2",
     "@uppy/react": "1.10.6",
     "@uppy/tus": "1.7.6",

@@ -10,6 +10,7 @@ import (
 
 	"github.com/mewben/arrstate/pkg/api"
 	"github.com/mewben/arrstate/pkg/auth"
+	"github.com/mewben/arrstate/pkg/file"
 )
 
 // SetupBackend -
@@ -45,6 +46,9 @@ func SetupBackend(db *mongo.Database) *fiber.App {
 	// Register routes
 	auth.Routes(app, db)
 	api.Routes(app, db)
+
+	// file-uploads proxy
+	file.Routes(app, db)
 
 	// static
 	app.Static("/", "./web/public")

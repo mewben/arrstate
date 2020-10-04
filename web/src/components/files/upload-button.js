@@ -26,6 +26,14 @@ const UploadFileButton = ({
     }
   }
 
+  const handleUploadComplete = result => {
+    if (onUploadComplete) {
+      onUploadComplete(result, () => {
+        setIsPickerOpen(false)
+      })
+    }
+  }
+
   const openPicker = () => {
     setIsPickerOpen(true)
   }
@@ -45,7 +53,7 @@ const UploadFileButton = ({
         <FilePicker
           onClose={closePicker}
           onUpload={handleUpload}
-          onUploadComplete={onUploadComplete}
+          onUploadComplete={handleUploadComplete}
           createOptions={{
             entityID,
             entityType,

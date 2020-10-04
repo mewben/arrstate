@@ -170,6 +170,10 @@ func TestEditProperty(t *testing.T) {
 		assert.Equal(updName, response.Name)
 	})
 
+	t.Run("It should not edit price if status != draft", func(t *testing.T) {
+		// TODO
+	})
+
 	t.Run("Permissions", func(t *testing.T) {
 
 		t.Run("It should not edit from other business", func(t *testing.T) {

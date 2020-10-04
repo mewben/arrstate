@@ -1,10 +1,9 @@
 import { requestApi } from "@Utils"
 
-const filesEndpoint = process.env.GATSBY_FILES_ENDPOINT
+const filesEndpoint = process.env.GATSBY_S3_UPLOAD_URL_BASE
 
 export const onUpload = async (files = [], { onUpload, ...createOptions }) => {
   for (const file of files) {
-    console.log("file", file)
     const res = await requestApi("/api/files", "POST", {
       data: {
         title: file.name,

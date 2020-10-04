@@ -13,6 +13,7 @@ require (
 	github.com/nicksnyder/go-i18n/v2 v2.0.3
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
+	github.com/valyala/fasthttp v1.16.0
 	go.mongodb.org/mongo-driver v1.4.1
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
 	golang.org/x/text v0.3.3

@@ -32,7 +32,7 @@ const Wrapper = ({ generateData }) => {
 
   return (
     <div className="container p-4 mx-auto">
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-12 gap-x-6 gap-y-6">
         <div className="col-span-4">
           <Widget
             data={dashboard?.projects}

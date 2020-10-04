@@ -15,7 +15,7 @@ import {
 } from "@Components/forms"
 import { ERRORS } from "@Enums"
 import { Error, Loading } from "@Components/generic"
-import { Button, ButtonConfirm } from "@Components/generic/button"
+import { Button, ConfirmButton } from "@Components/generic/button"
 import { useProjectOptions } from "@Hooks"
 import { DrawerHeader } from "@Wrappers/layout"
 import { get, map, values } from "@Utils/lodash"
@@ -116,7 +116,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
         validationSchema={validationSchema}
         model={initialModel}
       >
-        <div className="grid grid-cols-12 gap-6 p-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-6 p-6">
           <Error error={error} className="col-span-12" />
           <TextField name="name" label={t("form.property.name")} autoFocus />
           <SelectField
@@ -159,7 +159,7 @@ const PropertyForm = ({ model, projectID, onClose }) => {
           <div className="col-span-12">
             <div className="flex items-center justify-between">
               <SubmitButton>{t("btnSubmit")}</SubmitButton>
-              {isEdit && <ButtonConfirm onConfirm={onDelete} />}
+              {isEdit && <ConfirmButton onConfirm={onDelete} />}
             </div>
           </div>
         </div>

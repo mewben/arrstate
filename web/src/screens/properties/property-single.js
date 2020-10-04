@@ -10,6 +10,7 @@ import { PropertyForm } from "@Components/popups/property"
 import PropertyOverview from "./property-overview"
 import PropertyInvoices from "./property-invoices"
 import PropertyReceipts from "./property-receipts"
+import PropertyFiles from "./property-files"
 
 const PropertySingle = ({ propertyID }) => {
   const { t } = useTranslation()
@@ -26,6 +27,10 @@ const PropertySingle = ({ propertyID }) => {
     {
       label: t("properties.menu.receipts"),
       path: `/properties/${propertyID}/receipts`,
+    },
+    {
+      label: t("properties.menu.files"),
+      path: `/properties/${propertyID}/files`,
     },
   ]
 
@@ -52,6 +57,7 @@ const PropertySingle = ({ propertyID }) => {
         <PropertyOverview path="/" property={data} />
         <PropertyInvoices path="/invoices" property={data} />
         <PropertyReceipts path="/receipts" property={data} />
+        <PropertyFiles path="/files" property={data} />
       </Router>
     </>
   )

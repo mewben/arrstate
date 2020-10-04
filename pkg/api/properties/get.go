@@ -10,6 +10,7 @@ import (
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/pkg/errors"
 	"github.com/mewben/arrstate/pkg/models"
+	"github.com/mewben/arrstate/pkg/utils"
 )
 
 // Get properties
@@ -49,6 +50,10 @@ func (h *Handler) Get(projectID string) (*ResponseList, error) {
 			Value: -1,
 		},
 	})
+
+	log.Println("---melvin---")
+	utils.PrettyJSON(filter)
+
 	cursor, err := h.DB.Find(h.Ctx, enums.CollProperties, filter, opts)
 	if err != nil {
 		return nil, errors.NewHTTPError(errors.ErrNotFound)

@@ -44,3 +44,7 @@ export const INVOICE_STATUS = {
   PAID: "paid",
   OVERDUE: "overdue",
 }
+
+export const FILE_TYPES = {
+  IMAGE: "image/*",
+}

@@ -5,9 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/internal/startup"
@@ -38,21 +37,23 @@ func TestCreateProject(t *testing.T) {
 		fakeAddress.State = "Bohol"
 		fakeArea := 36.5
 		fakeNotes := "Sample Notes"
-		fakeImages := []*models.ImageModel{
-			{
-				ID:          primitive.NewObjectID(),
-				Src:         "src",
-				Alt:         "alt",
-				Description: "description",
-			},
-		}
+		// fakeImages := []*models.FileSchemaWID{
+		// 	{
+		// 		ID:        primitive.NewObjectID(),
+		// 		URL:       "url",
+		// 		Title:     "alt",
+		// 		Extension: "jpg",
+		// 		Size:      1235,
+		// 		MimeType:  "image/*",
+		// 	},
+		// }
 		data := fiber.Map{
 			"name":    fakeProject,
 			"address": fakeAddress,
 			"area":    fakeArea,
 			"unit":    enums.DefaultUnitArea,
 			"notes":   fakeNotes,
-			"images":  fakeImages,
+			// "files":   fakeImages,
 		}
 		req := helpers.DoRequest("POST", path, data, token)
 
@@ -72,11 +73,13 @@ func TestCreateProject(t *testing.T) {
 		assert.Equal(fakeAddress.Country, response.Address.Country)
 		assert.Equal(fakeAddress.State, response.Address.State)
 		assert.Equal(fakeNotes, response.Notes)
-		assert.Len(response.Images, 1)
-		assert.Equal(fakeImages[0].ID, response.Images[0].ID)
-		assert.Equal(fakeImages[0].Src, response.Images[0].Src)
-		assert.Equal(fakeImages[0].Alt, response.Images[0].Alt)
-		assert.Equal(fakeImages[0].Description, response.Images[0].Description)
+		// assert.Len(response.Files, 1)
+		// assert.Equal(fakeImages[0].ID, response.Files[0].ID)
+		// assert.Equal(fakeImages[0].URL, response.Files[0].URL)
+		// assert.Equal(fakeImages[0].Title, response.Files[0].Title)
+		// assert.Equal(fakeImages[0].Extension, response.Files[0].Extension)
+		// assert.Equal(fakeImages[0].MimeType, response.Files[0].MimeType)
+		// assert.Equal(fakeImages[0].Size, response.Files[0].Size)
 	})
 
 	t.Run("It should set defaultValues if not set", func(t *testing.T) {

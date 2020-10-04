@@ -18,12 +18,14 @@
       "subTotal": "SubTotal"
     }
   },
-  "btnAcquire": "Acquire",
-  "btnGenerate": "Generate",
-  "btnPay": "Pay",
-  "btnSave": "Save",
-  "btnSubmit": "Submit",
-  "btnViewReceipt": "View Receipt",
+  "btnAcquire": "ACQUIRE",
+  "btnGenerate": "GENERATE",
+  "btnPay": "PAY",
+  "btnSave": "SAVE",
+  "btnSignout": "SIGN OUT",
+  "btnSubmit": "SUBMIT",
+  "btnViewAll": "VIEW ALL",
+  "btnViewReceipt": "VIEW RECEIPT",
   "business": {
     "name": "Business Name"
   },
@@ -33,12 +35,12 @@
   },
   "confirm": "Are you sure?",
   "dashboard": {
-    "btnGenerate": "Generate dashboard data",
-    "btnRefresh": "Refresh dashboard data",
+    "btnGenerate": "GENERATE DASHBOARD DATA",
+    "btnRefresh": "REFRESH DASHBOARD DATA",
     "empty": "No dashboard data yet.",
     "title": "Dashboard"
   },
-  "delete": "Delete",
+  "delete": "DELETE",
   "domain": "Domain",
   "email": "Email Address",
   "empty": {
@@ -72,6 +74,7 @@
       "block": "Block not found",
       "business": "Business not found",
       "default": "Not found",
+      "file": "File not found",
       "invoice": "Invoice not found",
       "person": "Person not found",
       "project": "Project not found",
@@ -94,6 +97,12 @@
     "user": {
       "notInBusiness": "User not in business"
     }
+  },
+  "files": {
+    "add": "ADD FILE",
+    "filename": "Filename",
+    "size": "Size",
+    "type": "Type"
   },
   "form": {
     "acquire": {
@@ -143,6 +152,7 @@
       "type": "Property Type"
     }
   },
+  "image": "Image",
   "invoices": {
     "dueDate": "Due Date",
     "issueDate": "Issue Date",
@@ -172,41 +182,43 @@
   },
   "password": "Password",
   "people": {
-    "add": "Add Person",
+    "add": "ADD PERSON",
     "address": "Address",
-    "edit": "Edit Person",
+    "edit": "EDIT PERSON",
     "name": "Name",
-    "new": "New Person",
+    "new": "NEW PERSON",
     "role": "Role",
     "title": "People"
   },
   "projects": {
-    "add": "Add Project",
+    "add": "ADD PROJECT",
     "area": "Area",
-    "edit": "Edit Project",
+    "edit": "EDIT PROJECT",
     "menu": {
       "agents": "Agents",
       "clients": "Clients",
+      "files": "Files",
       "overview": "Overview",
       "properties": "Properties"
     },
     "name": "Project Name",
-    "new": "New Project",
+    "new": "NEW PROJECT",
     "title": "Projects"
   },
   "properties": {
-    "add": "Add Property",
+    "add": "ADD PROPERTY",
     "area": "Area",
     "code": "Property Code",
-    "edit": "Edit Property",
+    "edit": "EDIT PROPERTY",
     "house": "House",
     "lot": "Lot",
     "menu": {
+      "files": "Files",
       "invoices": "Invoices",
       "overview": "Overview",
       "receipts": "Receipts"
     },
-    "new": "New Property",
+    "new": "NEW PROPERTY",
     "price": "Price",
     "priceAddon": "Addon Price",
     "project": "Project",
@@ -239,14 +251,14 @@
     "title": "Settings"
   },
   "signin": {
-    "btn": "Sign In",
-    "btnCreate": "Create one",
+    "btn": "SIGN IN",
+    "btnCreate": "CREATE ONE",
     "forgot": "Forgot your password?",
     "noAccount": "Don't have an account yet?",
     "title": "Sign In"
   },
   "signup": {
-    "btn": "Sign Up",
+    "btn": "SIGN UP",
     "domainHelp": "You can change the name and domain anytime.",
     "hasAccount": "Already have an account?",
     "termsHelp": "By creating an account, you are agreeing to our",
@@ -258,5 +270,6 @@
     "both": "Both",
     "relative": "Relative"
   },
-  "to": "To"
+  "to": "To",
+  "upload": "Upload"
 }

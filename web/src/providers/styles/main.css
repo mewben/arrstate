@@ -1,8 +1,12 @@
-@tailwind base;
+@import "tailwindcss/base";
+/* @import "./custom-base-styles.css"; */
 
-@tailwind components;
+@import "tailwindcss/components";
+@import "./components.css";
+/* @import "./custom-components.css"; */
 
-@tailwind utilities;
+@import "tailwindcss/utilities";
+/* @import "./custom-utilities.css"; */
 
 /*** APPLY ***/
 .form-input {
@@ -39,3 +43,8 @@ form .fieldset:first-child {
   box-shadow: 0 0 0 3px rgba(164, 202, 254, 0.45);
   border-color: #a4cafe;
 } */
+
+/*** Plugins override  ***/
+.uppy-Root {
+  @apply font-sans;
+}

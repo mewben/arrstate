@@ -1,3 +1,4 @@
 export { default as Button } from "./button"
-export { default as ButtonConfirm } from "./button-confirm"
+export { ConfirmButton } from "./confirm/index"
 export { default as BackButton } from "./back-button"
+export { default as AddButton } from "./add-button"

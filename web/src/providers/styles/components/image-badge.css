@@ -1,0 +1,66 @@
+.image-badge {
+  @apply relative w-16 h-16 rounded p-1;
+
+  &.outlined {
+    @apply border border-dashed border-cool-gray-200;
+  }
+
+  &.large {
+    @apply w-32 h-32;
+  }
+
+  .image-badge-content {
+    @apply relative overflow-hidden w-full h-full flex items-center justify-center bg-cover bg-no-repeat rounded-sm;
+  }
+
+  .image-badge-trigger {
+    @apply absolute inset-0 w-full flex items-center justify-center text-center cursor-pointer text-cool-gray-400;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 5px,
+      #f4f8fc 0,
+      #f4f8fc 16px
+    );
+
+    &:before {
+      @apply absolute inset-0 bg-cool-gray-400 opacity-0 pointer-events-none;
+      content: "";
+      transition: all 0.15s linear;
+    }
+  }
+
+  &.has-value {
+    .image-badge-trigger {
+      @apply bg-transparent;
+      background-image: none;
+    }
+  }
+
+  .image-badge-text {
+    @apply pointer-events-none text-xs;
+    transition: all 0.1s ease;
+  }
+
+  .image-badge-icon {
+    @apply absolute inset-0 opacity-0 w-full pointer-events-none flex items-center justify-center max-w-full max-h-full text-white;
+    transform: scale(0.6);
+    transition: all 0.1s ease;
+  }
+
+  &:hover {
+    .image-badge-trigger {
+      &:before {
+        opacity: 0.4;
+      }
+      .image-badge-icon {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .image-badge-text {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+    }
+  }
+}

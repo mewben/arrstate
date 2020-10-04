@@ -23,13 +23,13 @@ const PersonOverview = ({ person }) => {
                 <h3 className="font-bold text-xl leading-7 text-cool-gray-900 sm:text-2xl sm:leading-8">
                   {fullName(person.name)}
                 </h3>
-                <p className="text-sm leading-5 text-cool-gray-500">
+                <div className="text-sm leading-5 text-cool-gray-500">
                   <div className="flex space-x-2">
                     {map(person.role, rol => (
                       <span key={rol}>{rol}</span>
                     ))}
                   </div>
-                </p>
+                </div>
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ package invoices
 import (
 	"log"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/mewben/arrstate/internal/enums"

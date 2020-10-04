@@ -80,7 +80,7 @@ const FormLocalization = ({ model }) => {
         </h3>
       </div>
       <Form model={model} onSubmit={onSubmit}>
-        <div className="grid grid-cols-12 gap-6 p-6">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-6 p-6">
           <LanguageSelectField
             name="language"
             leftLabel={t("form.localization.language")}
@@ -104,7 +104,9 @@ const FormLocalization = ({ model }) => {
             options={timestampFormatOptions}
             disableClearable
           /> */}
-          <SubmitButton>{t("btnSave")}</SubmitButton>
+          <div>
+            <SubmitButton>{t("btnSave")}</SubmitButton>
+          </div>
         </div>
       </Form>
     </div>

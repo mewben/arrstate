@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/mewben/arrstate/internal/enums"
 	"github.com/mewben/arrstate/internal/startup"
 	"github.com/mewben/arrstate/pkg"
@@ -168,6 +168,10 @@ func TestEditProperty(t *testing.T) {
 		assert.Equal(property1.ID, response.ID)
 		assert.Equal(project.ID, *response.ProjectID)
 		assert.Equal(updName, response.Name)
+	})
+
+	t.Run("It should not edit price if status != draft", func(t *testing.T) {
+		// TODO
 	})
 
 	t.Run("Permissions", func(t *testing.T) {

@@ -92,4 +92,21 @@ func Routes(g fiber.Router, db *mongo.Database) {
 		return c.Status(201).JSON(response)
 
 	})
+
+	g.Delete("/files/:fileID", func(c *fiber.Ctx) error {
+		log.Println("files.delete")
+		var err error
+		h.Ctx = c.Context()
+		h.User, h.Business, _, err = utils.PrepareHandler(c, h.DB)
+		if err != nil {
+			return c.Status(400).JSON(err)
+		}
+
+		response, err := h.Remove(c.Params("fileID"))
+		if err != nil {
+			log.Println("errrrrr", err)
+			return c.Status(400).JSON(err)
+		}
+		return c.Status(200).JSON(response)
+	})
 }

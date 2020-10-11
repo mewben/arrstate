@@ -40,6 +40,7 @@ const List = ({ entityType, entityID }) => {
               <Th fullWidth>{t("files.filename")}</Th>
               <Th>{t("files.type")}</Th>
               <Th align="right">{t("files.size")}</Th>
+              <Th> </Th>
             </tr>
           </thead>
           <TBody>

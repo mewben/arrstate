@@ -2,6 +2,7 @@ import React from "react"
 
 import {
   ReactQueryProvider,
+  SwrProvider,
   StylesProvider,
   AuthProvider,
   DateProvider,
@@ -9,12 +10,14 @@ import {
 
 export const wrapRootElement = ({ element }) => {
   return (
-    <ReactQueryProvider>
-      <StylesProvider>
-        <DateProvider>
-          <AuthProvider>{element}</AuthProvider>
-        </DateProvider>
-      </StylesProvider>
-    </ReactQueryProvider>
+    <SwrProvider>
+      <ReactQueryProvider>
+        <StylesProvider>
+          <DateProvider>
+            <AuthProvider>{element}</AuthProvider>
+          </DateProvider>
+        </StylesProvider>
+      </ReactQueryProvider>
+    </SwrProvider>
   )
 }

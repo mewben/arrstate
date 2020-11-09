@@ -2,8 +2,6 @@ import axios from "axios"
 
 import { authToken } from "@Providers"
 
-// const backend = process.env.GATSBY_BACKEND
-
 export const requestApi = async (
   path = "",
   method = "GET",
@@ -26,4 +24,12 @@ export const requestApi = async (
     params,
     responseType: "json",
   })
+}
+
+export const publicFetcher = (url, params) => {
+  return requestApi(url, "GET", { params, noToken: true }).then(res => res.data)
+}
+
+export const privateFetcher = (url, params) => {
+  return requestApi(url, "GET", { params }).then(res => res.data)
 }

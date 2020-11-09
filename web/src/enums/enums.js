@@ -17,6 +17,8 @@ export const PROPERTY_TYPES = {
   HOUSE: "house",
 }
 
+// t('paymentSchemes.installment')
+// t('paymentSchemes.cash')
 export const PAYMENT_SCHEMES = {
   INSTALLMENT: "installment",
   CASH: "cash",

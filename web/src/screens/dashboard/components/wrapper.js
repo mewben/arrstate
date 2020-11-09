@@ -3,60 +3,69 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen"
 import RecentActorsIcon from "@material-ui/icons/RecentActors"
 import TextureIcon from "@material-ui/icons/Texture"
 import { useTranslation } from "react-i18next"
+import useSwr from "swr"
+import MoneyIcon from "@material-ui/icons/Payment"
+import { fromMoney } from "@Utils/money"
+import acc from "accounting"
 
-import { useCurrentContext } from "@Wrappers"
-import { Empty, Button } from "@Components/generic"
-
+import { Loading } from "@Components/generic"
+import { useParams } from "@Utils"
 import Widget from "./widget"
+import SalesWidget from "./sales-widget"
 
-const Wrapper = ({ generateData }) => {
+const Wrapper = () => {
   const { t } = useTranslation()
-  const {
-    currentBusiness: { dashboard },
-  } = useCurrentContext()
+  const params = useParams()
 
-  if (!dashboard) {
-    return (
-      <Empty>
-        <div className="text-center">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            {t("dashboard.empty")}
-          </h3>
-          <div className="mt-2">
-            <Button onClick={generateData}>{t("dashboard.btnGenerate")}</Button>
-          </div>
-        </div>
-      </Empty>
-    )
+  const { data, error } = useSwr(["/api/dashboard", params.toString()])
+
+  if (!data && !error) {
+    return <Loading />
   }
+
+  const counts = data?.counts || {}
 
   return (
     <div className="container p-4 mx-auto">
       <div className="grid grid-cols-12 gap-x-6 gap-y-6">
-        <div className="col-span-4">
+        <div className="col-span-3">
           <Widget
-            data={dashboard?.projects}
+            data={`Php ${acc.formatNumber(fromMoney(counts.sales), 2)}`}
+            label={t("salesTotal")}
+            icon={<MoneyIcon fontSize="large" />}
+            color="text-green-400"
+            link="/reports/income"
+            linkTitle={t("btnViewReports")}
+          />
+        </div>
+        <div className="col-span-3">
+          <Widget
+            data={acc.formatNumber(counts.projects)}
+            label={t("projects.title")}
             link="/projects"
-            icon={<FolderOpenIcon />}
-            color="bg-green-400"
+            icon={<FolderOpenIcon fontSize="large" />}
+            color="text-yellow-200"
           />
         </div>
-        <div className="col-span-4">
+        <div className="col-span-3">
           <Widget
-            data={dashboard?.properties}
+            data={acc.formatNumber(counts.properties)}
+            label={t("properties.title")}
             link="/properties"
-            icon={<TextureIcon />}
-            color="bg-orange-400"
+            icon={<TextureIcon fontSize="large" />}
+            color="text-orange-400"
           />
         </div>
-        <div className="col-span-4">
+        <div className="col-span-3">
           <Widget
-            data={dashboard?.people}
+            data={acc.formatNumber(counts.people)}
+            label={t("people.title")}
             link="/people"
-            icon={<RecentActorsIcon />}
-            color="bg-blue-400"
+            icon={<RecentActorsIcon fontSize="large" />}
+            color="text-blue-400"
           />
         </div>
+        <SalesWidget data={data?.sales} />
       </div>
     </div>
   )

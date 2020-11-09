@@ -1,47 +1,42 @@
 import React from "react"
-import { Link } from "gatsby"
 import { useTranslation } from "react-i18next"
-import acc from "accounting"
 import cx from "clsx"
 
-import { Button } from "@Components/generic/button"
+import { Button, Panel } from "@Components/generic"
 
-const Widget = ({ data, icon, color, link }) => {
+const Widget = ({ data, label, icon, color, link, linkTitle }) => {
   const { t } = useTranslation()
-
-  if (!data) {
-    return null
+  if (!linkTitle) {
+    linkTitle = t("btnViewAll")
   }
 
   return (
-    <div className="bg-white overflow-hidden shadow rounded-lg">
-      <div className="px-4 py-5 sm:p-6">
+    <Panel noPadding>
+      <div className="p-5">
         <div className="flex items-center">
-          <div className={cx("flex-shrink-0 rounded-md text-white p-3", color)}>
-            {icon}
+          <div className="flex-shrink-0">
+            <div className={cx("text-cool-gray-400", color)}>{icon}</div>
           </div>
           <div className="ml-5 w-0 flex-1">
             <dl>
-              <dt className="text-sm leading-5 font-medium text-gray-500 truncate">
-                {data.label}
+              <dt className="text-sm leading-5 font-medium text-cool-gray-500 truncate">
+                {label}
               </dt>
-              <dd className="flex items-baseline">
-                <div className="text-2xl leading-8 font-semibold text-gray-900">
-                  {acc.formatNumber(data.total)}
+              <dd>
+                <div className="text-lg leading-7 font-medium text-cool-gray-900">
+                  {data}
                 </div>
               </dd>
             </dl>
           </div>
         </div>
       </div>
-      <div className="bg-gray-50 px-4 py-4 sm:px-6">
-        <div className="text-sm leading-5">
-          <Button to={link} size="xs">
-            {t("btnViewAll")}
-          </Button>
-        </div>
+      <div className="bg-cool-gray-50 px-5 py-2">
+        <Button to={link} size="sm" variant="text">
+          {linkTitle}
+        </Button>
       </div>
-    </div>
+    </Panel>
   )
 }
 

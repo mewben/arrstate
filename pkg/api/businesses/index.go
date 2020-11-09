@@ -51,7 +51,13 @@ func Routes(g fiber.Router, db *mongo.Database) {
 			return c.Status(400).JSON(err)
 		}
 
-		response, err := h.GenerateDashboard()
+		params := &DashboardParams{}
+		if err := c.QueryParser(params); err != nil {
+			log.Println("errrqueryparser", err)
+			return c.Status(400).JSON(errors.NewHTTPError(errors.ErrInputInvalid, err))
+		}
+
+		response, err := h.GetDashboard(params)
 		if err != nil {
 			log.Println("errrrrr", err)
 			return c.Status(400).JSON(err)

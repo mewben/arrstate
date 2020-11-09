@@ -20,5 +20,8 @@ func Init() *mongo.Database {
 	enums.Init()
 	// TODO:
 	// Migrations(db)
+
+	// cron.Run()
+
 	return db
 }

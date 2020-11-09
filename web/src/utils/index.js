@@ -1,5 +1,6 @@
 export { extractError } from "./extract-error"
-export { requestApi } from "./request-api"
+export { requestApi } from "./request"
+export { useParams } from "./use-params"
 export { buildParams } from "./build-params"
 export { fullName, initialsName } from "./full-name"
 export { formatDate } from "./format-date"

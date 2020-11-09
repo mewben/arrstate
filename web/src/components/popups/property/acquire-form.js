@@ -73,7 +73,13 @@ const AcquireForm = ({
       //   is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
       //   then: Yup.string().required(req),
       // }),
-      terms: Yup.number().required(req).min(1, req).nullable(), // 60 months
+      //terms: Yup.number().required(req).min(1, req).nullable(), // 60 months
+      terms: Yup.number()
+        .nullable()
+        .when("paymentScheme", {
+          is: val => val === PAYMENT_SCHEMES.INSTALLMENT,
+          then: Yup.number().required(req).min(1, req),
+        }),
       downPayment: Yup.number()
         .nullable()
         .when("paymentScheme", {

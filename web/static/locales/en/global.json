@@ -18,14 +18,15 @@
       "subTotal": "SubTotal"
     }
   },
-  "btnAcquire": "ACQUIRE",
-  "btnGenerate": "GENERATE",
-  "btnPay": "PAY",
-  "btnSave": "SAVE",
-  "btnSignout": "SIGN OUT",
-  "btnSubmit": "SUBMIT",
-  "btnViewAll": "VIEW ALL",
-  "btnViewReceipt": "VIEW RECEIPT",
+  "btnAcquire": "Acquire",
+  "btnGenerate": "Generate",
+  "btnPay": "Pay",
+  "btnSave": "Save",
+  "btnSignout": "Sign Out",
+  "btnSubmit": "Submit",
+  "btnViewAll": "View All",
+  "btnViewReceipt": "View Receipt",
+  "btnViewReports": "View Reports",
   "business": {
     "name": "Business Name"
   },
@@ -35,9 +36,6 @@
   },
   "confirm": "Are you sure?",
   "dashboard": {
-    "btnGenerate": "GENERATE DASHBOARD DATA",
-    "btnRefresh": "REFRESH DASHBOARD DATA",
-    "empty": "No dashboard data yet.",
     "title": "Dashboard"
   },
   "delete": "DELETE",
@@ -99,7 +97,7 @@
     }
   },
   "files": {
-    "add": "ADD FILE",
+    "add": "Add File",
     "filename": "Filename",
     "size": "Size",
     "type": "Type"
@@ -181,19 +179,23 @@
     "givenName": "Given Name"
   },
   "password": "Password",
+  "paymentSchemes": {
+    "cash": "Cash",
+    "installment": "Installment"
+  },
   "people": {
-    "add": "ADD PERSON",
+    "add": "Add Person",
     "address": "Address",
-    "edit": "EDIT PERSON",
+    "edit": "Edit Person",
     "name": "Name",
-    "new": "NEW PERSON",
+    "new": "New Person",
     "role": "Role",
     "title": "People"
   },
   "projects": {
-    "add": "ADD PROJECT",
+    "add": "Add Project",
     "area": "Area",
-    "edit": "EDIT PROJECT",
+    "edit": "Edit Project",
     "menu": {
       "agents": "Agents",
       "clients": "Clients",
@@ -202,14 +204,14 @@
       "properties": "Properties"
     },
     "name": "Project Name",
-    "new": "NEW PROJECT",
+    "new": "New Project",
     "title": "Projects"
   },
   "properties": {
-    "add": "ADD PROPERTY",
+    "add": "Add Property",
     "area": "Area",
     "code": "Property Code",
-    "edit": "EDIT PROPERTY",
+    "edit": "Edit Property",
     "house": "House",
     "lot": "Lot",
     "menu": {
@@ -218,7 +220,7 @@
       "overview": "Overview",
       "receipts": "Receipts"
     },
-    "new": "NEW PROPERTY",
+    "new": "New Property",
     "price": "Price",
     "priceAddon": "Addon Price",
     "project": "Project",
@@ -244,6 +246,7 @@
     "paidAt": "Paid Date",
     "title": "Reports"
   },
+  "salesTotal": "Total Sales",
   "settings": {
     "menu": {
       "account": "Account"
@@ -251,14 +254,14 @@
     "title": "Settings"
   },
   "signin": {
-    "btn": "SIGN IN",
-    "btnCreate": "CREATE ONE",
+    "btn": "Sign In",
+    "btnCreate": "Create One",
     "forgot": "Forgot your password?",
     "noAccount": "Don't have an account yet?",
     "title": "Sign In"
   },
   "signup": {
-    "btn": "SIGN UP",
+    "btn": "Sign Up",
     "domainHelp": "You can change the name and domain anytime.",
     "hasAccount": "Already have an account?",
     "termsHelp": "By creating an account, you are agreeing to our",

@@ -175,6 +175,14 @@ func Indexes(db *mongo.Database) {
 		{
 			Keys: bson.D{
 				{
+					Key:   "paidAt",
+					Value: 1,
+				},
+			},
+		},
+		{
+			Keys: bson.D{
+				{
 					Key:   "receiptNo",
 					Value: 1,
 				},

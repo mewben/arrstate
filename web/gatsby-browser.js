@@ -2,6 +2,7 @@ import React from "react"
 
 import {
   ReactQueryProvider,
+  SwrProvider,
   StylesProvider,
   AuthProvider,
   DateProvider,
@@ -13,14 +14,31 @@ import "@Providers/i18n"
 export const wrapRootElement = ({ element }) => {
   return (
     <React.Suspense fallback={<Loading />}>
+      <SwrProvider>
+        <ReactQueryProvider>
+          <StylesProvider>
+            <DateProvider>
+              <AuthProvider>{element}</AuthProvider>
+            </DateProvider>
+          </StylesProvider>
+        </ReactQueryProvider>
+      </SwrProvider>
+    </React.Suspense>
+  )
+}
+
+/*
+export const wrapRootElement2 = ({ element }) => {
+  return (
+    <React.Suspense fallback={<Loading />}>
       <ReactQueryProvider>
         <StylesProvider>
           <DateProvider>
             <AuthProvider>{element}</AuthProvider>
           </DateProvider>
         </StylesProvider>
-        {/* <ReactQueryDevtools /> */}
       </ReactQueryProvider>
     </React.Suspense>
   )
 }
+*/

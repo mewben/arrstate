@@ -26,6 +26,7 @@
   "btnSubmit": "__",
   "btnViewAll": "__",
   "btnViewReceipt": "__",
+  "btnViewReports": "__",
   "business": {
     "name": "__"
   },
@@ -35,9 +36,6 @@
   },
   "confirm": "__",
   "dashboard": {
-    "btnGenerate": "__",
-    "btnRefresh": "__",
-    "empty": "__",
     "title": "__"
   },
   "delete": "__",
@@ -181,6 +179,10 @@
     "givenName": "__"
   },
   "password": "__",
+  "paymentSchemes": {
+    "cash)": "__",
+    "installment)": "__"
+  },
   "people": {
     "add": "__",
     "address": "__",
@@ -244,6 +246,7 @@
     "paidAt": "__",
     "title": "__"
   },
+  "salesTotal": "__",
   "settings": {
     "menu": {
       "account": "__"

@@ -55,4 +55,6 @@ const (
 	InvoiceBlockIntro   = "intro"
 	InvoiceBlockItem    = "item"
 	InvoiceBlockSummary = "summary"
+
+	DateTimeForm = "2006-01-02T15:04" // ex. 2020-12-04T17:30
 )

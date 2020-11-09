@@ -1,44 +1,21 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { useMutation, queryCache } from "react-query"
-import DeleteIcon from "@material-ui/icons/Delete"
 
 import { AppBar } from "@Wrappers/layout"
-import { Button, FileUploader } from "@Components/generic"
+import { Button, Panel, FileUploader } from "@Components/generic"
 import { requestApi } from "@Utils"
 import { Wrapper } from "./components"
 
 const Dashboard = () => {
   const { t } = useTranslation()
 
-  const [fetchData, { reset, error }] = useMutation(
-    () => {
-      return requestApi("/api/dashboard", "GET")
-    },
-    {
-      onSuccess: ({ data }) => {
-        queryCache.setQueryData("currentBusiness", data)
-        queryCache.invalidateQueries("currentBusiness")
-      },
-    }
-  )
-
-  const handleGenerateData = () => {
-    reset()
-    fetchData()
-  }
-
   // TODO: error notification notistack
-
   return (
     <>
-      <AppBar title={t("dashboard.title")}>
-        <Button variant="text" onClick={handleGenerateData}>
-          {t("dashboard.btnRefresh")}
-        </Button>
-      </AppBar>
+      <AppBar title={t("dashboard.title")} />
       <div className="overflow-y-scroll">
-        <Wrapper generateData={handleGenerateData} />
+        <Wrapper />
+
         {/*
         <FileUploader />
         <div className="m-8 p-8 border border-gray-500">

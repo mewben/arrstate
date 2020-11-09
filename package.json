@@ -5,6 +5,9 @@
   "repository": "git@github.com:mewben/arrstate.git",
   "author": "Melvin Soldia <melvinsoldia@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "12.18.3"
+  },
   "scripts": {
     "build": "cd web && npm install && npm run build"
   }

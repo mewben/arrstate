@@ -2,12 +2,9 @@
   "name": "arrstate",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:mewben/arrstate.git",
+  "repository": "https://github.com:mewben/arrstate.git",
   "author": "Melvin Soldia <melvinsoldia@gmail.com>",
   "license": "MIT",
-  "engines": {
-    "node": "12.18.3"
-  },
   "scripts": {
     "build": "cd web && npm install && npm run build"
   }
